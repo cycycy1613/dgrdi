@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTB Information Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a365d;
+            --secondary: #2d6c8a;
+            --accent: #e9b949;
+            --light: #f8f9fa;
+            --dark: #2d3748;
+            --gray: #a0aec0;
+            --success: #38a169;
+            --danger: #e53e3e;
+            --dark-bg: #121212;
+            --dark-surface: #1e1e1e;
+            --dark-text: #e0e0e0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7f9;
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .tabs-container {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .tabs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+        }
+        
+        .tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            padding: 10px;
+        }
+        
+        .tab:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab i {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .tab span {
+            font-weight: 600;
+            font-size: 12px;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin: 40px 0 30px;
+            color: var(--primary);
+            font-size: 28px;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 80px; height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .announcement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+        
+        .announcement-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .announcement-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Modals & UI Components */
+        .modal, .upload-modal, .login-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active, .upload-modal.active, .login-modal.active { display: flex; }
+
+        .modal-content img { max-width: 90vw; max-height: 80vh; border-radius: 8px; }
+
+        .btn { padding: 12px 24px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-secondary { background: var(--gray); color: white; }
+
+        footer { background: var(--primary); color: white; padding: 30px 0; margin-top: auto; }
+        .footer-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .footer-links a { color: white; margin-left: 20px; text-decoration: none; }
+        
+        .toast {
+            position: fixed; bottom: 20px; right: 20px; padding: 15px 25px;
+            background: var(--success); color: white; border-radius: 8px;
+            display: none; z-index: 2000;
+        }
+
+        @media (max-width: 768px) {
+            .tabs { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo"><h1>BTB Information Portal</h1></div>
+                <div><p>Agent Dashboard</p></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="tabs-container">
+            <div class="tabs">
+                <a href="https://drive.google.com/file/d/1mILPs9HAOLYZSzTwBZnIdwSJHdSQpzKs/view?usp=drive_link" target="_blank" class="tab">
+                    <i class="fas fa-file-powerpoint"></i>
+                    <span>PRESENTATION</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/10g0jZiD8MmLdDMdOeVfQPYA8C2QgLf7v?usp=drive_link" target="_blank" class="tab">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>INVENTORIES</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/13QCdKeLVYhVoZqzl5W5lh7gfdXJHjUln?usp=drive_link" target="_blank" class="tab">
+                    <i class="fas fa-file-signature"></i>
+                    <span>REQUIREMENTS</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/12egoQwsab4WeCNNHyYJ3M_i1fvp6WeIq?usp=drive_link" target="_blank" class="tab">
+                    <i class="fas fa-city"></i>
+                    <span>UDH MAHOGANY</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/1P-6457zTcrlZnQqTnaeCeN23V31l9Ojf?usp=drive_link" target="_blank" class="tab">
+                    <i class="fas fa-building"></i>
+                    <span>UDH HAMPTON</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/1-4N6srD3lTMAWGEL3NQHUGgXj4MShyQP?usp=drive_link" target="_blank" class="tab">
+                    <i class="fas fa-hotel"></i>
+                    <span>UDH CAMPVILLE</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/1i2OXvIdKz7FjBiVHqeh8TqXaJkyIFHL5" target="_blank" class="tab">
+                    <i class="fas fa-home"></i>
+                    <span>BELLA VISTA</span>
+                </a>
+            </div>
+        </div>
+
+        <section>
+            <h2 class="section-title">Bulletin Board</h2>
+            <div class="announcement-grid" id="announcementGrid"></div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">Bayanihan Town Batangas</div>
+                <div class="footer-links">
+                    <a href="#" id="loginLink" onclick="openLoginModal(event)">Admin Login</a>
+                </div>
+            </div>
+            <div class="copyright" style="text-align:center; margin-top:20px;">&copy; 2026 BTB Information Portal</div>
+        </div>
+    </footer>
+
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <img id="modalImage" src="">
+            <div style="position:absolute; top:20px; right:20px; display:flex; flex-direction:column; gap:10px;">
+                <button class="btn btn-primary" onclick="openUploadModal()"><i class="fas fa-upload"></i></button>
+                <button class="btn btn-secondary" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="upload-modal" id="uploadModal">
+        <div style="background:white; padding:30px; border-radius:12px; width:90%; max-width:400px;">
+            <h3>Upload Poster</h3><br>
+            <input type="file" id="posterImage" accept="image/*" style="margin-bottom:20px;">
+            <div style="display:flex; gap:10px;">
+                <button class="btn btn-secondary" onclick="closeUploadModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="uploadPoster()">Upload</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="login-modal" id="loginModal">
+        <div style="background:white; padding:30px; border-radius:12px; width:90%; max-width:400px;">
+            <h3>Admin Login</h3><br>
+            <input type="email" id="loginEmail" placeholder="Email" style="width:100%; padding:10px; margin-bottom:10px;">
+            <input type="password" id="loginPassword" placeholder="Password" style="width:100%; padding:10px; margin-bottom:10px;">
+            <button class="btn btn-primary" style="width:100%" onclick="handleLogin()">Login</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBdNGSSfPLBORjVvnJM3IVqxFZByw3iJWM",
+            authDomain: "btb-announcement.firebaseapp.com",
+            projectId: "btb-announcement",
+            databaseURL: "https://btb-announcement-default-rtdb.firebaseio.com"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+        
+        // NEW BRANCH FOR THIS VERSION
+        const DB_PATH = '/bayanihan_portal/announcements';
+        const DEFAULT_IMG = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWRmMmY3Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzY2NiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q2xpY2sgdG8gVXBsb2FkIFBvc3RlcjwvdGV4dD48L3N2Zz4=";
+
+        let currentSlot = null;
+
+        function showToast(msg, ok = true) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.style.backgroundColor = ok ? '#38a169' : '#e53e3e';
+            t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 3000);
+        }
+
+        function openModal(img, idx) {
+            currentSlot = idx;
+            document.getElementById('modalImage').src = img;
+            document.getElementById('imageModal').classList.add('active');
+        }
+
+        function closeModal() { document.getElementById('imageModal').classList.remove('active'); }
+
+        function openUploadModal() {
+            if(!auth.currentUser) return showToast("Please login as admin first", false);
+            document.getElementById('uploadModal').classList.add('active');
+            closeModal();
+        }
+
+        function closeUploadModal() { document.getElementById('uploadModal').classList.remove('active'); }
+
+        function openLoginModal(e) { e.preventDefault(); document.getElementById('loginModal').classList.add('active'); }
+
+        function handleLogin() {
+            const e = document.getElementById('loginEmail').value;
+            const p = document.getElementById('loginPassword').value;
+            auth.signInWithEmailAndPassword(e, p)
+                .then(() => { showToast("Logged in!"); document.getElementById('loginModal').classList.remove('active'); })
+                .catch(err => showToast(err.message, false));
+        }
+
+        async function uploadPoster() {
+            const file = document.getElementById('posterImage').files[0];
+            if(!file) return showToast("Select an image", false);
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = async () => {
+                await database.ref(DB_PATH).update({ [`slot_${currentSlot}`]: reader.result });
+                showToast("Uploaded!");
+                closeUploadModal();
+                loadGrid();
+            };
+        }
+
+        function loadGrid() {
+            const grid = document.getElementById('announcementGrid');
+            grid.innerHTML = '';
+            database.ref(DB_PATH).once('value').then(snap => {
+                const data = snap.val() || {};
+                for(let i=0; i<4; i++) {
+                    const imgData = data[`slot_${i}`] || DEFAULT_IMG;
+                    const item = document.createElement('div');
+                    item.className = 'announcement-item';
+                    item.innerHTML = `<img src="${imgData}">`;
+                    item.onclick = () => openModal(imgData, i);
+                    grid.appendChild(item);
+                }
+            });
+        }
+
+        auth.onAuthStateChanged(user => {
+            document.getElementById('loginLink').textContent = user ? "Logout" : "Admin Login";
+            if(user) document.getElementById('loginLink').onclick = () => auth.signOut();
+        });
+
+        window.onload = loadGrid;
+    </script>
+</body>
+</html>
