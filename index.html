@@ -100,7 +100,6 @@
 
         .project-image {
             width: 100%;
-            /* 4:3 Aspect Ratio: (3 / 4) * 100% = 75% */
             aspect-ratio: 4 / 3; 
             background-color: var(--light-grey);
             overflow: hidden;
@@ -148,6 +147,12 @@
             min-width: 100px;
         }
 
+        /* Button Container */
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+
         .see-details-btn {
             display: inline-block;
             background-color: var(--dark-blue);
@@ -159,12 +164,64 @@
             transition: var(--transition);
             border: 2px solid var(--dark-blue);
             text-align: center;
-            width: 100%;
+            flex-grow: 1; /* Makes the button take up remaining space */
         }
 
         .see-details-btn:hover {
             background-color: var(--light-blue);
             border-color: var(--light-blue);
+        }
+
+        .copy-link-btn {
+            background-color: var(--grey);
+            color: var(--dark-blue);
+            border: none;
+            padding: 12px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+        }
+
+        .copy-link-btn:hover {
+            background-color: var(--gold);
+            color: var(--white);
+        }
+
+        /* Toast Notification */
+        #toast {
+            visibility: hidden;
+            min-width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 14px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        #toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
         }
 
         /* Footer */
@@ -260,7 +317,12 @@
                             <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span class="detail-label">Location:</span><span>San Pascual - Alitagtag, Batangas</span></div>
                             <div class="detail-item"><i class="fas fa-ruler-combined"></i><span class="detail-label">Land Area:</span><span> 65 Hectares</span></div>
                         </div>
-                        <a href="https://bayanihantownbatangas.info/members" class="see-details-btn">See Details</a>
+                        <div class="card-actions">
+                            <a href="https://bayanihantownbatangas.info/members" class="see-details-btn">See Details</a>
+                            <button class="copy-link-btn" onclick="copyToClipboard('https://bayanihantownbatangas.info/members')" title="Copy Link">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -275,7 +337,12 @@
                             <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span class="detail-label">Location:</span><span>Balagtas, Batangas City</span></div>
                             <div class="detail-item"><i class="fas fa-ruler-combined"></i><span class="detail-label">Land Area:</span><span>8.9 Hectares</span></div>
                         </div>
-                        <a href="https://urbandecahomesbatangas.com/members" class="see-details-btn">See Details</a>
+                        <div class="card-actions">
+                            <a href="https://urbandecahomesbatangas.com/members" class="see-details-btn">See Details</a>
+                            <button class="copy-link-btn" onclick="copyToClipboard('https://urbandecahomesbatangas.com/members')" title="Copy Link">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -290,12 +357,19 @@
                             <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span class="detail-label">Location:</span><span>Cavite and Muntinlupa</span></div>
                             <div class="detail-item"><i class="fas fa-ruler-combined"></i><span class="detail-label">Land Area:</span><span> - </span></div>
                         </div>
-                        <a href="https://www.dgrdi.digital/south-project" class="see-details-btn">See Details</a>
+                        <div class="card-actions">
+                            <a href="https://www.dgrdi.digital/south-project" class="see-details-btn">See Details</a>
+                            <button class="copy-link-btn" onclick="copyToClipboard('https://www.dgrdi.digital/south-project')" title="Copy Link">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+
+    <div id="toast">Link copied to clipboard!</div>
 
     <footer>
         <div class="container">
@@ -313,5 +387,30 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        function copyToClipboard(text) {
+            // Create a temporary textarea to copy the text
+            const tempInput = document.createElement("textarea");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            // Show Toast Notification
+            showToast();
+        }
+
+        function showToast() {
+            const toast = document.getElementById("toast");
+            toast.className = "show";
+            
+            // Remove the show class after 3 seconds
+            setTimeout(function(){ 
+                toast.className = toast.className.replace("show", ""); 
+            }, 3000);
+        }
+    </script>
 </body>
 </html>
