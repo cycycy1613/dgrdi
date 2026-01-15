@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTB Google Drive</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a365d;
+            --secondary: #2d6c8a;
+            --accent: #e9b949;
+            --light: #f8f9fa;
+            --dark: #2d3748;
+            --gray: #a0aec0;
+            --success: #38a169;
+            --danger: #e53e3e;
+            --dark-bg: #121212;
+            --dark-surface: #1e1e1e;
+            --dark-text: #e0e0e0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7f9;
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        /* Navigation Tabs */
+        .tabs-container {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .tabs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 10px;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            min-height: 110px;
+            animation: slideUp 0.5s ease-out;
+        }
+        
+        .tab:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab i {
+            font-size: 28px;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        .tab:hover i {
+            transform: scale(1.2);
+        }
+        
+        .tab span {
+            font-weight: 600;
+            font-size: 13px;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        /* Announcement Section */
+        .announcement-section {
+            margin: 40px 0;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary);
+            font-size: 28px;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .announcement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .announcement-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .announcement-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Modals & Toasts */
+        .modal, .upload-modal, .login-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.active, .upload-modal.active, .login-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content img {
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: 8px;
+        }
+
+        .modal-actions {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .modal-btn {
+            width: 50px; height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        
+        .upload-content, .login-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .login-content { background: var(--dark-surface); color: white; }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; }
+        .form-group input { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+
+        .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-secondary { background: var(--gray); color: white; }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 30px 0;
+            margin-top: auto;
+            text-align: center;
+        }
+
+        .footer-links a { color: white; margin: 0 10px; text-decoration: none; }
+
+        .toast {
+            position: fixed; bottom: 20px; right: 20px;
+            padding: 15px 25px; border-radius: 8px;
+            color: white; display: none; z-index: 2000;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 600px) {
+            .tabs { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>BTB Google Drive</h1>
+                </div>
+                <div class="header-info">
+                    <p>Dashboard</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="tabs-container">
+            <div class="tabs">
+                <a href="https://drive.google.com/drive/folders/1WBDE4CSpI0BQ2NsFZLZRmRzv9WCJK-nS?usp=drive_link" target="_blank" class="tab">
+                    <i class="fas fa-file-powerpoint"></i>
+                    <span>Presentation</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/1JaboHJRPD43aTmMiQV_CiS3D_S5MNxxL?usp=drive_link" target="_blank" class="tab">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>Site Dev Plan</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/14YEUmMBHzIsvzaOvWTAsbp-hhWzeusen" target="_blank" class="tab">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Availability</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/1JbME1PW_n0B1uN13LVEmkyvvfHie_DRk?usp=drive_link" target="_blank" class="tab">
+                    <i class="fas fa-layer-group"></i>
+                    <span>Floor Plan</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/1JzU0PxkE5jbNqueXlcxGz17Ig6TOZsUu?usp=drive_link" target="_blank" class="tab">
+                    <i class="fas fa-camera-retro"></i>
+                    <span>Photos & Videos</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/1-hiU3WW3kMJ0W8gE41UwnzGmi6bex7R_?usp=drive_link" target="_blank" class="tab">
+                    <i class="fas fa-play-circle"></i>
+                    <span>AVP & E-Flyer</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/18Wx8ElWa7eJDIWncPA8bO9lFltIXMBt4?usp=drive_link" target="_blank" class="tab">
+                    <i class="fas fa-calculator"></i>
+                    <span>Sample Computation</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/1bWGtCl2hzo4_K4Vith6aSE-HgVYJJMdq?usp=drive_link" target="_blank" class="tab">
+                    <i class="fas fa-file-invoice"></i>
+                    <span>Requirements</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/1LHl_effKE8mj1M7VvOWpfdbOCIR147mQ?usp=sharing" target="_blank" class="tab">
+                    <i class="fas fa-id-card"></i>
+                    <span>Contact Person</span>
+                </a>
+            </div>
+        </div>
+
+        <section class="announcement-section">
+            <h2 class="section-title">Bulletin Board</h2>
+            <div class="announcement-grid" id="announcementGrid">
+                </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-logo">Bayanihan Town Batangas</div>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#" id="loginLink" onclick="openLoginModal(event)">Login</a>
+            </div>
+            <div class="copyright">&copy; 2025 BTB Google Drive. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="Announcement">
+            <div class="modal-actions">
+                <div class="modal-btn upload" onclick="openUploadModal()"><i class="fas fa-upload"></i></div>
+                <div class="modal-btn exit" onclick="closeModal()"><i class="fas fa-times"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="upload-modal" id="uploadModal">
+        <div class="upload-content">
+            <h3>Upload New Poster</h3>
+            <div class="form-group">
+                <label>Admin Code</label>
+                <input type="password" id="adminCode" placeholder="Enter admin code">
+            </div>
+            <div class="form-group">
+                <label>Select Poster Image</label>
+                <input type="file" id="posterImage" accept="image/*">
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-secondary" onclick="closeUploadModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="uploadPoster()">Upload</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="login-modal" id="loginModal">
+        <div class="login-content">
+            <h3>Admin Login</h3>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="loginEmail" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password">
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary" onclick="handleLogin()">Login</button>
+                <button class="btn btn-secondary" onclick="closeLoginModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBdNGSSfPLBORjVvnJM3IVqxFZByw3iJWM",
+            authDomain: "btb-announcement.firebaseapp.com",
+            projectId: "btb-announcement",
+            storageBucket: "btb-announcement.firebasestorage.app",
+            messagingSenderId: "1047737510079",
+            appId: "1:1047737510079:web:9add56a0c7375fa0f4be0a",
+            measurementId: "G-T9EQGE2TWG",
+            databaseURL: "https://btb-announcement-default-rtdb.firebaseio.com"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+        const DEFAULT_IMAGE = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWRmMmY3Ii8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzY2NiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q2xpY2sgdG8gVXBsb2FkPC90ZXh0Pgo8L3N2Zz4=";
+
+        let currentImageIndex = null;
+        let announcementItems = [];
+        let dataLoaded = false;
+
+        function showToast(message, isSuccess = true) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.backgroundColor = isSuccess ? '#38a169' : '#e53e3e';
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 3000);
+        }
+
+        function openModal(imageData, index) {
+            currentImageIndex = index;
+            document.getElementById('modalImage').src = imageData || '';
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+            document.body.style.overflow = 'hidden';
+            document.querySelector('.modal-btn.upload').style.display = auth.currentUser ? 'flex' : 'none';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+            setTimeout(() => { modal.style.display = 'none'; document.body.style.overflow = 'auto'; }, 300);
+        }
+
+        function openUploadModal() {
+            if (!auth.currentUser) { showToast('Login required', false); return; }
+            const uModal = document.getElementById('uploadModal');
+            uModal.style.display = 'flex';
+            setTimeout(() => uModal.classList.add('active'), 10);
+            closeModal();
+        }
+
+        function closeUploadModal() {
+            const uModal = document.getElementById('uploadModal');
+            uModal.classList.remove('active');
+            setTimeout(() => uModal.style.display = 'none', 300);
+        }
+
+        function openLoginModal(e) {
+            e.preventDefault();
+            const lModal = document.getElementById('loginModal');
+            lModal.style.display = 'flex';
+            setTimeout(() => lModal.classList.add('active'), 10);
+        }
+
+        function closeLoginModal() {
+            const lModal = document.getElementById('loginModal');
+            lModal.classList.remove('active');
+            setTimeout(() => lModal.style.display = 'none', 300);
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const pass = document.getElementById('loginPassword').value;
+            auth.signInWithEmailAndPassword(email, pass)
+                .then(() => { showToast('Logged in!'); closeLoginModal(); })
+                .catch(err => showToast(err.message, false));
+        }
+
+        function updateAnnouncementItem(index, imageData) {
+            const item = announcementItems[index];
+            item.innerHTML = `<img src="${imageData}" alt="Poster">`;
+            item.onclick = () => openModal(imageData, index);
+        }
+
+        async function uploadPoster() {
+            const code = document.getElementById('adminCode').value;
+            const file = document.getElementById('posterImage').files[0];
+            if (code !== '001122') { showToast('Invalid Code', false); return; }
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = async () => {
+                const base64 = reader.result;
+                database.ref(`/announcements/poster_${currentImageIndex}`).set(base64)
+                    .then(() => {
+                        showToast('Uploaded!');
+                        updateAnnouncementItem(currentImageIndex, base64);
+                        closeUploadModal();
+                    });
+            };
+        }
+
+        function initAnnouncementGrid() {
+            const grid = document.getElementById('announcementGrid');
+            grid.innerHTML = '';
+            for (let i = 0; i < 4; i++) {
+                const item = document.createElement('div');
+                item.className = 'announcement-item';
+                item.innerHTML = '<span>Loading...</span>';
+                announcementItems.push(item);
+                grid.appendChild(item);
+            }
+
+            database.ref('/announcements').on('value', (snap) => {
+                const data = snap.val() || {};
+                for (let i = 0; i < 4; i++) {
+                    const img = data[`poster_${i}`] || DEFAULT_IMAGE;
+                    updateAnnouncementItem(i, img);
+                }
+            });
+        }
+
+        auth.onAuthStateChanged(user => {
+            const link = document.getElementById('loginLink');
+            if (user) {
+                link.textContent = 'Logout';
+                link.onclick = (e) => { e.preventDefault(); auth.signOut(); };
+            } else {
+                link.textContent = 'Login';
+                link.onclick = openLoginModal;
+            }
+        });
+
+        window.onload = initAnnouncementGrid;
+    </script>
+</body>
+</html>
