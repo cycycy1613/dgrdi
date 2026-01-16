@@ -110,9 +110,9 @@
         
         .tab span {
             font-weight: 600;
-            font-size: 12px;
+            font-size: 13px; /* Slightly increased for readability */
             text-align: center;
-            text-transform: uppercase;
+            /* text-transform: uppercase; Removed to allow normal casing */
         }
         
         .section-title {
@@ -374,7 +374,6 @@
         let currentImageIndex = null;
         let announcementItems = [];
 
-        // UI Logic
         function showToast(msg, success=true) {
             const t = document.getElementById('toast');
             t.textContent = msg;
@@ -396,7 +395,6 @@
         function openLoginModal() { document.getElementById('loginModal').classList.add('active'); }
         function closeLoginModal() { document.getElementById('loginModal').classList.remove('active'); }
 
-        // Firebase Logic (Updated Branch: portal_v2)
         function updateItem(idx, data) {
             const grid = document.getElementById('announcementGrid');
             let item = announcementItems[idx];
@@ -438,7 +436,7 @@
                 link.textContent = 'Logout';
                 link.onclick = () => auth.signOut();
             } else {
-                link.textContent = 'Admin Login';
+                link.textContent = 'Login';
                 link.onclick = openLoginModal;
             }
         });
