@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UDH Meycauayan - Google Drive</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a365d;
+            --secondary: #2d6c8a;
+            --accent: #e9b949;
+            --light: #f8f9fa;
+            --dark: #2d3748;
+            --gray: #a0aec0;
+            --success: #38a169;
+            --danger: #e53e3e;
+            --dark-bg: #121212;
+            --dark-surface: #1e1e1e;
+            --dark-text: #e0e0e0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7f9;
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .tabs-container {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .tabs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            padding: 10px;
+        }
+        
+        .tab:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab i {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .tab span {
+            font-weight: 600;
+            font-size: 13px;
+            text-align: center;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary);
+            font-size: 28px;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .announcement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .announcement-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .announcement-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal, .upload-modal, .login-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active, .upload-modal.active, .login-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content img {
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: 8px;
+        }
+
+        .modal-actions {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .modal-btn {
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            background: white;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 20px;
+        }
+
+        .upload-content, .login-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 450px;
+        }
+
+        .login-content { background: var(--dark-surface); color: white; }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-accent { background: var(--accent); color: var(--dark); }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 30px 0;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a { color: white; margin-left: 20px; text-decoration: none; }
+
+        .toast {
+            position: fixed; bottom: 20px; right: 20px;
+            padding: 15px 25px; border-radius: 8px;
+            color: white; display: none; z-index: 2000;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo"><h1>UDH Meycauayan - Google Drive</h1></div>
+                <p>Dashboard</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="tabs-container">
+            <div class="tabs">
+                <a href="https://drive.google.com/drive/folders/1I2uLAtVvHfCfDnN9yO3__G2V2WyURSfI?usp=drive_link" target="_blank" class="tab">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>Site Dev & Floor Plans</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/1GddfNKPZlvMPUmmI90HyioAnVXTMzq3m?usp=drive_link" target="_blank" class="tab">
+                    <i class="fas fa-mountain-city"></i>
+                    <span>Amenities & Vicinity Map</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/1uJYqSNalVEGUTpWWMg504h5UuUKk1Slj?usp=drive_link" target="_blank" class="tab">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>Inventories</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/1S4R-ej1CEgqMkoVIgWoAmIk1C4F_lU-W?usp=drive_link" target="_blank" class="tab">
+                    <i class="fas fa-camera"></i>
+                    <span>Unit Photos</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/1UNVMQN0xnoNNr2Yqe2qfL0BWszKjOptd?usp=drive_link" target="_blank" class="tab">
+                    <i class="fas fa-calculator"></i>
+                    <span>Computations</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/1J1mCK0U-4uS8ZDBYmQXTB-NzOn8GdGT-?usp=drive_link" target="_blank" class="tab">
+                    <i class="fas fa-file-invoice"></i>
+                    <span>Requirements</span>
+                </a>
+                <a href="https://www.facebook.com/decagold.marilao" target="_blank" class="tab">
+                    <i class="fab fa-facebook-square"></i>
+                    <span>Connect with us!</span>
+                </a>
+            </div>
+        </div>
+
+        <section>
+            <h2 class="section-title">Bulletin Board</h2>
+            <div class="announcement-grid" id="announcementGrid"></div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>Urban Deca Homes Meycauayan</div>
+                <div class="footer-links">
+                    <a href="#" id="loginLink">Login</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <img id="modalImage" src="">
+            <div class="modal-actions">
+                <div class="modal-btn" onclick="openUploadModal()" id="uploadBtnAction" style="display:none;"><i class="fas fa-upload" style="color:var(--primary)"></i></div>
+                <div class="modal-btn" onclick="closeModal()"><i class="fas fa-times" style="color:var(--danger)"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="upload-modal" id="uploadModal">
+        <div class="upload-content">
+            <h3>Upload Poster</h3>
+            <input type="password" id="adminCode" placeholder="Admin Code" style="width:100%; padding:10px; margin:10px 0;">
+            <input type="file" id="posterImage" accept="image/*" style="margin:10px 0;">
+            <button class="btn btn-primary" onclick="uploadPoster()">Upload</button>
+            <button class="btn" onclick="closeUploadModal()">Cancel</button>
+        </div>
+    </div>
+
+    <div class="login-modal" id="loginModal">
+        <div class="login-content">
+            <h3>Login</h3>
+            <input type="email" id="loginEmail" placeholder="Email" style="width:100%; padding:10px; margin:10px 0;">
+            <input type="password" id="loginPassword" placeholder="Password" style="width:100%; padding:10px; margin:10px 0;">
+            <button class="btn btn-accent" onclick="handleLogin()">Login</button>
+            <button class="btn" style="color:white" onclick="closeLoginModal()">Close</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBdNGSSfPLBORjVvnJM3IVqxFZByw3iJWM",
+            authDomain: "btb-announcement.firebaseapp.com",
+            projectId: "btb-announcement",
+            storageBucket: "btb-announcement.firebasestorage.app",
+            messagingSenderId: "1047737510079",
+            appId: "1:1047737510079:web:9add56a0c7375fa0f4be0a",
+            databaseURL: "https://btb-announcement-default-rtdb.firebaseio.com"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+        const DEFAULT_IMAGE = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWRmMmY3Ii8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzY2NiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q0xJQ0sgVE8gVVBMT0FEIFBPU1RFUjwvdGV4dD4KPC9zdmc+";
+
+        let currentImageIndex = null;
+        let announcementItems = [];
+
+        function showToast(msg, success=true) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.style.backgroundColor = success ? '#38a169' : '#e53e3e';
+            t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 3000);
+        }
+
+        function openModal(img, idx) {
+            currentImageIndex = idx;
+            document.getElementById('modalImage').src = img;
+            document.getElementById('imageModal').classList.add('active');
+            document.getElementById('uploadBtnAction').style.display = auth.currentUser ? 'flex' : 'none';
+        }
+
+        function closeModal() { document.getElementById('imageModal').classList.remove('active'); }
+        function openUploadModal() { closeModal(); document.getElementById('uploadModal').classList.add('active'); }
+        function closeUploadModal() { document.getElementById('uploadModal').classList.remove('active'); }
+        function openLoginModal() { document.getElementById('loginModal').classList.add('active'); }
+        function closeLoginModal() { document.getElementById('loginModal').classList.remove('active'); }
+
+        function updateItem(idx, data) {
+            const grid = document.getElementById('announcementGrid');
+            let item = announcementItems[idx];
+            if(!item) {
+                item = document.createElement('div');
+                item.className = 'announcement-item';
+                grid.appendChild(item);
+                announcementItems[idx] = item;
+            }
+            item.innerHTML = `<img src="${data}">`;
+            item.onclick = () => openModal(data, idx);
+        }
+
+        async function uploadPoster() {
+            const code = document.getElementById('adminCode').value;
+            const file = document.getElementById('posterImage').files[0];
+            if(code !== '123456') return showToast('Invalid Code', false);
+            if(!file) return showToast('Select Image', false);
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = async () => {
+                // Using new branch: portal_meycauayan
+                await database.ref('/portal_meycauayan/posters/').update({ [`poster_${currentImageIndex}`]: reader.result });
+                showToast('Uploaded!');
+                closeUploadModal();
+                updateItem(currentImageIndex, reader.result);
+            };
+        }
+
+        function handleLogin() {
+            auth.signInWithEmailAndPassword(document.getElementById('loginEmail').value, document.getElementById('loginPassword').value)
+                .then(() => { showToast('Logged In'); closeLoginModal(); })
+                .catch(e => showToast(e.message, false));
+        }
+
+        auth.onAuthStateChanged(user => {
+            const link = document.getElementById('loginLink');
+            if(user) {
+                link.textContent = 'Logout';
+                link.onclick = () => auth.signOut();
+            } else {
+                link.textContent = 'Login';
+                link.onclick = openLoginModal;
+            }
+        });
+
+        window.onload = () => {
+            // Loading from new branch: portal_meycauayan
+            database.ref('/portal_meycauayan/posters/').on('value', snap => {
+                const data = snap.val() || {};
+                for(let i=0; i<4; i++) {
+                    updateItem(i, data[`poster_${i}`] || DEFAULT_IMAGE);
+                }
+            });
+        };
+    </script>
+</body>
+</html>
