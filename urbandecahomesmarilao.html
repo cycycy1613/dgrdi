@@ -403,7 +403,7 @@
         async function uploadPoster() {
             const code = document.getElementById('adminCode').value;
             const file = document.getElementById('posterImage').files[0];
-            if(code !== '156156') return showToast('Invalid Code', false);
+            if(code !== '123456') return showToast('Invalid Code', false);
             if(!file) return showToast('Select Image', false);
 
             const reader = new FileReader();
