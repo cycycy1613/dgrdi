@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DGRDI Directory - Complete DGRDI Project Data</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles & Variables */
+        :root {
+            --dark-blue: #0a1a3a;
+            --grey: #e8e9eb;
+            --black: #111;
+            --yellow: #ffc107;
+            --gold: #d4af37;
+            --light-blue: #4a9fe3;
+            --white: #ffffff;
+            --bg-body: #fdfdfd;
+            --card-bg: #ffffff;
+            --text-main: #111;
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            --border-radius: 12px;
+        }
+
+        /* Dark Mode Variables */
+        [data-theme="dark"] {
+            --dark-blue: #050d1d;
+            --bg-body: #0d1117;
+            --card-bg: #161b22;
+            --text-main: #e6edf3;
+            --grey: #30363d;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            transition: background-color 0.3s ease;
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Animated Background Canvas */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--dark-blue);
+            color: var(--white);
+            padding: 30px 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo h1 {
+            font-size: clamp(22px, 5vw, 28px);
+            font-weight: 700;
+        }
+
+        .logo h1 span {
+            color: var(--gold);
+        }
+
+        .tagline {
+            font-size: clamp(14px, 4vw, 18px);
+            font-style: italic;
+            color: var(--light-blue);
+            margin-top: 5px;
+        }
+
+        /* Controls Section */
+        .controls {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .controls-inner {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: var(--white);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            color: var(--dark-blue);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            font-size: 14px;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            background: var(--gold);
+            color: white;
+        }
+
+        /* Main Content */
+        main {
+            padding: 30px 0;
+        }
+
+        /* Layout Switcher Logic */
+        .projects-grid {
+            display: grid;
+            gap: 20px;
+            transition: all 0.5s ease;
+        }
+
+        .projects-grid.grid-view {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        }
+
+        .projects-grid.list-view {
+            grid-template-columns: 1fr;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Project Card */
+        .project-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--grey);
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .list-view .project-card {
+            flex-direction: row;
+            align-items: stretch;
+        }
+
+        .project-image {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            background-color: var(--grey);
+            overflow: hidden;
+        }
+
+        .list-view .project-image {
+            width: 35%;
+            max-width: 300px;
+            min-width: 200px;
+            aspect-ratio: auto;
+        }
+
+        .project-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .project-card:hover .project-card-img {
+            transform: scale(1.05);
+        }
+
+        .project-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .project-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .detail-item i {
+            color: var(--gold);
+            width: 20px;
+            margin-top: 4px;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            min-width: 85px;
+            flex-shrink: 0;
+        }
+
+        /* Button Container */
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .see-details-btn {
+            display: inline-block;
+            background-color: var(--dark-blue);
+            color: var(--white);
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: 2px solid var(--dark-blue);
+            text-align: center;
+            flex-grow: 1;
+            font-size: 15px;
+        }
+
+        .see-details-btn:hover {
+            background-color: var(--light-blue);
+            border-color: var(--light-blue);
+            color: white;
+        }
+
+        .maps-btn, .copy-link-btn {
+            background-color: var(--grey);
+            color: var(--text-main);
+            border: none;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            text-decoration: none;
+        }
+        
+        .maps-btn:hover, .copy-link-btn:hover {
+            background-color: var(--gold);
+            color: white;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 400px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gold);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+            color: var(--dark-blue);
+        }
+
+        [data-theme="dark"] .modal-header h3 {
+            color: var(--gold);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        .map-options-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .map-option-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            background: var(--grey);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .map-option-link:hover {
+            background: var(--gold);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        /* Toast Notification */
+        #toast {
+            visibility: hidden;
+            min-width: 200px;
+            background-color: var(--dark-blue);
+            color: #fff;
+            text-align: center;
+            border-radius: 50px;
+            padding: 12px 24px;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            border: 1px solid var(--gold);
+            font-size: 14px;
+        }
+
+        #toast.show {
+            visibility: visible;
+            animation: slideUp 0.5s forwards, slideDown 0.5s 2.5s forwards;
+        }
+
+        @keyframes slideUp { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+        @keyframes slideDown { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-blue);
+            color: var(--white);
+            padding: 40px 0 20px;
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .footer-logo { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+        .footer-logo span { color: var(--gold); }
+        .footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px; width: 100%; color: var(--grey); font-size: 14px; margin-top: 30px; }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            header { padding: 25px 0; }
+            .header-content { justify-content: center; text-align: center; }
+            .controls-inner { justify-content: center; }
+            .list-view .project-card { flex-direction: column; }
+            .list-view .project-image { width: 100%; max-width: 100%; }
+            main { padding: 20px 0; }
+        }
+
+        @media (max-width: 480px) {
+            .projects-grid.grid-view {
+                grid-template-columns: 1fr;
+            }
+            .control-btn span { display: none; }
+            .control-btn { padding: 10px 12px; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>DGRDI <span>Directory</span></h1>
+                    <div class="tagline">Where Real Estate Partners Find Complete Project Data</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="controls">
+        <div class="container">
+            <div class="controls-inner">
+                <button class="control-btn" id="layoutToggle" onclick="toggleLayout()">
+                    <i class="fas fa-list" id="layoutIcon"></i>
+                </button>
+                <button class="control-btn" id="locationSort" onclick="sortByLocation()" title="Sort by Nearest">
+                    <i class="fas fa-location-arrow" id="locationIcon"></i>
+                </button>
+                <button class="control-btn" id="themeToggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+            <div class="projects-grid grid-view" id="projectsGrid">
+                
+                <div class="project-card" data-lat="13.8100" data-lng="121.0200">
+                    <div class="project-image">
+                        <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/file_00000000db0c622fbb0386adac0c09ef.png" alt="Batangas - Bayanihan Town" class="project-card-img">
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-name">Batangas - Bayanihan Town</h3>
+                        <div class="project-details">
+                            <div class="detail-item"><i class="fas fa-home"></i><span class="detail-label">Type:</span><span>Townhouses</span></div>
+                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span class="detail-label">Location:</span><span>San Pascual - Alitagtag, Batangas</span></div>
+                            <div class="detail-item"><i class="fas fa-ruler-combined"></i><span class="detail-label">Land Area:</span><span> 65 Hectares</span></div>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://bayanihantownbatangas.info/members" class="see-details-btn">Details</a>
+                            <a href="https://maps.app.goo.gl/DPu8m1DmkE7TVNe76" target="_blank" class="maps-btn" title="View on Google Maps">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </a>
+                            <button class="copy-link-btn" onclick="copyToClipboard('https://bayanihantownbatangas.info/members')" title="Copy Link">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-lat="13.7975" data-lng="121.0709">
+                    <div class="project-image">
+                        <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/screenshot-2025-09-02-091838.png" alt="Batangas City - Urban Deca Homes" class="project-card-img">
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-name">Batangas City - Urban Deca Homes</h3>
+                        <div class="project-details">
+                            <div class="detail-item"><i class="fas fa-home"></i><span class="detail-label">Type:</span><span>Condominiums</span></div>
+                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span class="detail-label">Location:</span><span>Balagtas, Batangas City</span></div>
+                            <div class="detail-item"><i class="fas fa-ruler-combined"></i><span class="detail-label">Land Area:</span><span>8.9 Hectares</span></div>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://urbandecahomesbatangas.com/members" class="see-details-btn">Details</a>
+                            <a href="https://maps.app.goo.gl/zMxsD4afvUumiEkA8" target="_blank" class="maps-btn" title="View on Google Maps">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </a>
+                            <button class="copy-link-btn" onclick="copyToClipboard('https://urbandecahomesbatangas.com/members')" title="Copy Link">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-lat="14.3939" data-lng="121.0412">
+                    <div class="project-image">
+                        <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/photo_2026-01-14_15-09-33-1.jpg" alt="Cavite & Muntinlupa - Urban Deca Homes" class="project-card-img">
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-name">Cavite & Muntinlupa - Urban Deca Homes</h3>
+                        <div class="project-details">
+                            <div class="detail-item"><i class="fas fa-home"></i><span class="detail-label">Type:</span><span>Condominiums & Townhouse</span></div>
+                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span class="detail-label">Location:</span><span>Cavite and Muntinlupa</span></div>
+                            <div class="detail-item"><i class="fas fa-ruler-combined"></i><span class="detail-label">Land Area:</span><span> - </span></div>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://www.dgrdi.digital/south-project" class="see-details-btn">Details</a>
+                            <button class="maps-btn" onclick="openMapModal()" title="View Locations on Google Maps">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </button>
+                            <button class="copy-link-btn" onclick="copyToClipboard('https://www.dgrdi.digital/south-project')" title="Copy Link">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-lat="14.5813" data-lng="121.0488">
+                    <div class="project-image">
+                        <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/chatgpt-image-jan-19-2026-04_09_52-pm.png" alt="Edsa - Urban Deca Tower" class="project-card-img">
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-name">Edsa Mandaluyong - Urban Deca Tower</h3>
+                        <div class="project-details">
+                            <div class="detail-item"><i class="fas fa-home"></i><span class="detail-label">Type:</span><span>Condominiums</span></div>
+                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span class="detail-label">Location:</span><span>Highway Hills, Mandaluyong City</span></div>
+                            <div class="detail-item"><i class="fas fa-ruler-combined"></i><span class="detail-label">Land Area:</span><span>866.25 sqm</span></div>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://www.dgrdi.digital/urbandecatoweredsa" class="see-details-btn">Details</a>
+                            <a href="https://maps.app.goo.gl/QKUo148P72F7fy71A" target="_blank" class="maps-btn" title="View on Google Maps">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </a>
+                            <button class="copy-link-btn" onclick="copyToClipboard('https://www.dgrdi.digital/urbandecatoweredsa')" title="Copy Link">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                 </div>
+
+                <div class="project-card" data-lat="14.7687" data-lng="120.9469">
+                    <div class="project-image">
+                        <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/chatgpt-image-jan-17-2026-03_21_05-pm.png" alt="Marilao Bulacan - Urban Deca Homes" class="project-card-img">
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-name">Marilao Bulacan - Urban Deca Homes</h3>
+                        <div class="project-details">
+                            <div class="detail-item"><i class="fas fa-home"></i><span class="detail-label">Type:</span><span>Condominiums</span></div>
+                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span class="detail-label">Location:</span><span>MacArthur Hwy, Marilao Bulacan</span></div>
+                            <div class="detail-item"><i class="fas fa-ruler-combined"></i><span class="detail-label">Land Area:</span><span>14.7 Hectares</span></div>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://www.dgrdi.digital/urbandecahomesmarilao" class="see-details-btn">Details</a>
+                            <a href="https://maps.app.goo.gl/6tfcxzPQ99DWotvq5" target="_blank" class="maps-btn" title="View on Google Maps">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </a>
+                            <button class="copy-link-btn" onclick="copyToClipboard('https://www.dgrdi.digital/urbandecahomesmarilao')" title="Copy Link">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                 </div>
+
+                <div class="project-card" data-lat="14.7433" data-lng="120.9564">
+                    <div class="project-image">
+                        <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/chatgpt-image-jan-17-2026-03_23_46-pm.png" alt="Meycauayan Bulacan - Deca Homes" class="project-card-img">
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-name">Meycauayan Bulacan - Deca Homes</h3>
+                        <div class="project-details">
+                            <div class="detail-item"><i class="fas fa-home"></i><span class="detail-label">Type:</span><span>Townhouses</span></div>
+                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span class="detail-label">Location:</span><span>Saluysoy, Meycauayan City, Bulacan</span></div>
+                            <div class="detail-item"><i class="fas fa-ruler-combined"></i><span class="detail-label">Land Area:</span><span>41.05 Hectares</span></div>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://www.dgrdi.digital/decahomesmeycauayan" class="see-details-btn">Details</a>
+                            <a href="https://maps.app.goo.gl/Uh19jhQbmnm6cdyt9" target="_blank" class="maps-btn" title="View on Google Maps">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </a>
+                            <button class="copy-link-btn" onclick="copyToClipboard('https://www.dgrdi.digital/decahomesmeycauayan')" title="Copy Link">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                 </div>
+
+                 <div class="project-card" data-lat="14.5598" data-lng="121.0806">
+                    <div class="project-image">
+                        <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/chatgpt-image-jan-17-2026-11_55_03-am.png" alt="Ortigas- Urban Deca Homes" class="project-card-img">
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-name">Ortigas Pasig - Urban Deca Homes</h3>
+                        <div class="project-details">
+                            <div class="detail-item"><i class="fas fa-home"></i><span class="detail-label">Type:</span><span>Condominiums</span></div>
+                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span class="detail-label">Location:</span><span>Ortigas Ave Extension Pasig City</span></div>
+                            <div class="detail-item"><i class="fas fa-ruler-combined"></i><span class="detail-label">Land Area:</span><span>13.23 Hectares</span></div>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://www.dgrdi.digital/urbandecahomesortigas" class="see-details-btn">Details</a>
+                            <a href="https://maps.app.goo.gl/r8V5nJqSh9V2HrGbA" target="_blank" class="maps-btn" title="View on Google Maps">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </a>
+                            <button class="copy-link-btn" onclick="copyToClipboard('https://www.dgrdi.digital/urbandecahomesortigas')" title="Copy Link">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="mapModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Select Project Location</h3>
+                <button class="close-modal" onclick="closeMapModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <ul class="map-options-list">
+                <li><a href="https://maps.app.goo.gl/aWWHnTZ95uC1ZUFP7" target="_blank" class="map-option-link"><i class="fas fa-map-pin"></i> UDH Campville</a></li>
+                <li><a href="https://maps.app.goo.gl/QFPUK9XazHWGHz7b8" target="_blank" class="map-option-link"><i class="fas fa-map-pin"></i> UDH Hampton</a></li>
+                <li><a href="https://maps.app.goo.gl/k4G9BZ9XgSBigWqU7" target="_blank" class="map-option-link"><i class="fas fa-map-pin"></i> UDH Mahogany</a></li>
+                <li><a href="https://maps.app.goo.gl/N39ysVSWzPSqn2jC9" target="_blank" class="map-option-link"><i class="fas fa-map-pin"></i> Bella Vista</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="toast">Link copied to clipboard!</div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">DGRDI <span>Directory</span></div>
+                <div class="footer-bottom">
+                    <p>© 2026 DGRDI Directory. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* --- Dark Mode Logic --- */
+        function toggleTheme() {
+            const body = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                icon.className = 'fas fa-moon';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                icon.className = 'fas fa-sun';
+            }
+        }
+
+        /* --- Layout Toggle Logic --- */
+        function toggleLayout() {
+            const grid = document.getElementById('projectsGrid');
+            const icon = document.getElementById('layoutIcon');
+
+            if (grid.classList.contains('grid-view')) {
+                grid.classList.replace('grid-view', 'list-view');
+                icon.className = 'fas fa-th-large';
+            } else {
+                grid.classList.replace('list-view', 'grid-view');
+                icon.className = 'fas fa-list';
+            }
+        }
+
+        /* --- NEW: Location Sorting Logic --- */
+        function sortByLocation() {
+            if (!navigator.geolocation) {
+                alert("Geolocation is not supported by your browser.");
+                return;
+            }
+
+            const icon = document.getElementById('locationIcon');
+            icon.classList.add('fa-spin'); // Loading animation
+
+            navigator.geolocation.getCurrentPosition((position) => {
+                const userLat = position.coords.latitude;
+                const userLng = position.coords.longitude;
+
+                const grid = document.getElementById('projectsGrid');
+                const projects = Array.from(grid.querySelectorAll('.project-card'));
+
+                projects.sort((a, b) => {
+                    const latA = parseFloat(a.dataset.lat);
+                    const lngA = parseFloat(a.dataset.lng);
+                    const latB = parseFloat(b.dataset.lat);
+                    const lngB = parseFloat(b.dataset.lng);
+
+                    const distA = calculateDistance(userLat, userLng, latA, lngA);
+                    const distB = calculateDistance(userLat, userLng, latB, lngB);
+
+                    return distA - distB;
+                });
+
+                // Re-append projects in sorted order
+                projects.forEach(project => {
+                    project.style.animation = 'none'; // Trigger re-fade
+                    grid.appendChild(project);
+                    setTimeout(() => project.style.animation = '', 10);
+                });
+
+                icon.classList.remove('fa-spin');
+                
+                // Show feedback toast
+                const originalText = document.getElementById("toast").innerText;
+                document.getElementById("toast").innerText = "Sorted by nearest projects!";
+                showToast();
+                setTimeout(() => { document.getElementById("toast").innerText = originalText; }, 3000);
+
+            }, (error) => {
+                icon.classList.remove('fa-spin');
+                alert("Location access denied or unavailable.");
+            });
+        }
+
+        // Haversine formula for distance calculation
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Earth radius in KM
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        /* --- Modal Logic --- */
+        function openMapModal() {
+            document.getElementById('mapModal').classList.add('active');
+        }
+
+        function closeMapModal() {
+            document.getElementById('mapModal').classList.remove('active');
+        }
+
+        // Close modal when clicking outside content
+        window.onclick = function(event) {
+            const modal = document.getElementById('mapModal');
+            if (event.target == modal) {
+                closeMapModal();
+            }
+        }
+
+        /* --- Clipboard Logic --- */
+        function copyToClipboard(text) {
+            const tempInput = document.createElement("textarea");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            showToast();
+        }
+
+        function showToast() {
+            const toast = document.getElementById("toast");
+            toast.className = "show";
+            setTimeout(() => { toast.className = ""; }, 3000);
+        }
+
+        /* --- Animated Background Canvas --- */
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            const particleCount = window.innerWidth < 768 ? 20 : 35; 
+            
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 80 + 40,
+                    dx: (Math.random() - 0.5) * 0.4,
+                    dy: (Math.random() - 0.5) * 0.4,
+                    color: Math.random() > 0.5 ? '212, 175, 55' : '74, 159, 227'
+                });
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${p.color}, 0.18)`; 
+                ctx.fill();
+                
+                p.x += p.dx;
+                p.y += p.dy;
+
+                if (p.x < -p.radius) p.x = canvas.width + p.radius;
+                if (p.x > canvas.width + p.radius) p.x = -p.radius;
+                if (p.y < -p.radius) p.y = canvas.height + p.radius;
+                if (p.y > canvas.height + p.radius) p.y = -p.radius;
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+        animate();
+    </script>
+</body>
+</html>
