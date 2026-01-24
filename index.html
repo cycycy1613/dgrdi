@@ -50,7 +50,7 @@
             min-height: 100vh;
         }
 
-        /* Animated Background Canvas - Enhanced Visibility */
+        /* Animated Background Canvas */
         #bg-canvas {
             position: fixed;
             top: 0;
@@ -58,7 +58,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.7; /* Increased from 0.4 */
+            opacity: 0.7;
             pointer-events: none;
         }
 
@@ -66,7 +66,7 @@
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 15px; /* Better spacing for mobile */
+            padding: 0 15px;
         }
 
         /* Header Styles */
@@ -87,7 +87,7 @@
         }
 
         .logo h1 {
-            font-size: clamp(22px, 5vw, 28px); /* Fluid typography */
+            font-size: clamp(22px, 5vw, 28px);
             font-weight: 700;
         }
 
@@ -117,7 +117,7 @@
             display: flex;
             justify-content: flex-end;
             gap: 10px;
-            flex-wrap: wrap; /* Ensure buttons don't overflow on small screens */
+            flex-wrap: wrap;
         }
 
         .control-btn {
@@ -144,7 +144,7 @@
 
         /* Main Content */
         main {
-            padding: 30px 0; /* Reduced padding for mobile */
+            padding: 30px 0;
         }
 
         /* Layout Switcher Logic */
@@ -195,7 +195,7 @@
         }
 
         .list-view .project-image {
-            width: 35%; /* Proportional width for list view */
+            width: 35%;
             max-width: 300px;
             min-width: 200px;
             aspect-ratio: auto;
@@ -306,6 +306,94 @@
             color: white;
         }
 
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 400px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gold);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+            color: var(--dark-blue);
+        }
+
+        [data-theme="dark"] .modal-header h3 {
+            color: var(--gold);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        .map-options-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .map-option-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            background: var(--grey);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .map-option-link:hover {
+            background: var(--gold);
+            color: white;
+            transform: translateX(5px);
+        }
+
         /* Toast Notification */
         #toast {
             visibility: hidden;
@@ -352,7 +440,7 @@
         .footer-logo span { color: var(--gold); }
         .footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px; width: 100%; color: var(--grey); font-size: 14px; margin-top: 30px; }
 
-        /* Media Queries for enhanced responsiveness */
+        /* Media Queries */
         @media (max-width: 768px) {
             header { padding: 25px 0; }
             .header-content { justify-content: center; text-align: center; }
@@ -364,9 +452,9 @@
 
         @media (max-width: 480px) {
             .projects-grid.grid-view {
-                grid-template-columns: 1fr; /* Single column on very small phones */
+                grid-template-columns: 1fr;
             }
-            .control-btn span { display: none; } /* Show only icons on tiny screens to save space */
+            .control-btn span { display: none; }
             .control-btn { padding: 10px 12px; }
         }
     </style>
@@ -461,9 +549,9 @@
                         </div>
                         <div class="card-actions">
                             <a href="https://www.dgrdi.digital/south-project" class="see-details-btn">Details</a>
-                            <a href="#" target="_blank" class="maps-btn" title="View on Google Maps">
+                            <button class="maps-btn" onclick="openMapModal()" title="View Locations on Google Maps">
                                 <i class="fas fa-map-marked-alt"></i>
-                            </a>
+                            </button>
                             <button class="copy-link-btn" onclick="copyToClipboard('https://www.dgrdi.digital/south-project')" title="Copy Link">
                                 <i class="fas fa-copy"></i>
                             </button>
@@ -566,6 +654,21 @@
         </div>
     </main>
 
+    <div class="modal-overlay" id="mapModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Select Project Location</h3>
+                <button class="close-modal" onclick="closeMapModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <ul class="map-options-list">
+                <li><a href="https://maps.app.goo.gl/aWWHnTZ95uC1ZUFP7" target="_blank" class="map-option-link"><i class="fas fa-map-pin"></i> UDH Campville</a></li>
+                <li><a href="https://maps.app.goo.gl/QFPUK9XazHWGHz7b8" target="_blank" class="map-option-link"><i class="fas fa-map-pin"></i> UDH Hampton</a></li>
+                <li><a href="https://maps.app.goo.gl/k4G9BZ9XgSBigWqU7" target="_blank" class="map-option-link"><i class="fas fa-map-pin"></i> UDH Mahogany</a></li>
+                <li><a href="https://maps.app.goo.gl/N39ysVSWzPSqn2jC9" target="_blank" class="map-option-link"><i class="fas fa-map-pin"></i> Bella Vista</a></li>
+            </ul>
+        </div>
+    </div>
+
     <div id="toast">Link copied to clipboard!</div>
 
     <footer>
@@ -573,7 +676,7 @@
             <div class="footer-content">
                 <div class="footer-logo">DGRDI <span>Directory</span></div>
                 <div class="footer-bottom">
-                    <p>&copy; 2026 DGRDI Directory. All rights reserved.</p>
+                    <p>© 2026 DGRDI Directory. All rights reserved.</p>
                 </div>
             </div>
         </div>
@@ -605,6 +708,23 @@
             } else {
                 grid.classList.replace('list-view', 'grid-view');
                 icon.className = 'fas fa-list';
+            }
+        }
+
+        /* --- Modal Logic --- */
+        function openMapModal() {
+            document.getElementById('mapModal').classList.add('active');
+        }
+
+        function closeMapModal() {
+            document.getElementById('mapModal').classList.remove('active');
+        }
+
+        // Close modal when clicking outside content
+        window.onclick = function(event) {
+            const modal = document.getElementById('mapModal');
+            if (event.target == modal) {
+                closeMapModal();
             }
         }
 
