@@ -286,7 +286,7 @@
             color: white;
         }
 
-        .copy-link-btn {
+        .maps-btn, .copy-link-btn {
             background-color: var(--grey);
             color: var(--text-main);
             border: none;
@@ -298,6 +298,12 @@
             align-items: center;
             justify-content: center;
             width: 44px;
+            text-decoration: none;
+        }
+        
+        .maps-btn:hover, .copy-link-btn:hover {
+            background-color: var(--gold);
+            color: white;
         }
 
         /* Toast Notification */
@@ -409,6 +415,9 @@
                         </div>
                         <div class="card-actions">
                             <a href="https://bayanihantownbatangas.info/members" class="see-details-btn">Details</a>
+                            <a href="https://maps.app.goo.gl/DPu8m1DmkE7TVNe76" target="_blank" class="maps-btn" title="View on Google Maps">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </a>
                             <button class="copy-link-btn" onclick="copyToClipboard('https://bayanihantownbatangas.info/members')" title="Copy Link">
                                 <i class="fas fa-copy"></i>
                             </button>
@@ -429,6 +438,9 @@
                         </div>
                         <div class="card-actions">
                             <a href="https://urbandecahomesbatangas.com/members" class="see-details-btn">Details</a>
+                            <a href="https://maps.app.goo.gl/zMxsD4afvUumiEkA8" target="_blank" class="maps-btn" title="View on Google Maps">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </a>
                             <button class="copy-link-btn" onclick="copyToClipboard('https://urbandecahomesbatangas.com/members')" title="Copy Link">
                                 <i class="fas fa-copy"></i>
                             </button>
@@ -449,6 +461,9 @@
                         </div>
                         <div class="card-actions">
                             <a href="https://www.dgrdi.digital/south-project" class="see-details-btn">Details</a>
+                            <a href="#" target="_blank" class="maps-btn" title="View on Google Maps">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </a>
                             <button class="copy-link-btn" onclick="copyToClipboard('https://www.dgrdi.digital/south-project')" title="Copy Link">
                                 <i class="fas fa-copy"></i>
                             </button>
@@ -469,6 +484,9 @@
                         </div>
                         <div class="card-actions">
                             <a href="https://www.dgrdi.digital/urbandecatoweredsa" class="see-details-btn">Details</a>
+                            <a href="https://maps.app.goo.gl/QKUo148P72F7fy71A" target="_blank" class="maps-btn" title="View on Google Maps">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </a>
                             <button class="copy-link-btn" onclick="copyToClipboard('https://www.dgrdi.digital/urbandecatoweredsa')" title="Copy Link">
                                 <i class="fas fa-copy"></i>
                             </button>
@@ -489,6 +507,9 @@
                         </div>
                         <div class="card-actions">
                             <a href="https://www.dgrdi.digital/urbandecahomesmarilao" class="see-details-btn">Details</a>
+                            <a href="https://maps.app.goo.gl/6tfcxzPQ99DWotvq5" target="_blank" class="maps-btn" title="View on Google Maps">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </a>
                             <button class="copy-link-btn" onclick="copyToClipboard('https://www.dgrdi.digital/urbandecahomesmarilao')" title="Copy Link">
                                 <i class="fas fa-copy"></i>
                             </button>
@@ -509,6 +530,9 @@
                         </div>
                         <div class="card-actions">
                             <a href="https://www.dgrdi.digital/decahomesmeycauayan" class="see-details-btn">Details</a>
+                            <a href="https://maps.app.goo.gl/Uh19jhQbmnm6cdyt9" target="_blank" class="maps-btn" title="View on Google Maps">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </a>
                             <button class="copy-link-btn" onclick="copyToClipboard('https://www.dgrdi.digital/decahomesmeycauayan')" title="Copy Link">
                                 <i class="fas fa-copy"></i>
                             </button>
@@ -529,6 +553,9 @@
                         </div>
                         <div class="card-actions">
                             <a href="https://www.dgrdi.digital/urbandecahomesortigas" class="see-details-btn">Details</a>
+                            <a href="https://maps.app.goo.gl/r8V5nJqSh9V2HrGbA" target="_blank" class="maps-btn" title="View on Google Maps">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </a>
                             <button class="copy-link-btn" onclick="copyToClipboard('https://www.dgrdi.digital/urbandecahomesortigas')" title="Copy Link">
                                 <i class="fas fa-copy"></i>
                             </button>
@@ -557,16 +584,13 @@
         function toggleTheme() {
             const body = document.documentElement;
             const icon = document.getElementById('themeIcon');
-            const text = document.getElementById('themeText');
             
             if (body.getAttribute('data-theme') === 'dark') {
                 body.removeAttribute('data-theme');
                 icon.className = 'fas fa-moon';
-                text.innerText = 'Dark Mode';
             } else {
                 body.setAttribute('data-theme', 'dark');
                 icon.className = 'fas fa-sun';
-                text.innerText = 'Light Mode';
             }
         }
 
@@ -574,16 +598,13 @@
         function toggleLayout() {
             const grid = document.getElementById('projectsGrid');
             const icon = document.getElementById('layoutIcon');
-            const text = document.getElementById('layoutText');
 
             if (grid.classList.contains('grid-view')) {
                 grid.classList.replace('grid-view', 'list-view');
                 icon.className = 'fas fa-th-large';
-                text.innerText = 'Grid View';
             } else {
                 grid.classList.replace('list-view', 'grid-view');
                 icon.className = 'fas fa-list';
-                text.innerText = 'List View';
             }
         }
 
@@ -613,7 +634,6 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             particles = [];
-            // Increased particle count for better visibility
             const particleCount = window.innerWidth < 768 ? 20 : 35; 
             
             for (let i = 0; i < particleCount; i++) {
@@ -623,7 +643,6 @@
                     radius: Math.random() * 80 + 40,
                     dx: (Math.random() - 0.5) * 0.4,
                     dy: (Math.random() - 0.5) * 0.4,
-                    // Increased opacity of colors for visibility
                     color: Math.random() > 0.5 ? '212, 175, 55' : '74, 159, 227'
                 });
             }
@@ -634,7 +653,6 @@
             particles.forEach(p => {
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                // Boosted transparency slightly for visibility
                 ctx.fillStyle = `rgba(${p.color}, 0.18)`; 
                 ctx.fill();
                 
