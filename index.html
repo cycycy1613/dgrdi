@@ -479,6 +479,9 @@
                 <button class="control-btn" id="layoutToggle" onclick="toggleLayout()">
                     <i class="fas fa-list" id="layoutIcon"></i>
                 </button>
+                <button class="control-btn" id="locationSort" onclick="sortByLocation()" title="Sort by Nearest">
+                    <i class="fas fa-location-arrow" id="locationIcon"></i>
+                </button>
                 <button class="control-btn" id="themeToggle" onclick="toggleTheme()">
                     <i class="fas fa-moon" id="themeIcon"></i>
                 </button>
@@ -490,7 +493,7 @@
         <div class="container">
             <div class="projects-grid grid-view" id="projectsGrid">
                 
-                <div class="project-card">
+                <div class="project-card" data-lat="13.8100" data-lng="121.0200">
                     <div class="project-image">
                         <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/file_00000000db0c622fbb0386adac0c09ef.png" alt="Batangas - Bayanihan Town" class="project-card-img">
                     </div>
@@ -513,7 +516,7 @@
                     </div>
                 </div>
 
-                <div class="project-card">
+                <div class="project-card" data-lat="13.7975" data-lng="121.0709">
                     <div class="project-image">
                         <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/screenshot-2025-09-02-091838.png" alt="Batangas City - Urban Deca Homes" class="project-card-img">
                     </div>
@@ -536,7 +539,7 @@
                     </div>
                 </div>
 
-                <div class="project-card">
+                <div class="project-card" data-lat="14.3939" data-lng="121.0412">
                     <div class="project-image">
                         <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/photo_2026-01-14_15-09-33-1.jpg" alt="Cavite & Muntinlupa - Urban Deca Homes" class="project-card-img">
                     </div>
@@ -559,7 +562,7 @@
                     </div>
                 </div>
 
-                <div class="project-card">
+                <div class="project-card" data-lat="14.5813" data-lng="121.0488">
                     <div class="project-image">
                         <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/chatgpt-image-jan-19-2026-04_09_52-pm.png" alt="Edsa - Urban Deca Tower" class="project-card-img">
                     </div>
@@ -582,7 +585,7 @@
                     </div>
                  </div>
 
-                <div class="project-card">
+                <div class="project-card" data-lat="14.7687" data-lng="120.9469">
                     <div class="project-image">
                         <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/chatgpt-image-jan-17-2026-03_21_05-pm.png" alt="Marilao Bulacan - Urban Deca Homes" class="project-card-img">
                     </div>
@@ -605,7 +608,7 @@
                     </div>
                  </div>
 
-                <div class="project-card">
+                <div class="project-card" data-lat="14.7433" data-lng="120.9564">
                     <div class="project-image">
                         <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/chatgpt-image-jan-17-2026-03_23_46-pm.png" alt="Meycauayan Bulacan - Deca Homes" class="project-card-img">
                     </div>
@@ -628,7 +631,7 @@
                     </div>
                  </div>
 
-                 <div class="project-card">
+                 <div class="project-card" data-lat="14.5598" data-lng="121.0806">
                     <div class="project-image">
                         <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/chatgpt-image-jan-17-2026-11_55_03-am.png" alt="Ortigas- Urban Deca Homes" class="project-card-img">
                     </div>
@@ -709,6 +712,68 @@
                 grid.classList.replace('list-view', 'grid-view');
                 icon.className = 'fas fa-list';
             }
+        }
+
+        /* --- NEW: Location Sorting Logic --- */
+        function sortByLocation() {
+            if (!navigator.geolocation) {
+                alert("Geolocation is not supported by your browser.");
+                return;
+            }
+
+            const icon = document.getElementById('locationIcon');
+            icon.classList.add('fa-spin'); // Loading animation
+
+            navigator.geolocation.getCurrentPosition((position) => {
+                const userLat = position.coords.latitude;
+                const userLng = position.coords.longitude;
+
+                const grid = document.getElementById('projectsGrid');
+                const projects = Array.from(grid.querySelectorAll('.project-card'));
+
+                projects.sort((a, b) => {
+                    const latA = parseFloat(a.dataset.lat);
+                    const lngA = parseFloat(a.dataset.lng);
+                    const latB = parseFloat(b.dataset.lat);
+                    const lngB = parseFloat(b.dataset.lng);
+
+                    const distA = calculateDistance(userLat, userLng, latA, lngA);
+                    const distB = calculateDistance(userLat, userLng, latB, lngB);
+
+                    return distA - distB;
+                });
+
+                // Re-append projects in sorted order
+                projects.forEach(project => {
+                    project.style.animation = 'none'; // Trigger re-fade
+                    grid.appendChild(project);
+                    setTimeout(() => project.style.animation = '', 10);
+                });
+
+                icon.classList.remove('fa-spin');
+                
+                // Show feedback toast
+                const originalText = document.getElementById("toast").innerText;
+                document.getElementById("toast").innerText = "Sorted by nearest projects!";
+                showToast();
+                setTimeout(() => { document.getElementById("toast").innerText = originalText; }, 3000);
+
+            }, (error) => {
+                icon.classList.remove('fa-spin');
+                alert("Location access denied or unavailable.");
+            });
+        }
+
+        // Haversine formula for distance calculation
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Earth radius in KM
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
         }
 
         /* --- Modal Logic --- */
