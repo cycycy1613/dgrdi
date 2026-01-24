@@ -226,6 +226,15 @@
 
         .btn-primary { background: var(--primary); color: white; }
         .btn-accent { background: var(--accent); color: var(--dark); }
+        /* Visible close button for login */
+        .btn-outline-light { 
+            background: transparent; 
+            color: white; 
+            border: 1px solid white;
+        }
+        .btn-outline-light:hover {
+            background: rgba(255,255,255,0.1);
+        }
 
         footer {
             background: var(--primary);
@@ -383,7 +392,7 @@
             <input type="email" id="loginEmail" placeholder="Email" style="width:100%; padding:10px; margin:10px 0;">
             <input type="password" id="loginPassword" placeholder="Password" style="width:100%; padding:10px; margin:10px 0;">
             <button class="btn btn-accent" onclick="handleLogin()">Login</button>
-            <button class="btn" style="color:white" onclick="closeLoginModal()">Close</button>
+            <button class="btn btn-outline-light" style="color:white" onclick="closeLoginModal()">Close</button>
         </div>
     </div>
 
