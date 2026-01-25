@@ -142,9 +142,59 @@
             color: white;
         }
 
+        /* --- NEW: Daily Quotes Section --- */
+        .quotes-container {
+            margin: 20px auto 30px;
+            max-width: 1200px;
+            padding: 25px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            border-left: 5px solid var(--gold);
+            box-shadow: var(--shadow);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .quotes-container i.fa-quote-left {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 30px;
+            color: var(--grey);
+            opacity: 0.5;
+        }
+
+        .quote-greeting {
+            display: block;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        #daily-quote {
+            font-size: clamp(16px, 4vw, 20px);
+            font-weight: 600;
+            color: var(--text-main);
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        .quote-author {
+            display: block;
+            margin-top: 10px;
+            font-size: 13px;
+            color: var(--light-blue);
+            font-weight: 500;
+        }
+
         /* Main Content */
         main {
-            padding: 30px 0;
+            padding: 10px 0 30px;
         }
 
         /* Layout Switcher Logic */
@@ -491,6 +541,13 @@
 
     <main>
         <div class="container">
+            <div class="quotes-container">
+                <i class="fas fa-quote-left"></i>
+                <span class="quote-greeting" id="quote-time-label">Morning Inspiration</span>
+                <p id="daily-quote">"Don't wait to buy real estate. Buy real estate and wait."</p>
+                <span class="quote-author" id="quote-author">— Will Rogers</span>
+            </div>
+
             <div class="projects-grid grid-view" id="projectsGrid">
                 
                 <div class="project-card" data-lat="13.8100" data-lng="121.0200">
@@ -686,6 +743,52 @@
     </footer>
 
     <script>
+        /* --- Quotes Logic --- */
+        const quotesData = {
+            morning: [
+                { quote: "Every morning is a new opportunity to build a legacy. Win the day, one lead at a time.", author: "Sales Excellence" },
+                { quote: "To be successful in real estate, you must always and consistently put your clients' best interests first.", author: "Anthony Hitt" },
+                { quote: "Rise and grind. Your next closed deal is waiting for your enthusiasm.", author: "Success Mindset" }
+            ],
+            afternoon: [
+                { quote: "The best investment on Earth is earth. Keep pushing, the close is near.", author: "Louis Glickman" },
+                { quote: "Value is not just in the price; it's in the service and integrity you provide.", author: "Good Values" },
+                { quote: "Ninety percent of all millionaires become so through owning real estate.", author: "Andrew Carnegie" }
+            ],
+            evening: [
+                { quote: "Success is the sum of small efforts, repeated day in and day out. Rest well, tomorrow we build more.", author: "Robert Collier" },
+                { quote: "Reflect on today's wins, learn from the losses, and prepare for a bigger tomorrow.", author: "Daily Growth" },
+                { quote: "Real estate is an imperishable asset, ever increasing in value. You are selling the future.", author: "Russell Sage" }
+            ]
+        };
+
+        function updateDailyQuote() {
+            const now = new Date();
+            const hour = now.getHours();
+            let period = "";
+            let label = "";
+
+            if (hour >= 5 && hour < 12) {
+                period = "morning";
+                label = "Morning Inspiration";
+            } else if (hour >= 12 && hour < 18) {
+                period = "afternoon";
+                label = "Afternoon Momentum";
+            } else {
+                period = "evening";
+                label = "Evening Reflection";
+            }
+
+            const dailyQuotes = quotesData[period];
+            // Uses the day of the month to pick a quote so it doesn't change on every refresh, only every day/period
+            const quoteIndex = now.getDate() % dailyQuotes.length;
+            const selected = dailyQuotes[quoteIndex];
+
+            document.getElementById('quote-time-label').innerText = label;
+            document.getElementById('daily-quote').innerText = `"${selected.quote}"`;
+            document.getElementById('quote-author').innerText = `— ${selected.author}`;
+        }
+
         /* --- Dark Mode Logic --- */
         function toggleTheme() {
             const body = document.documentElement;
@@ -714,7 +817,7 @@
             }
         }
 
-        /* --- NEW: Location Sorting Logic --- */
+        /* --- Location Sorting Logic --- */
         function sortByLocation() {
             if (!navigator.geolocation) {
                 alert("Geolocation is not supported by your browser.");
@@ -722,7 +825,7 @@
             }
 
             const icon = document.getElementById('locationIcon');
-            icon.classList.add('fa-spin'); // Loading animation
+            icon.classList.add('fa-spin');
 
             navigator.geolocation.getCurrentPosition((position) => {
                 const userLat = position.coords.latitude;
@@ -743,16 +846,14 @@
                     return distA - distB;
                 });
 
-                // Re-append projects in sorted order
                 projects.forEach(project => {
-                    project.style.animation = 'none'; // Trigger re-fade
+                    project.style.animation = 'none';
                     grid.appendChild(project);
                     setTimeout(() => project.style.animation = '', 10);
                 });
 
                 icon.classList.remove('fa-spin');
                 
-                // Show feedback toast
                 const originalText = document.getElementById("toast").innerText;
                 document.getElementById("toast").innerText = "Sorted by nearest projects!";
                 showToast();
@@ -764,9 +865,8 @@
             });
         }
 
-        // Haversine formula for distance calculation
         function calculateDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371; // Earth radius in KM
+            const R = 6371; 
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -785,7 +885,6 @@
             document.getElementById('mapModal').classList.remove('active');
         }
 
-        // Close modal when clicking outside content
         window.onclick = function(event) {
             const modal = document.getElementById('mapModal');
             if (event.target == modal) {
@@ -855,6 +954,7 @@
         window.addEventListener('resize', initCanvas);
         initCanvas();
         animate();
+        updateDailyQuote();
     </script>
 </body>
 </html>
