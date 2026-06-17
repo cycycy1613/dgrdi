@@ -425,7 +425,8 @@
     <div class="container">
         <div class="tabs-container">
             <div class="tabs" id="tabsContainer">
-                </div>
+                <!-- tabs will be rendered here + add button -->
+            </div>
         </div>
 
         <section>
@@ -446,6 +447,7 @@
         </div>
     </footer>
 
+    <!-- Image Modal -->
     <div class="modal" id="imageModal">
         <div class="modal-content">
             <img id="modalImage" src="">
@@ -456,6 +458,7 @@
         </div>
     </div>
 
+    <!-- Upload Poster Modal -->
     <div class="upload-modal" id="uploadModal">
         <div class="upload-content">
             <h3>Upload Poster</h3>
@@ -466,6 +469,7 @@
         </div>
     </div>
 
+    <!-- Login Modal -->
     <div class="login-modal" id="loginModal">
         <div class="login-content">
             <h3><i class="fab fa-google" style="color: var(--accent); margin-right: 10px;"></i>Sign in with Google</h3>
@@ -477,6 +481,7 @@
         </div>
     </div>
 
+    <!-- Tab Create/Edit Modal -->
     <div class="tab-modal" id="tabModal">
         <div class="tab-content">
             <h3 id="tabModalTitle">Create Tab</h3>
@@ -484,12 +489,14 @@
             <input type="text" id="tabUrl" placeholder="Tab URL (https://...)" style="width:100%; padding:10px; margin:10px 0;">
             <label style="font-weight: 500;">Choose Icon:</label>
             <div class="icon-selector" id="iconSelector"></div>
+            <!-- admin code required for create/delete -->
             <input type="password" id="tabAdminCode" placeholder="Admin Code" class="admin-code-input">
             <button class="btn btn-primary" id="saveTabBtn">Save Tab</button>
             <button class="btn btn-outline-secondary" onclick="closeTabModal()">Cancel</button>
         </div>
     </div>
 
+    <!-- Confirm Delete Modal (now with admin code) -->
     <div class="modal" id="confirmModal">
         <div class="modal-content" style="background: white; padding: 30px; border-radius: 12px; max-width: 400px; text-align: center;">
             <h3>Delete Tab?</h3>
@@ -727,75 +734,29 @@
             }
         }
 
-        // GOOGLE LOGIN - Checks directly against DB list or strict fallback array
+        // GOOGLE LOGIN - allows any email that is registered in Firebase Auth
         function handleGoogleLogin() {
             const provider = new firebase.auth.GoogleAuthProvider();
             auth.signInWithPopup(provider)
                 .then((result) => {
                     const user = result.user;
-                    if (user && user.email) {
-                        const email = user.email.toLowerCase();
-                        
-                        // Check against a list of authorized emails stored in Firebase Realtime Database
-                        database.ref('/portal_v4/authorized_emails').once('value')
-                            .then((snapshot) => {
-                                let authorizedEmails = snapshot.val() || [];
-                                let isAuthorized = false;
-                                
-                                // Clean up array or object values from database to check cleanly
-                                if (Array.isArray(authorizedEmails)) {
-                                    isAuthorized = authorizedEmails.map(e => String(e).toLowerCase()).includes(email);
-                                } else if (typeof authorizedEmails === 'object') {
-                                    isAuthorized = Object.values(authorizedEmails).map(e => String(e).toLowerCase()).includes(email);
-                                }
-                                
-                                // Hardcoded list fallback (Put your actual Google admin emails here)
-                                if (!isAuthorized) {
-                                    const hardcodedEmails = ['admin@udt.com', 'test@test.com', 'user@example.com'];
-                                    isAuthorized = hardcodedEmails.map(e => e.toLowerCase()).includes(email);
-                                }
-                                
-                                if (!isAuthorized) {
-                                    // Kick unauthorized users out
-                                    auth.signOut().then(() => {
-                                        showToast('email is not authorize', false);
-                                        closeLoginModal();
-                                    });
-                                } else {
-                                    showToast('Logged in with Google');
-                                    closeLoginModal();
-                                }
-                            })
-                            .catch((error) => {
-                                // Final fallback list verification if database connections fail entirely
-                                const hardcodedEmails = ['admin@udt.com', 'test@test.com', 'user@example.com'];
-                                if (!hardcodedEmails.map(e => e.toLowerCase()).includes(email)) {
-                                    auth.signOut().then(() => {
-                                        showToast('email is not authorize', false);
-                                        closeLoginModal();
-                                    });
-                                } else {
-                                    showToast('Logged in with Google');
-                                    closeLoginModal();
-                                }
-                            });
+                    if (user) {
+                        // User is authenticated with Firebase Auth
+                        // No email blocking - any registered email is allowed
+                        showToast('Logged in with Google');
+                        closeLoginModal();
                     } else {
                         showToast('Login failed', false);
                     }
                 })
-                .catch((err) => {
-                    showToast(err.message, false);
-                });
+                .catch(err => showToast(err.message, false));
         }
 
         // AUTH STATE
         auth.onAuthStateChanged(user => {
             if (user) {
                 loginLink.textContent = 'Logout';
-                loginLink.onclick = () => {
-                    auth.signOut();
-                    showToast('Logged out');
-                };
+                loginLink.onclick = () => auth.signOut();
                 const uploadBtn = document.getElementById('uploadBtnAction');
                 if (uploadBtn) uploadBtn.style.display = 'flex';
                 renderTabs(currentTabs);
