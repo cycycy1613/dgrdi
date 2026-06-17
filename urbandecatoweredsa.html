@@ -71,6 +71,7 @@
             margin: 30px 0;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             animation: fadeIn 0.8s ease-out;
+            position: relative;
         }
         
         .tabs {
@@ -80,6 +81,10 @@
             justify-content: center;
         }
         
+        .tab-wrapper {
+            position: relative;
+        }
+
         .tab {
             display: flex;
             flex-direction: column;
@@ -94,6 +99,8 @@
             transition: all 0.3s ease;
             text-decoration: none;
             padding: 10px;
+            width: 100%;
+            position: relative;
         }
         
         .tab:hover {
@@ -113,7 +120,65 @@
             font-size: 13px;
             text-align: center;
         }
-        
+
+        .tab-delete {
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            background: rgba(255,0,0,0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 12px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            transition: 0.2s;
+        }
+        .tab-delete:hover {
+            background: #c53030;
+            transform: scale(1.1);
+        }
+        .tab-wrapper:hover .tab-delete {
+            display: flex;
+        }
+        .tab-wrapper .tab-delete {
+            display: none;
+        }
+
+        .add-tab-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+            background: white;
+            border: 2px dashed var(--primary);
+            border-radius: 12px;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 10px;
+            opacity: 0.7;
+        }
+        .add-tab-btn:hover {
+            opacity: 1;
+            background: #eef2f7;
+            transform: scale(1.02);
+        }
+        .add-tab-btn i {
+            font-size: 32px;
+            margin-bottom: 6px;
+        }
+        .add-tab-btn span {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
         .section-title {
             text-align: center;
             margin-bottom: 30px;
@@ -162,11 +227,11 @@
             object-fit: cover;
         }
 
-        .modal, .upload-modal, .login-modal {
+        .modal, .upload-modal, .login-modal, .tab-modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.8);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -174,7 +239,7 @@
             transition: opacity 0.3s ease;
         }
 
-        .modal.active, .upload-modal.active, .login-modal.active {
+        .modal.active, .upload-modal.active, .login-modal.active, .tab-modal.active {
             display: flex;
             opacity: 1;
         }
@@ -202,12 +267,14 @@
             cursor: pointer; font-size: 20px;
         }
 
-        .upload-content, .login-content {
+        .upload-content, .login-content, .tab-content {
             background: white;
             padding: 30px;
             border-radius: 12px;
             width: 90%;
-            max-width: 450px;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .login-content { 
@@ -228,8 +295,9 @@
 
         .btn-primary { background: var(--primary); color: white; }
         .btn-accent { background: var(--accent); color: var(--dark); }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-outline-secondary { background: transparent; border: 1px solid #ccc; color: #333; }
         
-        /* Updated Visible Close Button */
         .btn-outline-danger { 
             background: var(--danger); 
             color: white; 
@@ -238,6 +306,36 @@
         }
         .btn-outline-danger:hover {
             background: #c53030;
+        }
+
+        .icon-selector {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin: 12px 0;
+            max-height: 160px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        .icon-selector i {
+            font-size: 26px;
+            padding: 8px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 2px solid transparent;
+            color: var(--primary);
+        }
+        .icon-selector i:hover {
+            background: #edf2f7;
+            transform: scale(1.1);
+        }
+        .icon-selector i.selected {
+            border-color: var(--accent);
+            background: #fefcbf;
         }
 
         footer {
@@ -254,7 +352,7 @@
             flex-wrap: wrap;
         }
 
-        .footer-links a { color: white; margin-left: 20px; text-decoration: none; }
+        .footer-links a { color: white; margin-left: 20px; text-decoration: none; cursor: pointer; }
 
         .toast {
             position: fixed; bottom: 20px; right: 20px;
@@ -262,46 +360,43 @@
             color: white; display: none; z-index: 2000;
         }
 
-        /* --- MOBILE OPTIMIZATIONS --- */
+        /* MOBILE */
         @media (max-width: 600px) {
             .tabs {
-                grid-template-columns: 1fr; /* Display as list */
+                grid-template-columns: 1fr;
             }
-
-            .tab {
-                flex-direction: row; /* Icon left, text right */
-                height: 60px; /* Slimmer height for list view */
+            .tab, .add-tab-btn {
+                flex-direction: row;
+                height: 60px;
                 justify-content: flex-start;
                 padding: 0 20px;
             }
-
-            .tab i {
+            .tab i, .add-tab-btn i {
                 margin-bottom: 0;
                 margin-right: 20px;
                 font-size: 20px;
                 width: 25px;
                 text-align: center;
             }
-
-            .tab span {
+            .tab span, .add-tab-btn span {
                 font-size: 15px;
                 text-align: left;
             }
-
             .footer-content {
                 flex-direction: column;
                 text-align: center;
                 gap: 15px;
             }
-
             .footer-links {
                 display: flex;
                 flex-direction: column;
                 gap: 10px;
             }
-
             .footer-links a {
                 margin-left: 0;
+            }
+            .icon-selector {
+                grid-template-columns: repeat(4, 1fr);
             }
         }
 
@@ -320,35 +415,8 @@
 
     <div class="container">
         <div class="tabs-container">
-            <div class="tabs">
-                <a href="https://drive.google.com/drive/folders/19rKed59KANrzN_2JPuDacg47ATRZgE3y?usp=drive_link" target="_blank" class="tab">
-                    <i class="fas fa-file-powerpoint"></i>
-                    <span>Presentation</span>
-                </a>
-                <a href="https://drive.google.com/drive/folders/1opl0bZstV9gZ5NwaAidPgHWzLDPAiGrR?usp=drive_link" target="_blank" class="tab">
-                    <i class="fas fa-map-marked-alt"></i>
-                    <span>Site Dev Plan</span>
-                </a>
-                <a href="https://drive.google.com/drive/folders/1-qsk8pvJkfbM6piPtqnXqht-dvoZ6AEz?usp=drive_link" target="_blank" class="tab">
-                    <i class="fas fa-images"></i>
-                    <span>Photos</span>
-                </a>
-                <a href="https://drive.google.com/drive/folders/1HXwE1tbBb4voerCanpuviVEVkeqKSTBp?usp=drive_link" target="_blank" class="tab">
-                    <i class="fas fa-calculator"></i>
-                    <span>Computations</span>
-                </a>
-                <a href="https://drive.google.com/drive/folders/1qAcSarS3WtFkYsKkct3phCOQS7OA9X17?usp=drive_link" target="_blank" class="tab">
-                    <i class="fas fa-th-list"></i>
-                    <span>Availability</span>
-                </a>
-                <a href="https://drive.google.com/drive/folders/1PzgMRQ0OJRVOEVKAW4wvoAxETvXSnF1X?usp=drive_link" target="_blank" class="tab">
-                    <i class="fas fa-file-invoice"></i>
-                    <span>Requirements</span>
-                </a>
-                <a href="https://drive.google.com/drive/folders/1riaTudsu7AzzZPD_d9amJyRqqbZ5efjX?usp=drive_link" target="_blank" class="tab">
-                    <i class="fas fa-address-book"></i>
-                    <span>Contact Person</span>
-                </a>
+            <div class="tabs" id="tabsContainer">
+                <!-- tabs will be rendered here + add button -->
             </div>
         </div>
 
@@ -364,12 +432,13 @@
                 <div>Urban Deca Tower Edsa</div>
                 <div class="footer-links">
                     <a href="https://www.dgrdi.digital/" target="_blank" rel="noopener noreferrer">More Projects</a>
-                    <a href="#" id="loginLink">Login</a>
+                    <a id="loginLink">Login</a>
                 </div>
             </div>
         </div>
     </footer>
 
+    <!-- Image Modal -->
     <div class="modal" id="imageModal">
         <div class="modal-content">
             <img id="modalImage" src="">
@@ -380,6 +449,7 @@
         </div>
     </div>
 
+    <!-- Upload Poster Modal -->
     <div class="upload-modal" id="uploadModal">
         <div class="upload-content">
             <h3>Upload Poster</h3>
@@ -390,13 +460,38 @@
         </div>
     </div>
 
+    <!-- Login Modal -->
     <div class="login-modal" id="loginModal">
         <div class="login-content">
-            <h3>Login</h3>
-            <input type="email" id="loginEmail" placeholder="Email" style="width:100%; padding:10px; margin:10px 0;">
-            <input type="password" id="loginPassword" placeholder="Password" style="width:100%; padding:10px; margin:10px 0;">
-            <button class="btn btn-accent" onclick="handleLogin()">Login</button>
+            <h3><i class="fab fa-google" style="color: var(--accent); margin-right: 10px;"></i>Sign in with Google</h3>
+            <p style="margin: 16px 0; color: #ccc;">Use your Google account registered in Firebase</p>
+            <button class="btn btn-accent" onclick="handleGoogleLogin()" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <i class="fab fa-google"></i> Sign in with Google
+            </button>
             <button class="btn btn-outline-danger" onclick="closeLoginModal()">Close</button>
+        </div>
+    </div>
+
+    <!-- Tab Create/Edit Modal -->
+    <div class="tab-modal" id="tabModal">
+        <div class="tab-content">
+            <h3 id="tabModalTitle">Create Tab</h3>
+            <input type="text" id="tabName" placeholder="Tab Name" style="width:100%; padding:10px; margin:10px 0;">
+            <input type="text" id="tabUrl" placeholder="Tab URL (https://...)" style="width:100%; padding:10px; margin:10px 0;">
+            <label style="font-weight: 500;">Choose Icon:</label>
+            <div class="icon-selector" id="iconSelector"></div>
+            <button class="btn btn-primary" id="saveTabBtn">Save Tab</button>
+            <button class="btn btn-outline-secondary" onclick="closeTabModal()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Confirm Delete Modal -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content" style="background: white; padding: 30px; border-radius: 12px; max-width: 400px; text-align: center;">
+            <h3>Delete Tab?</h3>
+            <p style="margin: 15px 0;">Are you sure you want to delete this tab? This action cannot be undone.</p>
+            <button class="btn btn-danger" id="confirmDeleteBtn" style="width: auto; padding: 10px 30px;">Yes, Delete</button>
+            <button class="btn btn-outline-secondary" onclick="closeConfirmModal()" style="width: auto; padding: 10px 30px; margin-left: 10px;">Cancel</button>
         </div>
     </div>
 
@@ -407,6 +502,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
+        // FIREBASE CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyBdNGSSfPLBORjVvnJM3IVqxFZByw3iJWM",
             authDomain: "btb-announcement.firebaseapp.com",
@@ -420,17 +516,38 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const database = firebase.database();
+
+        // ICON LIST (FontAwesome 6)
+        const ICON_LIST = [
+            "fas fa-file-powerpoint", "fas fa-map-marked-alt", "fas fa-images", "fas fa-calculator",
+            "fas fa-th-list", "fas fa-file-invoice", "fas fa-address-book", "fas fa-home",
+            "fas fa-folder", "fas fa-cloud", "fas fa-database", "fas fa-cog",
+            "fas fa-user", "fas fa-users", "fas fa-chart-bar", "fas fa-envelope",
+            "fas fa-phone", "fas fa-print", "fas fa-download", "fas fa-upload",
+            "fas fa-link", "fas fa-external-link-alt", "fas fa-pencil-alt", "fas fa-trash",
+            "fas fa-plus", "fas fa-minus", "fas fa-check", "fas fa-times",
+            "fas fa-calendar", "fas fa-clock", "fas fa-bell", "fas fa-comment"
+        ];
+
         const DEFAULT_IMAGE = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWRmMmY3Ii8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzY2NiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q0xJQ0sgVE8gVVBMT0FEIFBPU1RFUjwvdGV4dD4KPC9zdmc+";
 
         let currentImageIndex = null;
         let announcementItems = [];
+        let currentTabs = [];
+        let editingTabKey = null;
+        let deleteTargetKey = null;
 
+        // DOM refs
+        const tabsContainer = document.getElementById('tabsContainer');
+        const loginLink = document.getElementById('loginLink');
+        const toast = document.getElementById('toast');
+
+        // Helpers
         function showToast(msg, success=true) {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.style.backgroundColor = success ? '#38a169' : '#e53e3e';
-            t.style.display = 'block';
-            setTimeout(() => t.style.display = 'none', 3000);
+            toast.textContent = msg;
+            toast.style.backgroundColor = success ? '#38a169' : '#e53e3e';
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 3000);
         }
 
         function openModal(img, idx) {
@@ -439,13 +556,183 @@
             document.getElementById('imageModal').classList.add('active');
             document.getElementById('uploadBtnAction').style.display = auth.currentUser ? 'flex' : 'none';
         }
-
         function closeModal() { document.getElementById('imageModal').classList.remove('active'); }
         function openUploadModal() { closeModal(); document.getElementById('uploadModal').classList.add('active'); }
         function closeUploadModal() { document.getElementById('uploadModal').classList.remove('active'); }
         function openLoginModal() { document.getElementById('loginModal').classList.add('active'); }
         function closeLoginModal() { document.getElementById('loginModal').classList.remove('active'); }
+        function openTabModal(key=null) {
+            editingTabKey = key;
+            document.getElementById('tabModalTitle').innerText = key ? 'Edit Tab' : 'Create Tab';
+            if (key) {
+                const tab = currentTabs.find(t => t.key === key);
+                if (tab) {
+                    document.getElementById('tabName').value = tab.name || '';
+                    document.getElementById('tabUrl').value = tab.url || '';
+                    // highlight icon
+                    document.querySelectorAll('#iconSelector i').forEach(el => el.classList.remove('selected'));
+                    if (tab.icon) {
+                        document.querySelectorAll('#iconSelector i').forEach(el => {
+                            if (el.className === tab.icon) el.classList.add('selected');
+                        });
+                    }
+                }
+            } else {
+                document.getElementById('tabName').value = '';
+                document.getElementById('tabUrl').value = '';
+                document.querySelectorAll('#iconSelector i').forEach(el => el.classList.remove('selected'));
+            }
+            document.getElementById('tabModal').classList.add('active');
+        }
+        function closeTabModal() { document.getElementById('tabModal').classList.remove('active'); }
 
+        function openConfirmModal(key) {
+            deleteTargetKey = key;
+            document.getElementById('confirmModal').classList.add('active');
+        }
+        function closeConfirmModal() { document.getElementById('confirmModal').classList.remove('active'); }
+
+        // Render icons in selector
+        function renderIconSelector() {
+            const container = document.getElementById('iconSelector');
+            container.innerHTML = '';
+            ICON_LIST.forEach(icon => {
+                const i = document.createElement('i');
+                i.className = icon;
+                i.addEventListener('click', () => {
+                    document.querySelectorAll('#iconSelector i').forEach(el => el.classList.remove('selected'));
+                    i.classList.add('selected');
+                });
+                container.appendChild(i);
+            });
+        }
+        renderIconSelector();
+
+        // RENDER TABS
+        function renderTabs(tabs) {
+            tabsContainer.innerHTML = '';
+            const user = auth.currentUser;
+            tabs.forEach(tab => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'tab-wrapper';
+
+                const a = document.createElement('a');
+                a.href = tab.url || '#';
+                a.target = '_blank';
+                a.className = 'tab';
+                a.innerHTML = `<i class="${tab.icon || 'fas fa-folder'}"></i><span>${tab.name || 'Tab'}</span>`;
+                wrapper.appendChild(a);
+
+                if (user) {
+                    const delBtn = document.createElement('button');
+                    delBtn.className = 'tab-delete';
+                    delBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                    delBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openConfirmModal(tab.key);
+                    });
+                    wrapper.appendChild(delBtn);
+                }
+
+                tabsContainer.appendChild(wrapper);
+            });
+
+            // Add "+" button if admin
+            if (user) {
+                const addBtn = document.createElement('div');
+                addBtn.className = 'add-tab-btn';
+                addBtn.innerHTML = '<i class="fas fa-plus-circle"></i><span>Add Tab</span>';
+                addBtn.addEventListener('click', () => openTabModal(null));
+                tabsContainer.appendChild(addBtn);
+            }
+        }
+
+        // LOAD TABS from Firebase (branch: portal_v4/tabs)
+        function loadTabs() {
+            database.ref('/portal_v4/tabs').on('value', snap => {
+                const data = snap.val() || {};
+                const tabs = Object.keys(data).map(key => ({ key, ...data[key] }));
+                currentTabs = tabs;
+                renderTabs(tabs);
+            });
+        }
+
+        // SAVE / UPDATE TAB
+        function saveTab() {
+            const name = document.getElementById('tabName').value.trim();
+            const url = document.getElementById('tabUrl').value.trim();
+            const selectedIcon = document.querySelector('#iconSelector i.selected');
+            const icon = selectedIcon ? selectedIcon.className : 'fas fa-folder';
+
+            if (!name) return showToast('Tab name is required', false);
+            if (!url) return showToast('URL is required', false);
+
+            const payload = { name, url, icon };
+
+            if (editingTabKey) {
+                // update existing
+                database.ref(`/portal_v4/tabs/${editingTabKey}`).update(payload)
+                    .then(() => {
+                        showToast('Tab updated!');
+                        closeTabModal();
+                    })
+                    .catch(err => showToast(err.message, false));
+            } else {
+                // push new
+                database.ref('/portal_v4/tabs').push(payload)
+                    .then(() => {
+                        showToast('Tab created!');
+                        closeTabModal();
+                    })
+                    .catch(err => showToast(err.message, false));
+            }
+        }
+
+        // DELETE TAB
+        function confirmDelete() {
+            if (deleteTargetKey) {
+                database.ref(`/portal_v4/tabs/${deleteTargetKey}`).remove()
+                    .then(() => {
+                        showToast('Tab deleted');
+                        closeConfirmModal();
+                        deleteTargetKey = null;
+                    })
+                    .catch(err => showToast(err.message, false));
+            }
+        }
+
+        // GOOGLE LOGIN
+        function handleGoogleLogin() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then(() => {
+                    showToast('Logged in with Google');
+                    closeLoginModal();
+                })
+                .catch(err => showToast(err.message, false));
+        }
+
+        // AUTH STATE
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                loginLink.textContent = 'Logout';
+                loginLink.onclick = () => auth.signOut();
+                // show upload button in modal if needed
+                const uploadBtn = document.getElementById('uploadBtnAction');
+                if (uploadBtn) uploadBtn.style.display = 'flex';
+                // re-render tabs with delete & add
+                renderTabs(currentTabs);
+            } else {
+                loginLink.textContent = 'Login';
+                loginLink.onclick = openLoginModal;
+                const uploadBtn = document.getElementById('uploadBtnAction');
+                if (uploadBtn) uploadBtn.style.display = 'none';
+                renderTabs(currentTabs);
+            }
+        });
+
+        // BULLETIN BOARD (unchanged)
         function updateItem(idx, data) {
             const grid = document.getElementById('announcementGrid');
             let item = announcementItems[idx];
@@ -459,17 +746,16 @@
             item.onclick = () => openModal(data, idx);
         }
 
+        // Upload poster (unchanged but uses admin code 156156)
         async function uploadPoster() {
             const code = document.getElementById('adminCode').value;
             const file = document.getElementById('posterImage').files[0];
-            // New Admin Code: 156156
             if(code !== '156156') return showToast('Invalid Code', false);
             if(!file) return showToast('Select Image', false);
 
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = async () => {
-                // New Firebase branch: portal_v4
                 await database.ref('/portal_v4/posters/').update({ [`poster_${currentImageIndex}`]: reader.result });
                 showToast('Uploaded!');
                 closeUploadModal();
@@ -477,25 +763,9 @@
             };
         }
 
-        function handleLogin() {
-            auth.signInWithEmailAndPassword(document.getElementById('loginEmail').value, document.getElementById('loginPassword').value)
-                .then(() => { showToast('Logged In'); closeLoginModal(); })
-                .catch(e => showToast(e.message, false));
-        }
-
-        auth.onAuthStateChanged(user => {
-            const link = document.getElementById('loginLink');
-            if(user) {
-                link.textContent = 'Logout';
-                link.onclick = () => auth.signOut();
-            } else {
-                link.textContent = 'Login';
-                link.onclick = openLoginModal;
-            }
-        });
-
+        // LOAD posters
         window.onload = () => {
-            // Loading from new branch: portal_v4
+            loadTabs();
             database.ref('/portal_v4/posters/').on('value', snap => {
                 const data = snap.val() || {};
                 for(let i=0; i<4; i++) {
@@ -503,6 +773,18 @@
                 }
             });
         };
+
+        // Event bindings
+        document.getElementById('saveTabBtn').addEventListener('click', saveTab);
+        document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDelete);
+        // close modals on overlay click
+        document.querySelectorAll('.modal, .upload-modal, .login-modal, .tab-modal').forEach(el => {
+            el.addEventListener('click', (e) => {
+                if (e.target === el) {
+                    el.classList.remove('active');
+                }
+            });
+        });
     </script>
 </body>
 </html>
