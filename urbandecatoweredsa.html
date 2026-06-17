@@ -734,74 +734,17 @@
             }
         }
 
-        // GOOGLE LOGIN with authorized email check
+        // GOOGLE LOGIN - allows any email that is registered in Firebase Auth
         function handleGoogleLogin() {
             const provider = new firebase.auth.GoogleAuthProvider();
             auth.signInWithPopup(provider)
                 .then((result) => {
                     const user = result.user;
-                    // Check if email is registered in Firebase Auth (user object exists)
                     if (user) {
-                        // email is automatically registered via Google sign-in, but we need to check if it's allowed
-                        // We'll check against a list of authorized emails (hardcoded or from DB)
-                        // For demo, we check if the email ends with '@gmail.com' or specific domain
-                        // You can also store authorized emails in Firebase Realtime DB and check here.
-                        // For simplicity, we allow only specific emails: add your authorized emails here.
-                        const authorizedEmails = ['admin@udt.com', 'user@example.com', 'test@test.com']; // add more
-                        // Alternatively, check if email is verified or domain matches
-                        // For this demo, we'll allow any email that is registered (since sign-in succeeded)
-                        // But to block unauthorized, we check against a list or domain
-                        const email = user.email;
-                        // If you want to restrict to specific emails, uncomment below:
-                        // if (!authorizedEmails.includes(email)) {
-                        //     auth.signOut();
-                        //     showToast('Email not authorized. Please use a registered email.', false);
-                        //     closeLoginModal();
-                        //     return;
-                        // }
-                        // For demo, we block if email is not from a specific domain (example: @gmail.com)
-                        // Change this to your domain or use the authorizedEmails list.
-                        // For flexibility, we check if email contains '@' and is from allowed domain
-                        // You can modify this condition as needed.
-                        // *** NEW: block if email is not in authorized list ***
-                        // For demonstration, we use a list from Firebase or hardcoded.
-                        // We'll fetch authorized emails from database or use a list.
-                        // Let's fetch from /portal_v4/authorized_emails
-                        database.ref('/portal_v4/authorized_emails').once('value').then(snap => {
-                            const emails = snap.val() || [];
-                            // if emails is array, check; if object, convert
-                            let allowed = false;
-                            if (Array.isArray(emails)) {
-                                allowed = emails.includes(email);
-                            } else if (typeof emails === 'object') {
-                                allowed = Object.values(emails).includes(email);
-                            }
-                            // fallback: if no list in DB, use hardcoded
-                            if (!allowed) {
-                                const hardcoded = ['admin@udt.com', 'test@test.com', 'user@example.com'];
-                                allowed = hardcoded.includes(email);
-                            }
-                            if (!allowed) {
-                                auth.signOut();
-                                showToast('Email not authorized. Please use a registered email.', false);
-                                closeLoginModal();
-                                return;
-                            }
-                            // success
-                            showToast('Logged in with Google');
-                            closeLoginModal();
-                        }).catch(() => {
-                            // if cannot fetch, fallback to hardcoded
-                            const hardcoded = ['admin@udt.com', 'test@test.com', 'user@example.com'];
-                            if (!hardcoded.includes(email)) {
-                                auth.signOut();
-                                showToast('Email not authorized. Please use a registered email.', false);
-                                closeLoginModal();
-                                return;
-                            }
-                            showToast('Logged in with Google');
-                            closeLoginModal();
-                        });
+                        // User is authenticated with Firebase Auth
+                        // No email blocking - any registered email is allowed
+                        showToast('Logged in with Google');
+                        closeLoginModal();
                     } else {
                         showToast('Login failed', false);
                     }
