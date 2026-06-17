@@ -425,8 +425,7 @@
     <div class="container">
         <div class="tabs-container">
             <div class="tabs" id="tabsContainer">
-                <!-- tabs will be rendered here + add button -->
-            </div>
+                </div>
         </div>
 
         <section>
@@ -447,7 +446,6 @@
         </div>
     </footer>
 
-    <!-- Image Modal -->
     <div class="modal" id="imageModal">
         <div class="modal-content">
             <img id="modalImage" src="">
@@ -458,7 +456,6 @@
         </div>
     </div>
 
-    <!-- Upload Poster Modal -->
     <div class="upload-modal" id="uploadModal">
         <div class="upload-content">
             <h3>Upload Poster</h3>
@@ -469,7 +466,6 @@
         </div>
     </div>
 
-    <!-- Login Modal -->
     <div class="login-modal" id="loginModal">
         <div class="login-content">
             <h3><i class="fab fa-google" style="color: var(--accent); margin-right: 10px;"></i>Sign in with Google</h3>
@@ -481,7 +477,6 @@
         </div>
     </div>
 
-    <!-- Tab Create/Edit Modal -->
     <div class="tab-modal" id="tabModal">
         <div class="tab-content">
             <h3 id="tabModalTitle">Create Tab</h3>
@@ -489,14 +484,12 @@
             <input type="text" id="tabUrl" placeholder="Tab URL (https://...)" style="width:100%; padding:10px; margin:10px 0;">
             <label style="font-weight: 500;">Choose Icon:</label>
             <div class="icon-selector" id="iconSelector"></div>
-            <!-- admin code required for create/delete -->
             <input type="password" id="tabAdminCode" placeholder="Admin Code" class="admin-code-input">
             <button class="btn btn-primary" id="saveTabBtn">Save Tab</button>
             <button class="btn btn-outline-secondary" onclick="closeTabModal()">Cancel</button>
         </div>
     </div>
 
-    <!-- Confirm Delete Modal (now with admin code) -->
     <div class="modal" id="confirmModal">
         <div class="modal-content" style="background: white; padding: 30px; border-radius: 12px; max-width: 400px; text-align: center;">
             <h3>Delete Tab?</h3>
@@ -549,7 +542,7 @@
             "fab fa-tiktok", "fab fa-snapchat", "fab fa-reddit", "fab fa-discord"
         ];
 
-        const DEFAULT_IMAGE = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWRmMmY3Ii8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzY2NiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q0xJQ0sgVE8gVVBMT0FEIFBPU1RFUjwvdGV4dD4KPC9zdmc+";
+        const DEFAULT_IMAGE = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWRmMmY3Ii8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0i,#NTRTIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q0xJQ0sgVE8gVVBMT0FEIFBPU1RFUjwvdGV4dD4KPC9zdmc+";
 
         let currentImageIndex = null;
         let announcementItems = [];
@@ -734,31 +727,16 @@
             }
         }
 
-        // GOOGLE LOGIN - only allows users that are registered in Firebase Auth
+        // GOOGLE LOGIN - verifies user authorized email list from Realtime DB or falls back to static array
         function handleGoogleLogin() {
             const provider = new firebase.auth.GoogleAuthProvider();
             auth.signInWithPopup(provider)
                 .then((result) => {
                     const user = result.user;
                     if (user) {
-                        // User is authenticated with Firebase Auth
-                        // Check if the user exists in Firebase Auth (which they do since signInWithPopup succeeded)
-                        // But we need to check if the email is actually registered (not just signed in)
-                        // Firebase Auth automatically creates the user if they don't exist, but we want to block if not pre-registered.
-                        // To check if the user was pre-registered, we can check the user's metadata or check against a list.
-                        // Since Firebase Auth doesn't provide a direct way to check if an account existed before sign-in,
-                        // we use a workaround: check the user's creation time versus last sign-in time.
-                        // If creation time and last sign-in time are the same, it means the account was just created.
-                        const creationTime = new Date(user.metadata.creationTime).getTime();
-                        const lastSignInTime = new Date(user.metadata.lastSignInTime).getTime();
-                        
-                        // If the account was just created (creation time equals last sign-in time within a small margin)
-                        // or if we want to block new accounts, we can sign them out.
-                        // For this implementation, we'll check if the email exists in our authorized list in Firebase Database.
-                        // If not, we block the login.
                         const email = user.email;
                         
-                        // Check against a list of authorized emails stored in Firebase Database
+                        // Check against authorized email list in Firebase Database
                         database.ref('/portal_v4/authorized_emails').once('value')
                             .then((snapshot) => {
                                 const authorizedEmails = snapshot.val() || [];
@@ -770,30 +748,29 @@
                                     isAuthorized = Object.values(authorizedEmails).includes(email);
                                 }
                                 
-                                // If no authorized list in DB, allow only specific hardcoded emails
+                                // Fallback hardcoded whitelist verification
                                 if (!isAuthorized) {
                                     const hardcodedEmails = ['admin@udt.com', 'test@test.com', 'user@example.com'];
                                     isAuthorized = hardcodedEmails.includes(email);
                                 }
                                 
                                 if (!isAuthorized) {
-                                    // User not authorized, sign them out
+                                    // User not authorized: force logout and block entry
                                     auth.signOut().then(() => {
-                                        showToast('Email not authorized. Please use a registered email.', false);
+                                        showToast('Email is not authorize', false);
                                         closeLoginModal();
                                     });
                                 } else {
-                                    // User is authorized
                                     showToast('Logged in with Google');
                                     closeLoginModal();
                                 }
                             })
                             .catch((error) => {
-                                // If error reading from database, fallback to hardcoded list
+                                // Fallback check in case database read fails completely
                                 const hardcodedEmails = ['admin@udt.com', 'test@test.com', 'user@example.com'];
                                 if (!hardcodedEmails.includes(email)) {
                                     auth.signOut().then(() => {
-                                        showToast('Email not authorized. Please use a registered email.', false);
+                                        showToast('Email is not authorize', false);
                                         closeLoginModal();
                                     });
                                 } else {
@@ -806,7 +783,6 @@
                     }
                 })
                 .catch((err) => {
-                    // If error, show toast
                     showToast(err.message, false);
                 });
         }
