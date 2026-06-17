@@ -338,6 +338,15 @@
             background: #fefcbf;
         }
 
+        /* admin code input inside tab modal */
+        .admin-code-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
         footer {
             background: var(--primary);
             color: white;
@@ -480,16 +489,19 @@
             <input type="text" id="tabUrl" placeholder="Tab URL (https://...)" style="width:100%; padding:10px; margin:10px 0;">
             <label style="font-weight: 500;">Choose Icon:</label>
             <div class="icon-selector" id="iconSelector"></div>
+            <!-- admin code required for create/delete -->
+            <input type="password" id="tabAdminCode" placeholder="Admin Code" class="admin-code-input">
             <button class="btn btn-primary" id="saveTabBtn">Save Tab</button>
             <button class="btn btn-outline-secondary" onclick="closeTabModal()">Cancel</button>
         </div>
     </div>
 
-    <!-- Confirm Delete Modal -->
+    <!-- Confirm Delete Modal (now with admin code) -->
     <div class="modal" id="confirmModal">
         <div class="modal-content" style="background: white; padding: 30px; border-radius: 12px; max-width: 400px; text-align: center;">
             <h3>Delete Tab?</h3>
-            <p style="margin: 15px 0;">Are you sure you want to delete this tab? This action cannot be undone.</p>
+            <p style="margin: 15px 0;">Enter admin code to confirm deletion.</p>
+            <input type="password" id="deleteAdminCode" placeholder="Admin Code" style="width:100%; padding:10px; margin:10px 0; border:1px solid #ccc; border-radius:6px;">
             <button class="btn btn-danger" id="confirmDeleteBtn" style="width: auto; padding: 10px 30px;">Yes, Delete</button>
             <button class="btn btn-outline-secondary" onclick="closeConfirmModal()" style="width: auto; padding: 10px 30px; margin-left: 10px;">Cancel</button>
         </div>
@@ -517,7 +529,7 @@
         const auth = firebase.auth();
         const database = firebase.database();
 
-        // ICON LIST (FontAwesome 6)
+        // ICON LIST (FontAwesome 6) - added more icons including social media
         const ICON_LIST = [
             "fas fa-file-powerpoint", "fas fa-map-marked-alt", "fas fa-images", "fas fa-calculator",
             "fas fa-th-list", "fas fa-file-invoice", "fas fa-address-book", "fas fa-home",
@@ -526,7 +538,15 @@
             "fas fa-phone", "fas fa-print", "fas fa-download", "fas fa-upload",
             "fas fa-link", "fas fa-external-link-alt", "fas fa-pencil-alt", "fas fa-trash",
             "fas fa-plus", "fas fa-minus", "fas fa-check", "fas fa-times",
-            "fas fa-calendar", "fas fa-clock", "fas fa-bell", "fas fa-comment"
+            "fas fa-calendar", "fas fa-clock", "fas fa-bell", "fas fa-comment",
+            // additional icons
+            "fas fa-camera", "fas fa-video", "fas fa-music", "fas fa-headphones",
+            "fas fa-gamepad", "fas fa-plane", "fas fa-rocket", "fas fa-globe",
+            "fas fa-heart", "fas fa-star", "fas fa-trophy", "fas fa-gift",
+            // social media icons
+            "fab fa-facebook", "fab fa-twitter", "fab fa-instagram", "fab fa-youtube",
+            "fab fa-linkedin", "fab fa-github", "fab fa-whatsapp", "fab fa-telegram",
+            "fab fa-tiktok", "fab fa-snapchat", "fab fa-reddit", "fab fa-discord"
         ];
 
         const DEFAULT_IMAGE = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWRmMmY3Ii8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzY2NiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q0xJQ0sgVE8gVVBMT0FEIFBPU1RFUjwvdGV4dD4KPC9zdmc+";
@@ -582,12 +602,14 @@
                 document.getElementById('tabUrl').value = '';
                 document.querySelectorAll('#iconSelector i').forEach(el => el.classList.remove('selected'));
             }
+            document.getElementById('tabAdminCode').value = '';
             document.getElementById('tabModal').classList.add('active');
         }
         function closeTabModal() { document.getElementById('tabModal').classList.remove('active'); }
 
         function openConfirmModal(key) {
             deleteTargetKey = key;
+            document.getElementById('deleteAdminCode').value = '';
             document.getElementById('confirmModal').classList.add('active');
         }
         function closeConfirmModal() { document.getElementById('confirmModal').classList.remove('active'); }
@@ -658,12 +680,19 @@
             });
         }
 
-        // SAVE / UPDATE TAB
+        // SAVE / UPDATE TAB (requires admin code)
         function saveTab() {
             const name = document.getElementById('tabName').value.trim();
             const url = document.getElementById('tabUrl').value.trim();
             const selectedIcon = document.querySelector('#iconSelector i.selected');
             const icon = selectedIcon ? selectedIcon.className : 'fas fa-folder';
+            const adminCode = document.getElementById('tabAdminCode').value;
+
+            // Admin code check
+            if (adminCode !== '156156') {
+                showToast('Invalid admin code. Action denied.', false);
+                return;
+            }
 
             if (!name) return showToast('Tab name is required', false);
             if (!url) return showToast('URL is required', false);
@@ -671,7 +700,6 @@
             const payload = { name, url, icon };
 
             if (editingTabKey) {
-                // update existing
                 database.ref(`/portal_v4/tabs/${editingTabKey}`).update(payload)
                     .then(() => {
                         showToast('Tab updated!');
@@ -679,7 +707,6 @@
                     })
                     .catch(err => showToast(err.message, false));
             } else {
-                // push new
                 database.ref('/portal_v4/tabs').push(payload)
                     .then(() => {
                         showToast('Tab created!');
@@ -689,8 +716,13 @@
             }
         }
 
-        // DELETE TAB
+        // DELETE TAB (requires admin code)
         function confirmDelete() {
+            const adminCode = document.getElementById('deleteAdminCode').value;
+            if (adminCode !== '156156') {
+                showToast('Invalid admin code. Deletion denied.', false);
+                return;
+            }
             if (deleteTargetKey) {
                 database.ref(`/portal_v4/tabs/${deleteTargetKey}`).remove()
                     .then(() => {
@@ -702,13 +734,77 @@
             }
         }
 
-        // GOOGLE LOGIN
+        // GOOGLE LOGIN with authorized email check
         function handleGoogleLogin() {
             const provider = new firebase.auth.GoogleAuthProvider();
             auth.signInWithPopup(provider)
-                .then(() => {
-                    showToast('Logged in with Google');
-                    closeLoginModal();
+                .then((result) => {
+                    const user = result.user;
+                    // Check if email is registered in Firebase Auth (user object exists)
+                    if (user) {
+                        // email is automatically registered via Google sign-in, but we need to check if it's allowed
+                        // We'll check against a list of authorized emails (hardcoded or from DB)
+                        // For demo, we check if the email ends with '@gmail.com' or specific domain
+                        // You can also store authorized emails in Firebase Realtime DB and check here.
+                        // For simplicity, we allow only specific emails: add your authorized emails here.
+                        const authorizedEmails = ['admin@udt.com', 'user@example.com', 'test@test.com']; // add more
+                        // Alternatively, check if email is verified or domain matches
+                        // For this demo, we'll allow any email that is registered (since sign-in succeeded)
+                        // But to block unauthorized, we check against a list or domain
+                        const email = user.email;
+                        // If you want to restrict to specific emails, uncomment below:
+                        // if (!authorizedEmails.includes(email)) {
+                        //     auth.signOut();
+                        //     showToast('Email not authorized. Please use a registered email.', false);
+                        //     closeLoginModal();
+                        //     return;
+                        // }
+                        // For demo, we block if email is not from a specific domain (example: @gmail.com)
+                        // Change this to your domain or use the authorizedEmails list.
+                        // For flexibility, we check if email contains '@' and is from allowed domain
+                        // You can modify this condition as needed.
+                        // *** NEW: block if email is not in authorized list ***
+                        // For demonstration, we use a list from Firebase or hardcoded.
+                        // We'll fetch authorized emails from database or use a list.
+                        // Let's fetch from /portal_v4/authorized_emails
+                        database.ref('/portal_v4/authorized_emails').once('value').then(snap => {
+                            const emails = snap.val() || [];
+                            // if emails is array, check; if object, convert
+                            let allowed = false;
+                            if (Array.isArray(emails)) {
+                                allowed = emails.includes(email);
+                            } else if (typeof emails === 'object') {
+                                allowed = Object.values(emails).includes(email);
+                            }
+                            // fallback: if no list in DB, use hardcoded
+                            if (!allowed) {
+                                const hardcoded = ['admin@udt.com', 'test@test.com', 'user@example.com'];
+                                allowed = hardcoded.includes(email);
+                            }
+                            if (!allowed) {
+                                auth.signOut();
+                                showToast('Email not authorized. Please use a registered email.', false);
+                                closeLoginModal();
+                                return;
+                            }
+                            // success
+                            showToast('Logged in with Google');
+                            closeLoginModal();
+                        }).catch(() => {
+                            // if cannot fetch, fallback to hardcoded
+                            const hardcoded = ['admin@udt.com', 'test@test.com', 'user@example.com'];
+                            if (!hardcoded.includes(email)) {
+                                auth.signOut();
+                                showToast('Email not authorized. Please use a registered email.', false);
+                                closeLoginModal();
+                                return;
+                            }
+                            showToast('Logged in with Google');
+                            closeLoginModal();
+                        });
+                    } else {
+                        showToast('Login failed', false);
+                    }
                 })
                 .catch(err => showToast(err.message, false));
         }
@@ -718,10 +814,8 @@
             if (user) {
                 loginLink.textContent = 'Logout';
                 loginLink.onclick = () => auth.signOut();
-                // show upload button in modal if needed
                 const uploadBtn = document.getElementById('uploadBtnAction');
                 if (uploadBtn) uploadBtn.style.display = 'flex';
-                // re-render tabs with delete & add
                 renderTabs(currentTabs);
             } else {
                 loginLink.textContent = 'Login';
@@ -746,7 +840,7 @@
             item.onclick = () => openModal(data, idx);
         }
 
-        // Upload poster (unchanged but uses admin code 156156)
+        // Upload poster (unchanged)
         async function uploadPoster() {
             const code = document.getElementById('adminCode').value;
             const file = document.getElementById('posterImage').files[0];
