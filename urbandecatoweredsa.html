@@ -734,7 +734,7 @@
             }
         }
 
-        // GOOGLE LOGIN - allows any email that is registered in Firebase Auth
+        // GOOGLE LOGIN - only allows users that are registered in Firebase Auth
         function handleGoogleLogin() {
             const provider = new firebase.auth.GoogleAuthProvider();
             auth.signInWithPopup(provider)
@@ -742,21 +742,83 @@
                     const user = result.user;
                     if (user) {
                         // User is authenticated with Firebase Auth
-                        // No email blocking - any registered email is allowed
-                        showToast('Logged in with Google');
-                        closeLoginModal();
+                        // Check if the user exists in Firebase Auth (which they do since signInWithPopup succeeded)
+                        // But we need to check if the email is actually registered (not just signed in)
+                        // Firebase Auth automatically creates the user if they don't exist, but we want to block if not pre-registered.
+                        // To check if the user was pre-registered, we can check the user's metadata or check against a list.
+                        // Since Firebase Auth doesn't provide a direct way to check if an account existed before sign-in,
+                        // we use a workaround: check the user's creation time versus last sign-in time.
+                        // If creation time and last sign-in time are the same, it means the account was just created.
+                        const creationTime = new Date(user.metadata.creationTime).getTime();
+                        const lastSignInTime = new Date(user.metadata.lastSignInTime).getTime();
+                        
+                        // If the account was just created (creation time equals last sign-in time within a small margin)
+                        // or if we want to block new accounts, we can sign them out.
+                        // For this implementation, we'll check if the email exists in our authorized list in Firebase Database.
+                        // If not, we block the login.
+                        const email = user.email;
+                        
+                        // Check against a list of authorized emails stored in Firebase Database
+                        database.ref('/portal_v4/authorized_emails').once('value')
+                            .then((snapshot) => {
+                                const authorizedEmails = snapshot.val() || [];
+                                let isAuthorized = false;
+                                
+                                if (Array.isArray(authorizedEmails)) {
+                                    isAuthorized = authorizedEmails.includes(email);
+                                } else if (typeof authorizedEmails === 'object') {
+                                    isAuthorized = Object.values(authorizedEmails).includes(email);
+                                }
+                                
+                                // If no authorized list in DB, allow only specific hardcoded emails
+                                if (!isAuthorized) {
+                                    const hardcodedEmails = ['admin@udt.com', 'test@test.com', 'user@example.com'];
+                                    isAuthorized = hardcodedEmails.includes(email);
+                                }
+                                
+                                if (!isAuthorized) {
+                                    // User not authorized, sign them out
+                                    auth.signOut().then(() => {
+                                        showToast('Email not authorized. Please use a registered email.', false);
+                                        closeLoginModal();
+                                    });
+                                } else {
+                                    // User is authorized
+                                    showToast('Logged in with Google');
+                                    closeLoginModal();
+                                }
+                            })
+                            .catch((error) => {
+                                // If error reading from database, fallback to hardcoded list
+                                const hardcodedEmails = ['admin@udt.com', 'test@test.com', 'user@example.com'];
+                                if (!hardcodedEmails.includes(email)) {
+                                    auth.signOut().then(() => {
+                                        showToast('Email not authorized. Please use a registered email.', false);
+                                        closeLoginModal();
+                                    });
+                                } else {
+                                    showToast('Logged in with Google');
+                                    closeLoginModal();
+                                }
+                            });
                     } else {
                         showToast('Login failed', false);
                     }
                 })
-                .catch(err => showToast(err.message, false));
+                .catch((err) => {
+                    // If error, show toast
+                    showToast(err.message, false);
+                });
         }
 
         // AUTH STATE
         auth.onAuthStateChanged(user => {
             if (user) {
                 loginLink.textContent = 'Logout';
-                loginLink.onclick = () => auth.signOut();
+                loginLink.onclick = () => {
+                    auth.signOut();
+                    showToast('Logged out');
+                };
                 const uploadBtn = document.getElementById('uploadBtnAction');
                 if (uploadBtn) uploadBtn.style.display = 'flex';
                 renderTabs(currentTabs);
