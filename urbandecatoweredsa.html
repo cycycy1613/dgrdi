@@ -542,7 +542,7 @@
             "fab fa-tiktok", "fab fa-snapchat", "fab fa-reddit", "fab fa-discord"
         ];
 
-        const DEFAULT_IMAGE = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWRmMmY3Ii8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0i,#NTRTIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q0xJQ0sgVE8gVVBMT0FEIFBPU1RFUjwvdGV4dD4KPC9zdmc+";
+        const DEFAULT_IMAGE = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWRmMmY3Ii8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzY2NiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q0xJQ0sgVE8gVVBMT0FEIFBPU1RFUjwvdGV4dD4KPC9zdmc+";
 
         let currentImageIndex = null;
         let announcementItems = [];
@@ -727,37 +727,38 @@
             }
         }
 
-        // GOOGLE LOGIN - verifies user authorized email list from Realtime DB or falls back to static array
+        // GOOGLE LOGIN - Checks directly against DB list or strict fallback array
         function handleGoogleLogin() {
             const provider = new firebase.auth.GoogleAuthProvider();
             auth.signInWithPopup(provider)
                 .then((result) => {
                     const user = result.user;
-                    if (user) {
-                        const email = user.email;
+                    if (user && user.email) {
+                        const email = user.email.toLowerCase();
                         
-                        // Check against authorized email list in Firebase Database
+                        // Check against a list of authorized emails stored in Firebase Realtime Database
                         database.ref('/portal_v4/authorized_emails').once('value')
                             .then((snapshot) => {
-                                const authorizedEmails = snapshot.val() || [];
+                                let authorizedEmails = snapshot.val() || [];
                                 let isAuthorized = false;
                                 
+                                // Clean up array or object values from database to check cleanly
                                 if (Array.isArray(authorizedEmails)) {
-                                    isAuthorized = authorizedEmails.includes(email);
+                                    isAuthorized = authorizedEmails.map(e => String(e).toLowerCase()).includes(email);
                                 } else if (typeof authorizedEmails === 'object') {
-                                    isAuthorized = Object.values(authorizedEmails).includes(email);
+                                    isAuthorized = Object.values(authorizedEmails).map(e => String(e).toLowerCase()).includes(email);
                                 }
                                 
-                                // Fallback hardcoded whitelist verification
+                                // Hardcoded list fallback (Put your actual Google admin emails here)
                                 if (!isAuthorized) {
                                     const hardcodedEmails = ['admin@udt.com', 'test@test.com', 'user@example.com'];
-                                    isAuthorized = hardcodedEmails.includes(email);
+                                    isAuthorized = hardcodedEmails.map(e => e.toLowerCase()).includes(email);
                                 }
                                 
                                 if (!isAuthorized) {
-                                    // User not authorized: force logout and block entry
+                                    // Kick unauthorized users out
                                     auth.signOut().then(() => {
-                                        showToast('Email is not authorize', false);
+                                        showToast('email is not authorize', false);
                                         closeLoginModal();
                                     });
                                 } else {
@@ -766,11 +767,11 @@
                                 }
                             })
                             .catch((error) => {
-                                // Fallback check in case database read fails completely
+                                // Final fallback list verification if database connections fail entirely
                                 const hardcodedEmails = ['admin@udt.com', 'test@test.com', 'user@example.com'];
-                                if (!hardcodedEmails.includes(email)) {
+                                if (!hardcodedEmails.map(e => e.toLowerCase()).includes(email)) {
                                     auth.signOut().then(() => {
-                                        showToast('Email is not authorize', false);
+                                        showToast('email is not authorize', false);
                                         closeLoginModal();
                                     });
                                 } else {
