@@ -453,6 +453,7 @@
             <img id="modalImage" src="">
             <div class="modal-actions">
                 <div class="modal-btn" onclick="openUploadModal()" id="uploadBtnAction" style="display:none;"><i class="fas fa-upload" style="color:var(--primary)"></i></div>
+                <div class="modal-btn" onclick="deletePoster()" id="deleteBtnAction" style="display:none;"><i class="fas fa-trash" style="color:var(--danger)"></i></div>
                 <div class="modal-btn" onclick="closeModal()"><i class="fas fa-times" style="color:var(--danger)"></i></div>
             </div>
         </div>
@@ -469,14 +470,25 @@
         </div>
     </div>
 
-    <!-- Login Modal -->
+    <!-- Login Modal (Changed to OTP) -->
     <div class="login-modal" id="loginModal">
         <div class="login-content">
-            <h3><i class="fab fa-google" style="color: var(--accent); margin-right: 10px;"></i>Sign in with Google</h3>
-            <p style="margin: 16px 0; color: #ccc;">Use your Google account registered in Firebase</p>
-            <button class="btn btn-accent" onclick="handleGoogleLogin()" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-                <i class="fab fa-google"></i> Sign in with Google
-            </button>
+            <h3><i class="fas fa-mobile-alt" style="color: var(--accent); margin-right: 10px;"></i>Sign in with Mobile</h3>
+            <p style="margin: 16px 0; color: #ccc;">OTP will be sent to the master admin number</p>
+            
+            <div id="phone-auth-container">
+                <input type="text" id="phoneNumber" value="+639913827663" readonly style="width:100%; padding:10px; margin:10px 0; border-radius:6px; border:1px solid #ccc; background:#e0e0e0; color:#333; cursor:not-allowed;">
+                <button class="btn btn-accent" id="sendOtpBtn" onclick="sendOTP()" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <i class="fas fa-paper-plane"></i> Send OTP
+                </button>
+                <div id="recaptcha-container" style="margin-top: 10px;"></div>
+            </div>
+
+            <div id="otp-container" style="display:none;">
+                <input type="text" id="otpCode" placeholder="Enter 6-digit OTP" style="width:100%; padding:10px; margin:10px 0; border-radius:6px; border:1px solid #ccc;">
+                <button class="btn btn-primary" id="verifyOtpBtn" onclick="verifyOTP()">Verify OTP</button>
+            </div>
+            
             <button class="btn btn-outline-danger" onclick="closeLoginModal()">Close</button>
         </div>
     </div>
@@ -529,7 +541,7 @@
         const auth = firebase.auth();
         const database = firebase.database();
 
-        // ICON LIST (FontAwesome 6) - added more icons including social media
+        // ICON LIST (FontAwesome 6) - added more file type icons
         const ICON_LIST = [
             "fas fa-file-powerpoint", "fas fa-map-marked-alt", "fas fa-images", "fas fa-calculator",
             "fas fa-th-list", "fas fa-file-invoice", "fas fa-address-book", "fas fa-home",
@@ -539,14 +551,18 @@
             "fas fa-link", "fas fa-external-link-alt", "fas fa-pencil-alt", "fas fa-trash",
             "fas fa-plus", "fas fa-minus", "fas fa-check", "fas fa-times",
             "fas fa-calendar", "fas fa-clock", "fas fa-bell", "fas fa-comment",
-            // additional icons
+            // media icons
             "fas fa-camera", "fas fa-video", "fas fa-music", "fas fa-headphones",
             "fas fa-gamepad", "fas fa-plane", "fas fa-rocket", "fas fa-globe",
             "fas fa-heart", "fas fa-star", "fas fa-trophy", "fas fa-gift",
             // social media icons
             "fab fa-facebook", "fab fa-twitter", "fab fa-instagram", "fab fa-youtube",
             "fab fa-linkedin", "fab fa-github", "fab fa-whatsapp", "fab fa-telegram",
-            "fab fa-tiktok", "fab fa-snapchat", "fab fa-reddit", "fab fa-discord"
+            "fab fa-tiktok", "fab fa-snapchat", "fab fa-reddit", "fab fa-discord",
+            // ADDED: FILE TYPE ICONS
+            "fas fa-file-pdf", "fas fa-file-word", "fas fa-file-excel", "fas fa-file-image",
+            "fas fa-file-video", "fas fa-file-audio", "fas fa-file-archive", "fas fa-file-code",
+            "fas fa-file-csv", "fas fa-file-alt", "fas fa-file"
         ];
 
         const DEFAULT_IMAGE = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWRmMmY3Ii8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzY2NiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q0xJQ0sgVE8gVVBMT0FEIFBPU1RFUjwvdGV4dD4KPC9zdmc+";
@@ -556,6 +572,7 @@
         let currentTabs = [];
         let editingTabKey = null;
         let deleteTargetKey = null;
+        let confirmationResult = null; // for phone auth
 
         // DOM refs
         const tabsContainer = document.getElementById('tabsContainer');
@@ -574,13 +591,27 @@
             currentImageIndex = idx;
             document.getElementById('modalImage').src = img;
             document.getElementById('imageModal').classList.add('active');
-            document.getElementById('uploadBtnAction').style.display = auth.currentUser ? 'flex' : 'none';
+            
+            // Show action buttons if logged in
+            const loggedIn = auth.currentUser ? 'flex' : 'none';
+            document.getElementById('uploadBtnAction').style.display = loggedIn;
+            document.getElementById('deleteBtnAction').style.display = loggedIn;
         }
         function closeModal() { document.getElementById('imageModal').classList.remove('active'); }
         function openUploadModal() { closeModal(); document.getElementById('uploadModal').classList.add('active'); }
         function closeUploadModal() { document.getElementById('uploadModal').classList.remove('active'); }
-        function openLoginModal() { document.getElementById('loginModal').classList.add('active'); }
+        
+        function openLoginModal() { 
+            document.getElementById('loginModal').classList.add('active'); 
+            // Reset OTP layout states
+            document.getElementById('phone-auth-container').style.display = 'block';
+            document.getElementById('otp-container').style.display = 'none';
+            document.getElementById('sendOtpBtn').innerText = 'Send OTP';
+            document.getElementById('sendOtpBtn').disabled = false;
+            document.getElementById('otpCode').value = '';
+        }
         function closeLoginModal() { document.getElementById('loginModal').classList.remove('active'); }
+        
         function openTabModal(key=null) {
             editingTabKey = key;
             document.getElementById('tabModalTitle').innerText = key ? 'Edit Tab' : 'Create Tab';
@@ -688,8 +719,8 @@
             const icon = selectedIcon ? selectedIcon.className : 'fas fa-folder';
             const adminCode = document.getElementById('tabAdminCode').value;
 
-            // Admin code check
-            if (adminCode !== '156156') {
+            // Admin code check (updated to 1234)
+            if (adminCode !== '1234') {
                 showToast('Invalid admin code. Action denied.', false);
                 return;
             }
@@ -719,7 +750,8 @@
         // DELETE TAB (requires admin code)
         function confirmDelete() {
             const adminCode = document.getElementById('deleteAdminCode').value;
-            if (adminCode !== '156156') {
+            // Admin code check (updated to 1234)
+            if (adminCode !== '1234') {
                 showToast('Invalid admin code. Deletion denied.', false);
                 return;
             }
@@ -734,22 +766,45 @@
             }
         }
 
-        // GOOGLE LOGIN - allows any email that is registered in Firebase Auth
-        function handleGoogleLogin() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider)
+        // MOBILE OTP LOGIN 
+        function sendOTP() {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            
+            if (!window.recaptchaVerifier) {
+                window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+                    'size': 'invisible'
+                });
+            }
+            
+            const appVerifier = window.recaptchaVerifier;
+            const btn = document.getElementById('sendOtpBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            btn.disabled = true;
+
+            auth.signInWithPhoneNumber(phoneNumber, appVerifier)
                 .then((result) => {
-                    const user = result.user;
-                    if (user) {
-                        // User is authenticated with Firebase Auth
-                        // No email blocking - any registered email is allowed
-                        showToast('Logged in with Google');
-                        closeLoginModal();
-                    } else {
-                        showToast('Login failed', false);
-                    }
+                    confirmationResult = result;
+                    showToast('OTP Sent successfully!');
+                    document.getElementById('phone-auth-container').style.display = 'none';
+                    document.getElementById('otp-container').style.display = 'block';
                 })
-                .catch(err => showToast(err.message, false));
+                .catch((error) => {
+                    showToast(error.message, false);
+                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send OTP';
+                    btn.disabled = false;
+                });
+        }
+
+        function verifyOTP() {
+            const code = document.getElementById('otpCode').value;
+            if (!code) return showToast('Please enter the OTP', false);
+
+            confirmationResult.confirm(code).then((result) => {
+                showToast('Logged in successfully!');
+                closeLoginModal();
+            }).catch((error) => {
+                showToast('Invalid OTP Code', false);
+            });
         }
 
         // AUTH STATE
@@ -757,19 +812,27 @@
             if (user) {
                 loginLink.textContent = 'Logout';
                 loginLink.onclick = () => auth.signOut();
+                
                 const uploadBtn = document.getElementById('uploadBtnAction');
                 if (uploadBtn) uploadBtn.style.display = 'flex';
+                const deleteBtn = document.getElementById('deleteBtnAction');
+                if (deleteBtn) deleteBtn.style.display = 'flex';
+                
                 renderTabs(currentTabs);
             } else {
                 loginLink.textContent = 'Login';
                 loginLink.onclick = openLoginModal;
+                
                 const uploadBtn = document.getElementById('uploadBtnAction');
                 if (uploadBtn) uploadBtn.style.display = 'none';
+                const deleteBtn = document.getElementById('deleteBtnAction');
+                if (deleteBtn) deleteBtn.style.display = 'none';
+                
                 renderTabs(currentTabs);
             }
         });
 
-        // BULLETIN BOARD (unchanged)
+        // BULLETIN BOARD
         function updateItem(idx, data) {
             const grid = document.getElementById('announcementGrid');
             let item = announcementItems[idx];
@@ -783,11 +846,13 @@
             item.onclick = () => openModal(data, idx);
         }
 
-        // Upload poster (unchanged)
+        // Upload poster
         async function uploadPoster() {
             const code = document.getElementById('adminCode').value;
             const file = document.getElementById('posterImage').files[0];
-            if(code !== '156156') return showToast('Invalid Code', false);
+            
+            // Admin code check (updated to 1234)
+            if(code !== '1234') return showToast('Invalid Code', false);
             if(!file) return showToast('Select Image', false);
 
             const reader = new FileReader();
@@ -798,6 +863,24 @@
                 closeUploadModal();
                 updateItem(currentImageIndex, reader.result);
             };
+        }
+
+        // Delete / Reset Poster 
+        function deletePoster() {
+            const code = prompt("Enter Admin Code to delete poster:");
+            
+            // Admin code check
+            if(code !== '1234') {
+                return showToast('Invalid Code. Deletion denied.', false);
+            }
+
+            database.ref('/portal_v4/posters/').update({ [`poster_${currentImageIndex}`]: DEFAULT_IMAGE })
+                .then(() => {
+                    showToast('Poster successfully removed.');
+                    updateItem(currentImageIndex, DEFAULT_IMAGE);
+                    closeModal();
+                })
+                .catch(err => showToast(err.message, false));
         }
 
         // LOAD posters
