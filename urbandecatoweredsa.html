@@ -83,6 +83,13 @@
         
         .tab-wrapper {
             position: relative;
+            transition: opacity 0.2s;
+        }
+        
+        .tab-wrapper.drag-over {
+            opacity: 0.5;
+            border: 2px dashed var(--accent);
+            border-radius: 12px;
         }
 
         .tab {
@@ -145,9 +152,6 @@
         }
         .tab-wrapper:hover .tab-delete {
             display: flex;
-        }
-        .tab-wrapper .tab-delete {
-            display: none;
         }
 
         .add-tab-btn {
@@ -244,6 +248,10 @@
             opacity: 1;
         }
 
+        .modal-content {
+            position: relative;
+        }
+        
         .modal-content img {
             max-width: 90vw;
             max-height: 80vh;
@@ -291,12 +299,16 @@
             cursor: pointer;
             width: 100%;
             margin-top: 10px;
+            transition: 0.2s;
         }
 
         .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { opacity: 0.9; }
         .btn-accent { background: var(--accent); color: var(--dark); }
         .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { opacity: 0.9; }
         .btn-outline-secondary { background: transparent; border: 1px solid #ccc; color: #333; }
+        .btn-outline-secondary:hover { background: #f0f0f0; }
         
         .btn-outline-danger { 
             background: var(--danger); 
@@ -338,13 +350,29 @@
             background: #fefcbf;
         }
 
-        /* admin code input inside tab modal */
-        .admin-code-input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+        /* Theme Selector */
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+            justify-items: center;
+        }
+        .theme-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .theme-circle:hover {
+            transform: scale(1.1);
+        }
+        .theme-circle.active {
+            border-color: var(--dark);
+            transform: scale(1.1);
         }
 
         footer {
@@ -352,6 +380,7 @@
             color: white;
             padding: 30px 0;
             margin-top: auto;
+            transition: background 0.3s ease;
         }
 
         .footer-content {
@@ -361,7 +390,22 @@
             flex-wrap: wrap;
         }
 
-        .footer-links a { color: white; margin-left: 20px; text-decoration: none; cursor: pointer; }
+        .footer-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links a, .footer-links i { 
+            color: white; 
+            margin-left: 20px; 
+            text-decoration: none; 
+            cursor: pointer; 
+            transition: opacity 0.2s;
+        }
+        
+        .footer-links a:hover, .footer-links i:hover {
+            opacity: 0.8;
+        }
 
         .toast {
             position: fixed; bottom: 20px; right: 20px;
@@ -399,12 +443,15 @@
             .footer-links {
                 display: flex;
                 flex-direction: column;
-                gap: 10px;
+                gap: 15px;
             }
-            .footer-links a {
+            .footer-links a, .footer-links i {
                 margin-left: 0;
             }
             .icon-selector {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .theme-grid {
                 grid-template-columns: repeat(4, 1fr);
             }
         }
@@ -440,6 +487,9 @@
             <div class="footer-content">
                 <div>Urban Deca Tower Edsa</div>
                 <div class="footer-links">
+                    <!-- Config map available to everyone, theme locked to admin via JS -->
+                    <i class="fas fa-palette" id="themeBtn" style="display:none; font-size:20px;" onclick="openThemeModal()" title="Change Theme"></i>
+                    <i class="fas fa-cog" id="configBtn" style="font-size:20px;" onclick="openConfigModal()" title="Database Mapping Config"></i>
                     <a href="https://www.dgrdi.digital/" target="_blank" rel="noopener noreferrer">More Projects</a>
                     <a id="loginLink">Login</a>
                 </div>
@@ -463,14 +513,13 @@
     <div class="upload-modal" id="uploadModal">
         <div class="upload-content">
             <h3>Upload Poster</h3>
-            <input type="password" id="adminCode" placeholder="Admin Code" style="width:100%; padding:10px; margin:10px 0;">
-            <input type="file" id="posterImage" accept="image/*" style="margin:10px 0;">
+            <input type="file" id="posterImage" accept="image/*" style="margin:10px 0; width:100%;">
             <button class="btn btn-primary" onclick="uploadPoster()">Upload</button>
             <button class="btn" onclick="closeUploadModal()">Cancel</button>
         </div>
     </div>
 
-    <!-- Login Modal (Changed to OTP) -->
+    <!-- Login Modal -->
     <div class="login-modal" id="loginModal">
         <div class="login-content">
             <h3><i class="fas fa-mobile-alt" style="color: var(--accent); margin-right: 10px;"></i>Sign in with Mobile</h3>
@@ -497,25 +546,45 @@
     <div class="tab-modal" id="tabModal">
         <div class="tab-content">
             <h3 id="tabModalTitle">Create Tab</h3>
-            <input type="text" id="tabName" placeholder="Tab Name" style="width:100%; padding:10px; margin:10px 0;">
-            <input type="text" id="tabUrl" placeholder="Tab URL (GDrive Link..)" style="width:100%; padding:10px; margin:10px 0;">
+            <input type="text" id="tabName" placeholder="Tab Name" style="width:100%; padding:10px; margin:10px 0; border:1px solid #ccc; border-radius:6px;">
+            <input type="text" id="tabUrl" placeholder="Tab URL (GDrive Link..)" style="width:100%; padding:10px; margin:10px 0; border:1px solid #ccc; border-radius:6px;">
             <label style="font-weight: 500;">Choose Icon:</label>
             <div class="icon-selector" id="iconSelector"></div>
-            <!-- admin code required for create/delete -->
-            <input type="password" id="tabAdminCode" placeholder="Admin Code" class="admin-code-input">
             <button class="btn btn-primary" id="saveTabBtn">Save Tab</button>
             <button class="btn btn-outline-secondary" onclick="closeTabModal()">Cancel</button>
         </div>
     </div>
 
-    <!-- Confirm Delete Modal (now with admin code) -->
+    <!-- Universal Generic Confirm Delete Modal -->
     <div class="modal" id="confirmModal">
         <div class="modal-content" style="background: white; padding: 30px; border-radius: 12px; max-width: 400px; text-align: center;">
-            <h3>Delete Tab?</h3>
-            <p style="margin: 15px 0;">Enter admin code to confirm deletion.</p>
-            <input type="password" id="deleteAdminCode" placeholder="Admin Code" style="width:100%; padding:10px; margin:10px 0; border:1px solid #ccc; border-radius:6px;">
-            <button class="btn btn-danger" id="confirmDeleteBtn" style="width: auto; padding: 10px 30px;">Yes, Delete</button>
+            <h3 id="confirmTitle">Confirm Action</h3>
+            <p id="confirmMsg" style="margin: 15px 0;">Are you sure you want to proceed?</p>
+            <button class="btn btn-danger" id="confirmYesBtn" style="width: auto; padding: 10px 30px;">Yes, Proceed</button>
             <button class="btn btn-outline-secondary" onclick="closeConfirmModal()" style="width: auto; padding: 10px 30px; margin-left: 10px;">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Theme Selection Modal -->
+    <div class="modal" id="themeModal">
+        <div class="modal-content" style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; text-align: center;">
+            <h3>Select Dashboard Theme</h3>
+            <div class="theme-grid" id="themeGrid">
+                <!-- Javascript maps themes here -->
+            </div>
+            <button class="btn btn-outline-secondary" onclick="closeThemeModal()">Close</button>
+        </div>
+    </div>
+
+    <!-- Firebase Configuration Modal -->
+    <div class="modal" id="configModal">
+        <div class="modal-content" style="background: white; padding: 30px; border-radius: 12px; max-width: 400px; text-align: center;">
+            <h3>Database Configuration</h3>
+            <p style="margin: 15px 0;">Configure your Firebase Map Root Node.</p>
+            <input type="password" id="configAuthCode" placeholder="Access Code" style="width:100%; padding:10px; margin:10px 0; border:1px solid #ccc; border-radius:6px;">
+            <input type="text" id="configRootName" placeholder="Root Name (e.g. portal_v4)" style="width:100%; padding:10px; margin:10px 0; border:1px solid #ccc; border-radius:6px;">
+            <button class="btn btn-primary" onclick="saveFirebaseConfig()" style="margin-top: 10px;">Save & Restart</button>
+            <button class="btn btn-outline-secondary" onclick="closeConfigModal()" style="margin-top: 10px;">Cancel</button>
         </div>
     </div>
 
@@ -526,7 +595,10 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // FIREBASE CONFIG
+        // FIREBASE MAP CONFIGURATION LOGIC (Runs first)
+        let firebaseRoot = localStorage.getItem('udt_firebase_root') || 'portal_v4';
+
+        // FIREBASE INITIALIZATION
         const firebaseConfig = {
             apiKey: "AIzaSyBdNGSSfPLBORjVvnJM3IVqxFZByw3iJWM",
             authDomain: "btb-announcement.firebaseapp.com",
@@ -541,7 +613,21 @@
         const auth = firebase.auth();
         const database = firebase.database();
 
-        // ICON LIST (FontAwesome 6) - added more file type icons
+        // THEME COLORS (10 Gradient Sets)
+        const THEMES = [
+            { id: 0, name: 'Classic Blue', p: '#1a365d', s: '#2d6c8a' }, // Default
+            { id: 1, name: 'Royal Purple', p: '#4c1d95', s: '#7c3aed' },
+            { id: 2, name: 'Forest Green', p: '#064e3b', s: '#059669' },
+            { id: 3, name: 'Crimson Red', p: '#7f1d1d', s: '#dc2626' },
+            { id: 4, name: 'Sunset Orange', p: '#7c2d12', s: '#ea580c' },
+            { id: 5, name: 'Ocean Teal', p: '#134e4a', s: '#0d9488' },
+            { id: 6, name: 'Rose Pink', p: '#831843', s: '#db2777' },
+            { id: 7, name: 'Slate Gray', p: '#0f172a', s: '#334155' },
+            { id: 8, name: 'Deep Indigo', p: '#312e81', s: '#4f46e5' },
+            { id: 9, name: 'Emerald', p: '#022c22', s: '#10b981' }
+        ];
+
+        // ICON LIST (FontAwesome 6)
         const ICON_LIST = [
             "fas fa-file-powerpoint", "fas fa-map-marked-alt", "fas fa-images", "fas fa-calculator",
             "fas fa-th-list", "fas fa-file-invoice", "fas fa-address-book", "fas fa-home",
@@ -551,15 +637,12 @@
             "fas fa-link", "fas fa-external-link-alt", "fas fa-pencil-alt", "fas fa-trash",
             "fas fa-plus", "fas fa-minus", "fas fa-check", "fas fa-times",
             "fas fa-calendar", "fas fa-clock", "fas fa-bell", "fas fa-comment",
-            // media icons
             "fas fa-camera", "fas fa-video", "fas fa-music", "fas fa-headphones",
             "fas fa-gamepad", "fas fa-plane", "fas fa-rocket", "fas fa-globe",
             "fas fa-heart", "fas fa-star", "fas fa-trophy", "fas fa-gift",
-            // social media icons
             "fab fa-facebook", "fab fa-twitter", "fab fa-instagram", "fab fa-youtube",
             "fab fa-linkedin", "fab fa-github", "fab fa-whatsapp", "fab fa-telegram",
             "fab fa-tiktok", "fab fa-snapchat", "fab fa-reddit", "fab fa-discord",
-            // ADDED: FILE TYPE ICONS
             "fas fa-file-pdf", "fas fa-file-word", "fas fa-file-excel", "fas fa-file-image",
             "fas fa-file-video", "fas fa-file-audio", "fas fa-file-archive", "fas fa-file-code",
             "fas fa-file-csv", "fas fa-file-alt", "fas fa-file"
@@ -571,15 +654,15 @@
         let announcementItems = [];
         let currentTabs = [];
         let editingTabKey = null;
-        let deleteTargetKey = null;
-        let confirmationResult = null; // for phone auth
+        let confirmationResult = null; 
+        let confirmActionCb = null; // Store execution logic for generic confirm modal
+        let draggedTabKey = null; // Store tab for dragging
 
-        // DOM refs
         const tabsContainer = document.getElementById('tabsContainer');
         const loginLink = document.getElementById('loginLink');
         const toast = document.getElementById('toast');
 
-        // Helpers
+        // General Utilities
         function showToast(msg, success=true) {
             toast.textContent = msg;
             toast.style.backgroundColor = success ? '#38a169' : '#e53e3e';
@@ -587,23 +670,23 @@
             setTimeout(() => toast.style.display = 'none', 3000);
         }
 
+        // --- Modals Management ---
         function openModal(img, idx) {
             currentImageIndex = idx;
             document.getElementById('modalImage').src = img;
             document.getElementById('imageModal').classList.add('active');
             
-            // Show action buttons if logged in
             const loggedIn = auth.currentUser ? 'flex' : 'none';
             document.getElementById('uploadBtnAction').style.display = loggedIn;
             document.getElementById('deleteBtnAction').style.display = loggedIn;
         }
         function closeModal() { document.getElementById('imageModal').classList.remove('active'); }
+        
         function openUploadModal() { closeModal(); document.getElementById('uploadModal').classList.add('active'); }
         function closeUploadModal() { document.getElementById('uploadModal').classList.remove('active'); }
         
         function openLoginModal() { 
             document.getElementById('loginModal').classList.add('active'); 
-            // Reset OTP layout states
             document.getElementById('phone-auth-container').style.display = 'block';
             document.getElementById('otp-container').style.display = 'none';
             document.getElementById('sendOtpBtn').innerText = 'Send OTP';
@@ -620,7 +703,6 @@
                 if (tab) {
                     document.getElementById('tabName').value = tab.name || '';
                     document.getElementById('tabUrl').value = tab.url || '';
-                    // highlight icon
                     document.querySelectorAll('#iconSelector i').forEach(el => el.classList.remove('selected'));
                     if (tab.icon) {
                         document.querySelectorAll('#iconSelector i').forEach(el => {
@@ -633,19 +715,90 @@
                 document.getElementById('tabUrl').value = '';
                 document.querySelectorAll('#iconSelector i').forEach(el => el.classList.remove('selected'));
             }
-            document.getElementById('tabAdminCode').value = '';
             document.getElementById('tabModal').classList.add('active');
         }
         function closeTabModal() { document.getElementById('tabModal').classList.remove('active'); }
 
-        function openConfirmModal(key) {
-            deleteTargetKey = key;
-            document.getElementById('deleteAdminCode').value = '';
+        // Generic Configuration Modal
+        function openConfigModal() {
+            document.getElementById('configRootName').value = firebaseRoot;
+            document.getElementById('configAuthCode').value = '';
+            document.getElementById('configModal').classList.add('active');
+        }
+        function closeConfigModal() { document.getElementById('configModal').classList.remove('active'); }
+        
+        function saveFirebaseConfig() {
+            const code = document.getElementById('configAuthCode').value;
+            const newRoot = document.getElementById('configRootName').value.trim();
+            if(code !== '001122') return showToast('Invalid Access Code', false);
+            if(!newRoot) return showToast('Root map cannot be empty', false);
+
+            localStorage.setItem('udt_firebase_root', newRoot);
+            showToast('Database mapping configured! Rebooting...', true);
+            setTimeout(() => { location.reload(); }, 1500);
+        }
+
+        // Generic Confirm Modal
+        function openConfirmModal(title, message, callbackAction) {
+            document.getElementById('confirmTitle').innerText = title;
+            document.getElementById('confirmMsg').innerText = message;
+            confirmActionCb = callbackAction;
             document.getElementById('confirmModal').classList.add('active');
         }
-        function closeConfirmModal() { document.getElementById('confirmModal').classList.remove('active'); }
+        function closeConfirmModal() { 
+            document.getElementById('confirmModal').classList.remove('active'); 
+            confirmActionCb = null;
+        }
+        document.getElementById('confirmYesBtn').addEventListener('click', () => {
+            if(confirmActionCb) confirmActionCb();
+            closeConfirmModal();
+        });
 
-        // Render icons in selector
+        // Theme Modal & Settings
+        function applyThemeVariables(primary, secondary) {
+            document.documentElement.style.setProperty('--primary', primary);
+            document.documentElement.style.setProperty('--secondary', secondary);
+        }
+
+        function loadThemeSelectionUI() {
+            const grid = document.getElementById('themeGrid');
+            grid.innerHTML = '';
+            THEMES.forEach(t => {
+                const circle = document.createElement('div');
+                circle.className = 'theme-circle';
+                circle.style.background = `linear-gradient(135deg, ${t.p} 0%, ${t.s} 100%)`;
+                circle.title = t.name;
+                circle.onclick = () => saveTheme(t.p, t.s);
+                grid.appendChild(circle);
+            });
+        }
+        loadThemeSelectionUI();
+
+        function openThemeModal() { document.getElementById('themeModal').classList.add('active'); }
+        function closeThemeModal() { document.getElementById('themeModal').classList.remove('active'); }
+
+        function saveTheme(primary, secondary) {
+            if (!auth.currentUser) return;
+            database.ref(`${firebaseRoot}/theme`).set({ primary, secondary })
+                .then(() => {
+                    showToast('Theme updated globally!');
+                    closeThemeModal();
+                })
+                .catch(err => showToast(err.message, false));
+        }
+
+        function watchGlobalTheme() {
+            database.ref(`${firebaseRoot}/theme`).on('value', snap => {
+                const data = snap.val();
+                if (data && data.primary && data.secondary) {
+                    applyThemeVariables(data.primary, data.secondary);
+                } else {
+                    applyThemeVariables(THEMES[0].p, THEMES[0].s);
+                }
+            });
+        }
+
+        // --- Render UI ---
         function renderIconSelector() {
             const container = document.getElementById('iconSelector');
             container.innerHTML = '';
@@ -661,10 +814,13 @@
         }
         renderIconSelector();
 
-        // RENDER TABS
         function renderTabs(tabs) {
             tabsContainer.innerHTML = '';
             const user = auth.currentUser;
+            
+            // Sort tabs by our new order variable to track drag/drop accurately
+            tabs.sort((a,b) => (a.order || 0) - (b.order || 0));
+
             tabs.forEach(tab => {
                 const wrapper = document.createElement('div');
                 wrapper.className = 'tab-wrapper';
@@ -676,22 +832,56 @@
                 a.innerHTML = `<i class="${tab.icon || 'fas fa-folder'}"></i><span>${tab.name || 'Tab'}</span>`;
                 wrapper.appendChild(a);
 
+                // Admin Controls
                 if (user) {
                     const delBtn = document.createElement('button');
                     delBtn.className = 'tab-delete';
                     delBtn.innerHTML = '<i class="fas fa-trash"></i>';
                     delBtn.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        openConfirmModal(tab.key);
+                        e.preventDefault(); e.stopPropagation();
+                        openConfirmModal("Delete Tab", `Are you sure you want to permanently delete "${tab.name}"?`, () => {
+                            database.ref(`${firebaseRoot}/tabs/${tab.key}`).remove()
+                                .then(() => showToast('Tab deleted'))
+                                .catch(err => showToast(err.message, false));
+                        });
                     });
                     wrapper.appendChild(delBtn);
+
+                    // HTML5 Drag and Drop Settings for logged-in admin
+                    wrapper.draggable = true;
+                    wrapper.addEventListener('dragstart', (e) => {
+                        draggedTabKey = tab.key;
+                        e.dataTransfer.effectAllowed = 'move';
+                    });
+                    wrapper.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        wrapper.classList.add('drag-over');
+                    });
+                    wrapper.addEventListener('dragleave', () => wrapper.classList.remove('drag-over'));
+                    wrapper.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        wrapper.classList.remove('drag-over');
+                        if (draggedTabKey && draggedTabKey !== tab.key) {
+                            const fromIdx = currentTabs.findIndex(t => t.key === draggedTabKey);
+                            const toIdx = currentTabs.findIndex(t => t.key === tab.key);
+                            
+                            // Reorder logically
+                            const moved = currentTabs.splice(fromIdx, 1)[0];
+                            currentTabs.splice(toIdx, 0, moved);
+
+                            // Sync order state to firebase
+                            const updates = {};
+                            currentTabs.forEach((t, index) => { updates[`${t.key}/order`] = index; });
+                            database.ref(`${firebaseRoot}/tabs`).update(updates)
+                                .then(() => showToast('Tab arrangement saved', true))
+                                .catch(e => showToast('Failed syncing arrangement', false));
+                        }
+                    });
                 }
 
                 tabsContainer.appendChild(wrapper);
             });
 
-            // Add "+" button if admin
             if (user) {
                 const addBtn = document.createElement('div');
                 addBtn.className = 'add-tab-btn';
@@ -701,29 +891,22 @@
             }
         }
 
-        // LOAD TABS from Firebase (branch: portal_v4/tabs)
+        // Database Interactions
         function loadTabs() {
-            database.ref('/portal_v4/tabs').on('value', snap => {
+            database.ref(`${firebaseRoot}/tabs`).on('value', snap => {
                 const data = snap.val() || {};
-                const tabs = Object.keys(data).map(key => ({ key, ...data[key] }));
-                currentTabs = tabs;
-                renderTabs(tabs);
+                currentTabs = Object.keys(data).map(key => ({ key, ...data[key] }));
+                renderTabs(currentTabs);
             });
         }
 
-        // SAVE / UPDATE TAB (requires admin code)
         function saveTab() {
+            if (!auth.currentUser) return showToast('Authentication required.', false);
+
             const name = document.getElementById('tabName').value.trim();
             const url = document.getElementById('tabUrl').value.trim();
             const selectedIcon = document.querySelector('#iconSelector i.selected');
             const icon = selectedIcon ? selectedIcon.className : 'fas fa-folder';
-            const adminCode = document.getElementById('tabAdminCode').value;
-
-            // Admin code check (updated to 1234)
-            if (adminCode !== '1234') {
-                showToast('Invalid admin code. Action denied.', false);
-                return;
-            }
 
             if (!name) return showToast('Tab name is required', false);
             if (!url) return showToast('URL is required', false);
@@ -731,51 +914,24 @@
             const payload = { name, url, icon };
 
             if (editingTabKey) {
-                database.ref(`/portal_v4/tabs/${editingTabKey}`).update(payload)
-                    .then(() => {
-                        showToast('Tab updated!');
-                        closeTabModal();
-                    })
+                database.ref(`${firebaseRoot}/tabs/${editingTabKey}`).update(payload)
+                    .then(() => { showToast('Tab updated!'); closeTabModal(); })
                     .catch(err => showToast(err.message, false));
             } else {
-                database.ref('/portal_v4/tabs').push(payload)
-                    .then(() => {
-                        showToast('Tab created!');
-                        closeTabModal();
-                    })
+                // Ensure new tab pushes to the end of arrangement
+                payload.order = currentTabs.length; 
+                database.ref(`${firebaseRoot}/tabs`).push(payload)
+                    .then(() => { showToast('Tab created!'); closeTabModal(); })
                     .catch(err => showToast(err.message, false));
             }
         }
 
-        // DELETE TAB (requires admin code)
-        function confirmDelete() {
-            const adminCode = document.getElementById('deleteAdminCode').value;
-            // Admin code check (updated to 1234)
-            if (adminCode !== '1234') {
-                showToast('Invalid admin code. Deletion denied.', false);
-                return;
-            }
-            if (deleteTargetKey) {
-                database.ref(`/portal_v4/tabs/${deleteTargetKey}`).remove()
-                    .then(() => {
-                        showToast('Tab deleted');
-                        closeConfirmModal();
-                        deleteTargetKey = null;
-                    })
-                    .catch(err => showToast(err.message, false));
-            }
-        }
-
-        // MOBILE OTP LOGIN 
+        // Authentication Methods
         function sendOTP() {
             const phoneNumber = document.getElementById('phoneNumber').value;
-            
             if (!window.recaptchaVerifier) {
-                window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-                    'size': 'invisible'
-                });
+                window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', { 'size': 'invisible' });
             }
-            
             const appVerifier = window.recaptchaVerifier;
             const btn = document.getElementById('sendOtpBtn');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
@@ -807,32 +963,26 @@
             });
         }
 
-        // AUTH STATE
         auth.onAuthStateChanged(user => {
             if (user) {
                 loginLink.textContent = 'Logout';
                 loginLink.onclick = () => auth.signOut();
                 
-                const uploadBtn = document.getElementById('uploadBtnAction');
-                if (uploadBtn) uploadBtn.style.display = 'flex';
-                const deleteBtn = document.getElementById('deleteBtnAction');
-                if (deleteBtn) deleteBtn.style.display = 'flex';
-                
-                renderTabs(currentTabs);
+                document.getElementById('themeBtn').style.display = 'inline-block';
+                if (document.getElementById('uploadBtnAction')) document.getElementById('uploadBtnAction').style.display = 'flex';
+                if (document.getElementById('deleteBtnAction')) document.getElementById('deleteBtnAction').style.display = 'flex';
             } else {
                 loginLink.textContent = 'Login';
                 loginLink.onclick = openLoginModal;
                 
-                const uploadBtn = document.getElementById('uploadBtnAction');
-                if (uploadBtn) uploadBtn.style.display = 'none';
-                const deleteBtn = document.getElementById('deleteBtnAction');
-                if (deleteBtn) deleteBtn.style.display = 'none';
-                
-                renderTabs(currentTabs);
+                document.getElementById('themeBtn').style.display = 'none';
+                if (document.getElementById('uploadBtnAction')) document.getElementById('uploadBtnAction').style.display = 'none';
+                if (document.getElementById('deleteBtnAction')) document.getElementById('deleteBtnAction').style.display = 'none';
             }
+            renderTabs(currentTabs);
         });
 
-        // BULLETIN BOARD
+        // Bulletin Posters
         function updateItem(idx, data) {
             const grid = document.getElementById('announcementGrid');
             let item = announcementItems[idx];
@@ -846,47 +996,39 @@
             item.onclick = () => openModal(data, idx);
         }
 
-        // Upload poster
         async function uploadPoster() {
-            const code = document.getElementById('adminCode').value;
-            const file = document.getElementById('posterImage').files[0];
+            if (!auth.currentUser) return showToast('Authentication required.', false);
             
-            // Admin code check (updated to 1234)
-            if(code !== '1234') return showToast('Invalid Code', false);
+            const file = document.getElementById('posterImage').files[0];
             if(!file) return showToast('Select Image', false);
 
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = async () => {
-                await database.ref('/portal_v4/posters/').update({ [`poster_${currentImageIndex}`]: reader.result });
+                await database.ref(`${firebaseRoot}/posters/`).update({ [`poster_${currentImageIndex}`]: reader.result });
                 showToast('Uploaded!');
                 closeUploadModal();
                 updateItem(currentImageIndex, reader.result);
             };
         }
 
-        // Delete / Reset Poster 
         function deletePoster() {
-            const code = prompt("Enter Admin Code to delete poster:");
-            
-            // Admin code check
-            if(code !== '1234') {
-                return showToast('Invalid Code. Deletion denied.', false);
-            }
-
-            database.ref('/portal_v4/posters/').update({ [`poster_${currentImageIndex}`]: DEFAULT_IMAGE })
-                .then(() => {
-                    showToast('Poster successfully removed.');
-                    updateItem(currentImageIndex, DEFAULT_IMAGE);
-                    closeModal();
-                })
-                .catch(err => showToast(err.message, false));
+            openConfirmModal("Remove Poster", "Are you sure you want to permanently delete this poster?", () => {
+                database.ref(`${firebaseRoot}/posters/`).update({ [`poster_${currentImageIndex}`]: DEFAULT_IMAGE })
+                    .then(() => {
+                        showToast('Poster successfully removed.');
+                        updateItem(currentImageIndex, DEFAULT_IMAGE);
+                        closeModal();
+                    })
+                    .catch(err => showToast(err.message, false));
+            });
         }
 
-        // LOAD posters
+        // Core Initialization
         window.onload = () => {
+            watchGlobalTheme();
             loadTabs();
-            database.ref('/portal_v4/posters/').on('value', snap => {
+            database.ref(`${firebaseRoot}/posters/`).on('value', snap => {
                 const data = snap.val() || {};
                 for(let i=0; i<4; i++) {
                     updateItem(i, data[`poster_${i}`] || DEFAULT_IMAGE);
@@ -894,15 +1036,12 @@
             });
         };
 
-        // Event bindings
+        // UI Event Listeners Closures
         document.getElementById('saveTabBtn').addEventListener('click', saveTab);
-        document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDelete);
-        // close modals on overlay click
+        
         document.querySelectorAll('.modal, .upload-modal, .login-modal, .tab-modal').forEach(el => {
             el.addEventListener('click', (e) => {
-                if (e.target === el) {
-                    el.classList.remove('active');
-                }
+                if (e.target === el) el.classList.remove('active');
             });
         });
     </script>
