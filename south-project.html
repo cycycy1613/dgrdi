@@ -71,6 +71,7 @@
             margin: 30px 0;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             animation: fadeIn 0.8s ease-out;
+            position: relative;
         }
         
         .tabs {
@@ -80,6 +81,17 @@
             justify-content: center;
         }
         
+        .tab-wrapper {
+            position: relative;
+            transition: opacity 0.2s;
+        }
+        
+        .tab-wrapper.drag-over {
+            opacity: 0.5;
+            border: 2px dashed var(--accent);
+            border-radius: 12px;
+        }
+
         .tab {
             display: flex;
             flex-direction: column;
@@ -94,6 +106,8 @@
             transition: all 0.3s ease;
             text-decoration: none;
             padding: 10px;
+            width: 100%;
+            position: relative;
         }
         
         .tab:hover {
@@ -110,11 +124,65 @@
         
         .tab span {
             font-weight: 600;
-            font-size: 13px; /* Slightly increased for readability */
+            font-size: 13px;
             text-align: center;
-            /* text-transform: uppercase; Removed to allow normal casing */
         }
-        
+
+        .tab-delete {
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            background: rgba(255,0,0,0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 12px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            transition: 0.2s;
+        }
+        .tab-delete:hover {
+            background: #c53030;
+            transform: scale(1.1);
+        }
+        .tab-wrapper:hover .tab-delete {
+            display: flex;
+        }
+
+        .add-tab-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+            background: white;
+            border: 2px dashed var(--primary);
+            border-radius: 12px;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 10px;
+            opacity: 0.7;
+        }
+        .add-tab-btn:hover {
+            opacity: 1;
+            background: #eef2f7;
+            transform: scale(1.02);
+        }
+        .add-tab-btn i {
+            font-size: 32px;
+            margin-bottom: 6px;
+        }
+        .add-tab-btn span {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
         .section-title {
             text-align: center;
             margin-bottom: 30px;
@@ -163,18 +231,11 @@
             object-fit: cover;
         }
 
-        .announcement-item.empty {
-            background: #edf2f7;
-            color: var(--gray);
-            flex-direction: column;
-        }
-
-        /* Modals & Buttons */
-        .modal, .upload-modal, .login-modal {
+        .modal, .upload-modal, .login-modal, .tab-modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.8);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -182,11 +243,15 @@
             transition: opacity 0.3s ease;
         }
 
-        .modal.active, .upload-modal.active, .login-modal.active {
+        .modal.active, .upload-modal.active, .login-modal.active, .tab-modal.active {
             display: flex;
             opacity: 1;
         }
 
+        .modal-content {
+            position: relative;
+        }
+        
         .modal-content img {
             max-width: 90vw;
             max-height: 80vh;
@@ -210,15 +275,21 @@
             cursor: pointer; font-size: 20px;
         }
 
-        .upload-content, .login-content {
+        .upload-content, .login-content, .tab-content {
             background: white;
             padding: 30px;
             border-radius: 12px;
             width: 90%;
-            max-width: 450px;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
-        .login-content { background: var(--dark-surface); color: white; }
+        .login-content { 
+            background: var(--dark-surface); 
+            color: white; 
+            border: 2px solid var(--accent);
+        }
 
         .btn {
             padding: 12px 24px;
@@ -228,18 +299,80 @@
             cursor: pointer;
             width: 100%;
             margin-top: 10px;
+            transition: 0.2s;
         }
 
         .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { opacity: 0.9; }
         .btn-accent { background: var(--accent); color: var(--dark); }
-        /* Visible close button for login */
-        .btn-outline-light { 
-            background: transparent; 
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { opacity: 0.9; }
+        .btn-outline-secondary { background: transparent; border: 1px solid #ccc; color: #333; }
+        .btn-outline-secondary:hover { background: #f0f0f0; }
+        
+        .btn-outline-danger { 
+            background: var(--danger); 
             color: white; 
-            border: 1px solid white;
+            border: none;
+            margin-top: 15px;
         }
-        .btn-outline-light:hover {
-            background: rgba(255,255,255,0.1);
+        .btn-outline-danger:hover {
+            background: #c53030;
+        }
+
+        .icon-selector {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin: 12px 0;
+            max-height: 160px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        .icon-selector i {
+            font-size: 26px;
+            padding: 8px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 2px solid transparent;
+            color: var(--primary);
+        }
+        .icon-selector i:hover {
+            background: #edf2f7;
+            transform: scale(1.1);
+        }
+        .icon-selector i.selected {
+            border-color: var(--accent);
+            background: #fefcbf;
+        }
+
+        /* Theme Selector */
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+            justify-items: center;
+        }
+        .theme-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .theme-circle:hover {
+            transform: scale(1.1);
+        }
+        .theme-circle.active {
+            border-color: var(--dark);
+            transform: scale(1.1);
         }
 
         footer {
@@ -247,6 +380,7 @@
             color: white;
             padding: 30px 0;
             margin-top: auto;
+            transition: background 0.3s ease;
         }
 
         .footer-content {
@@ -256,7 +390,22 @@
             flex-wrap: wrap;
         }
 
-        .footer-links a { color: white; margin-left: 20px; text-decoration: none; }
+        .footer-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links a, .footer-links i { 
+            color: white; 
+            margin-left: 20px; 
+            text-decoration: none; 
+            cursor: pointer; 
+            transition: opacity 0.2s;
+        }
+        
+        .footer-links a:hover, .footer-links i:hover {
+            opacity: 0.8;
+        }
 
         .toast {
             position: fixed; bottom: 20px; right: 20px;
@@ -264,46 +413,46 @@
             color: white; display: none; z-index: 2000;
         }
 
-        /* --- MOBILE OPTIMIZATIONS --- */
+        /* MOBILE */
         @media (max-width: 600px) {
             .tabs {
-                grid-template-columns: 1fr; /* Display as list */
+                grid-template-columns: 1fr;
             }
-
-            .tab {
-                flex-direction: row; /* Icon left, text right */
-                height: 60px; /* Slimmer height for list view */
+            .tab, .add-tab-btn {
+                flex-direction: row;
+                height: 60px;
                 justify-content: flex-start;
                 padding: 0 20px;
             }
-
-            .tab i {
+            .tab i, .add-tab-btn i {
                 margin-bottom: 0;
                 margin-right: 20px;
                 font-size: 20px;
                 width: 25px;
                 text-align: center;
             }
-
-            .tab span {
+            .tab span, .add-tab-btn span {
                 font-size: 15px;
                 text-align: left;
             }
-
             .footer-content {
                 flex-direction: column;
                 text-align: center;
                 gap: 15px;
             }
-
             .footer-links {
                 display: flex;
                 flex-direction: column;
-                gap: 10px;
+                gap: 15px;
             }
-
-            .footer-links a {
+            .footer-links a, .footer-links i {
                 margin-left: 0;
+            }
+            .icon-selector {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .theme-grid {
+                grid-template-columns: repeat(4, 1fr);
             }
         }
 
@@ -322,39 +471,8 @@
 
     <div class="container">
         <div class="tabs-container">
-            <div class="tabs">
-                <a href="https://drive.google.com/file/d/1mILPs9HAOLYZSzTwBZnIdwSJHdSQpzKs/view?usp=drive_link" target="_blank" class="tab">
-                    <i class="fas fa-file-powerpoint"></i>
-                    <span>Presentation</span>
-                </a>
-                <a href="https://drive.google.com/drive/folders/12egoQwsab4WeCNNHyYJ3M_i1fvp6WeIq?usp=drive_link" target="_blank" class="tab">
-                    <i class="fas fa-house-chimney"></i>
-                    <span>UDH Mahogany</span>
-                </a>
-                <a href="https://drive.google.com/drive/folders/1P-6457zTcrlZnQqTnaeCeN23V31l9Ojf?usp=drive_link" target="_blank" class="tab">
-                    <i class="fas fa-house-chimney"></i>
-                    <span>UDH Hampton</span>
-                </a>
-                <a href="https://drive.google.com/drive/folders/1-4N6srD3lTMAWGEL3NQHUGgXj4MShyQP?usp=drive_link" target="_blank" class="tab">
-                    <i class="fas fa-house-chimney"></i>
-                    <span>UDH Campville</span>
-                </a>
-                <a href="https://drive.google.com/drive/folders/1i2OXvIdKz7FjBiVHqeh8TqXaJkyIFHL5" target="_blank" class="tab">
-                    <i class="fas fa-house-chimney"></i>
-                    <span>Bella Vista</span>
-                </a>
-                <a href="https://drive.google.com/drive/folders/10g0jZiD8MmLdDMdOeVfQPYA8C2QgLf7v?usp=drive_link" target="_blank" class="tab">
-                    <i class="fas fa-clipboard-list"></i>
-                    <span>Inventories</span>
-                </a>
-                <a href="https://drive.google.com/drive/folders/13QCdKeLVYhVoZqzl5W5lh7gfdXJHjUln?usp=drive_link" target="_blank" class="tab">
-                    <i class="fas fa-file-invoice"></i>
-                    <span>Requirements</span>
-                </a>
-                <a href="https://www.facebook.com/cavite.alabang.deca.gold.2025" target="_blank" class="tab">
-                    <i class="fab fa-facebook-square"></i>
-                    <span>Connect with us!</span>
-                </a>
+            <div class="tabs" id="tabsContainer">
+                <!-- tabs will be rendered here + add button -->
             </div>
         </div>
 
@@ -367,42 +485,105 @@
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div>Urban Deca Homes Hampton, Mahogany, Campville & Bella Vista</div>
+                <div>South Project - Cavite & Muntinlupa</div>
                 <div class="footer-links">
+                    <i class="fas fa-palette" id="themeBtn" style="display:none; font-size:20px;" onclick="openThemeModal()" title="Change Theme"></i>
+                    <i class="fas fa-cog" id="configBtn" style="display:none; font-size:20px;" onclick="openConfigModal()" title="Database Mapping Config"></i>
                     <a href="https://www.dgrdi.digital/" target="_blank" rel="noopener noreferrer">More Projects</a>
-                    <a href="#" id="loginLink">Login</a>
+                    <a id="loginLink">Login</a>
                 </div>
             </div>
         </div>
     </footer>
 
+    <!-- Image Modal -->
     <div class="modal" id="imageModal">
         <div class="modal-content">
             <img id="modalImage" src="">
             <div class="modal-actions">
                 <div class="modal-btn" onclick="openUploadModal()" id="uploadBtnAction" style="display:none;"><i class="fas fa-upload" style="color:var(--primary)"></i></div>
+                <div class="modal-btn" onclick="deletePoster()" id="deleteBtnAction" style="display:none;"><i class="fas fa-trash" style="color:var(--danger)"></i></div>
                 <div class="modal-btn" onclick="closeModal()"><i class="fas fa-times" style="color:var(--danger)"></i></div>
             </div>
         </div>
     </div>
 
+    <!-- Upload Poster Modal -->
     <div class="upload-modal" id="uploadModal">
         <div class="upload-content">
             <h3>Upload Poster</h3>
-            <input type="password" id="adminCode" placeholder="Admin Code" style="width:100%; padding:10px; margin:10px 0;">
-            <input type="file" id="posterImage" accept="image/*" style="margin:10px 0;">
+            <input type="file" id="posterImage" accept="image/*" style="margin:10px 0; width:100%;">
             <button class="btn btn-primary" onclick="uploadPoster()">Upload</button>
             <button class="btn" onclick="closeUploadModal()">Cancel</button>
         </div>
     </div>
 
+    <!-- Login Modal -->
     <div class="login-modal" id="loginModal">
         <div class="login-content">
-            <h3>Login</h3>
-            <input type="email" id="loginEmail" placeholder="Email" style="width:100%; padding:10px; margin:10px 0;">
-            <input type="password" id="loginPassword" placeholder="Password" style="width:100%; padding:10px; margin:10px 0;">
-            <button class="btn btn-accent" onclick="handleLogin()">Login</button>
-            <button class="btn btn-outline-light" style="color:white" onclick="closeLoginModal()">Close</button>
+            <h3><i class="fas fa-mobile-alt" style="color: var(--accent); margin-right: 10px;"></i>Sign in with Mobile</h3>
+            <p style="margin: 16px 0; color: #ccc;">OTP will be sent to the master admin number</p>
+            
+            <div id="phone-auth-container">
+                <input type="text" id="phoneNumber" value="+639558932020" readonly style="width:100%; padding:10px; margin:10px 0; border-radius:6px; border:1px solid #ccc; background:#e0e0e0; color:#333; cursor:not-allowed;">
+                <button class="btn btn-accent" id="sendOtpBtn" onclick="sendOTP()" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <i class="fas fa-paper-plane"></i> Send OTP
+                </button>
+                <div id="recaptcha-container" style="margin-top: 10px;"></div>
+            </div>
+
+            <div id="otp-container" style="display:none;">
+                <input type="text" id="otpCode" placeholder="Enter 6-digit OTP" style="width:100%; padding:10px; margin:10px 0; border-radius:6px; border:1px solid #ccc;">
+                <button class="btn btn-primary" id="verifyOtpBtn" onclick="verifyOTP()">Verify OTP</button>
+            </div>
+            
+            <button class="btn btn-outline-danger" onclick="closeLoginModal()">Close</button>
+        </div>
+    </div>
+
+    <!-- Tab Create/Edit Modal -->
+    <div class="tab-modal" id="tabModal">
+        <div class="tab-content">
+            <h3 id="tabModalTitle">Create Tab</h3>
+            <input type="text" id="tabName" placeholder="Tab Name" style="width:100%; padding:10px; margin:10px 0; border:1px solid #ccc; border-radius:6px;">
+            <input type="text" id="tabUrl" placeholder="Tab URL (GDrive Link..)" style="width:100%; padding:10px; margin:10px 0; border:1px solid #ccc; border-radius:6px;">
+            <label style="font-weight: 500;">Choose Icon:</label>
+            <div class="icon-selector" id="iconSelector"></div>
+            <button class="btn btn-primary" id="saveTabBtn">Save Tab</button>
+            <button class="btn btn-outline-secondary" onclick="closeTabModal()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Universal Generic Confirm Delete Modal -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content" style="background: white; padding: 30px; border-radius: 12px; max-width: 400px; text-align: center;">
+            <h3 id="confirmTitle">Confirm Action</h3>
+            <p id="confirmMsg" style="margin: 15px 0;">Are you sure you want to proceed?</p>
+            <button class="btn btn-danger" id="confirmYesBtn" style="width: auto; padding: 10px 30px;">Yes, Proceed</button>
+            <button class="btn btn-outline-secondary" onclick="closeConfirmModal()" style="width: auto; padding: 10px 30px; margin-left: 10px;">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Theme Selection Modal -->
+    <div class="modal" id="themeModal">
+        <div class="modal-content" style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; text-align: center;">
+            <h3>Select Dashboard Theme</h3>
+            <div class="theme-grid" id="themeGrid">
+                <!-- Javascript maps themes here -->
+            </div>
+            <button class="btn btn-outline-secondary" onclick="closeThemeModal()">Close</button>
+        </div>
+    </div>
+
+    <!-- Firebase Configuration Modal -->
+    <div class="modal" id="configModal">
+        <div class="modal-content" style="background: white; padding: 30px; border-radius: 12px; max-width: 400px; text-align: center;">
+            <h3>Database Configuration</h3>
+            <p style="margin: 15px 0;">Configure your Firebase Map Root Node.</p>
+            <input type="password" id="configAuthCode" placeholder="Access Code" style="width:100%; padding:10px; margin:10px 0; border:1px solid #ccc; border-radius:6px;">
+            <input type="text" id="configRootName" placeholder="Root Name (e.g. portal_v4)" style="width:100%; padding:10px; margin:10px 0; border:1px solid #ccc; border-radius:6px;">
+            <button class="btn btn-primary" onclick="saveFirebaseConfig()" style="margin-top: 10px;">Save & Restart</button>
+            <button class="btn btn-outline-secondary" onclick="closeConfigModal()" style="margin-top: 10px;">Cancel</button>
         </div>
     </div>
 
@@ -413,6 +594,10 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
+        // FIREBASE MAP CONFIGURATION LOGIC (Runs first)
+        let firebaseRoot = localStorage.getItem('udt_firebase_root') || 'portal_v4';
+
+        // FIREBASE INITIALIZATION
         const firebaseConfig = {
             apiKey: "AIzaSyBdNGSSfPLBORjVvnJM3IVqxFZByw3iJWM",
             authDomain: "btb-announcement.firebaseapp.com",
@@ -426,32 +611,396 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const database = firebase.database();
+
+        // THEME COLORS (10 Gradient Sets)
+        const THEMES = [
+            { id: 0, name: 'Classic Blue', p: '#1a365d', s: '#2d6c8a' }, // Default
+            { id: 1, name: 'Royal Purple', p: '#4c1d95', s: '#7c3aed' },
+            { id: 2, name: 'Forest Green', p: '#064e3b', s: '#059669' },
+            { id: 3, name: 'Crimson Red', p: '#7f1d1d', s: '#dc2626' },
+            { id: 4, name: 'Sunset Orange', p: '#7c2d12', s: '#ea580c' },
+            { id: 5, name: 'Ocean Teal', p: '#134e4a', s: '#0d9488' },
+            { id: 6, name: 'Rose Pink', p: '#831843', s: '#db2777' },
+            { id: 7, name: 'Slate Gray', p: '#0f172a', s: '#334155' },
+            { id: 8, name: 'Deep Indigo', p: '#312e81', s: '#4f46e5' },
+            { id: 9, name: 'Emerald', p: '#022c22', s: '#10b981' }
+        ];
+
+        // ICON LIST (FontAwesome 6)
+        const ICON_LIST = [
+            // Priority Icons
+            "fas fa-chalkboard-teacher", // Presentation
+            "fas fa-sitemap", // Site Map
+            "fas fa-boxes", // Inventory
+            "fas fa-ruler-combined", // Floor plan
+            "fas fa-images", // Photos
+            "fas fa-video", // Videos
+            "fas fa-calculator", // Computations
+            "fas fa-paint-brush", // Creatives
+            "fas fa-folder", // Folder
+            "fas fa-address-book", // Contact details
+            "fas fa-file-alt", // Document
+            "fab fa-facebook", // Facebook
+            
+            // Existing Icons
+            "fas fa-file-powerpoint", "fas fa-map-marked-alt",
+            "fas fa-th-list", "fas fa-file-invoice", "fas fa-home",
+            "fas fa-cloud", "fas fa-database", "fas fa-cog",
+            "fas fa-user", "fas fa-users", "fas fa-chart-bar", "fas fa-envelope",
+            "fas fa-phone", "fas fa-print", "fas fa-download", "fas fa-upload",
+            "fas fa-link", "fas fa-external-link-alt", "fas fa-pencil-alt", "fas fa-trash",
+            "fas fa-plus", "fas fa-minus", "fas fa-check", "fas fa-times",
+            "fas fa-calendar", "fas fa-clock", "fas fa-bell", "fas fa-comment",
+            "fas fa-camera", "fas fa-music", "fas fa-headphones",
+            "fas fa-gamepad", "fas fa-plane", "fas fa-rocket", "fas fa-globe",
+            "fas fa-heart", "fas fa-star", "fas fa-trophy", "fas fa-gift",
+            "fab fa-twitter", "fab fa-instagram", "fab fa-youtube",
+            "fab fa-linkedin", "fab fa-github", "fab fa-whatsapp", "fab fa-telegram",
+            "fab fa-tiktok", "fab fa-snapchat", "fab fa-reddit", "fab fa-discord",
+            "fas fa-file-pdf", "fas fa-file-word", "fas fa-file-excel", "fas fa-file-image",
+            "fas fa-file-video", "fas fa-file-audio", "fas fa-file-archive", "fas fa-file-code",
+            "fas fa-file-csv", "fas fa-file"
+        ];
+
         const DEFAULT_IMAGE = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWRmMmY3Ii8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzY2NiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q0xJQ0sgVE8gVVBMT0FEIFBPU1RFUjwvdGV4dD4KPC9zdmc+";
 
         let currentImageIndex = null;
         let announcementItems = [];
+        let currentTabs = [];
+        let editingTabKey = null;
+        let confirmationResult = null; 
+        let confirmActionCb = null; // Store execution logic for generic confirm modal
+        let draggedTabKey = null; // Store tab for dragging
 
+        const tabsContainer = document.getElementById('tabsContainer');
+        const loginLink = document.getElementById('loginLink');
+        const toast = document.getElementById('toast');
+
+        // General Utilities
         function showToast(msg, success=true) {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.style.backgroundColor = success ? '#38a169' : '#e53e3e';
-            t.style.display = 'block';
-            setTimeout(() => t.style.display = 'none', 3000);
+            toast.textContent = msg;
+            toast.style.backgroundColor = success ? '#38a169' : '#e53e3e';
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 3000);
         }
 
+        // --- Modals Management ---
         function openModal(img, idx) {
             currentImageIndex = idx;
             document.getElementById('modalImage').src = img;
             document.getElementById('imageModal').classList.add('active');
-            document.getElementById('uploadBtnAction').style.display = auth.currentUser ? 'flex' : 'none';
+            
+            const loggedIn = auth.currentUser ? 'flex' : 'none';
+            document.getElementById('uploadBtnAction').style.display = loggedIn;
+            document.getElementById('deleteBtnAction').style.display = loggedIn;
         }
-
         function closeModal() { document.getElementById('imageModal').classList.remove('active'); }
+        
         function openUploadModal() { closeModal(); document.getElementById('uploadModal').classList.add('active'); }
         function closeUploadModal() { document.getElementById('uploadModal').classList.remove('active'); }
-        function openLoginModal() { document.getElementById('loginModal').classList.add('active'); }
+        
+        function openLoginModal() { 
+            document.getElementById('loginModal').classList.add('active'); 
+            document.getElementById('phone-auth-container').style.display = 'block';
+            document.getElementById('otp-container').style.display = 'none';
+            document.getElementById('sendOtpBtn').innerText = 'Send OTP';
+            document.getElementById('sendOtpBtn').disabled = false;
+            document.getElementById('otpCode').value = '';
+        }
         function closeLoginModal() { document.getElementById('loginModal').classList.remove('active'); }
+        
+        function openTabModal(key=null) {
+            editingTabKey = key;
+            document.getElementById('tabModalTitle').innerText = key ? 'Edit Tab' : 'Create Tab';
+            if (key) {
+                const tab = currentTabs.find(t => t.key === key);
+                if (tab) {
+                    document.getElementById('tabName').value = tab.name || '';
+                    document.getElementById('tabUrl').value = tab.url || '';
+                    document.querySelectorAll('#iconSelector i').forEach(el => el.classList.remove('selected'));
+                    if (tab.icon) {
+                        document.querySelectorAll('#iconSelector i').forEach(el => {
+                            if (el.className === tab.icon) el.classList.add('selected');
+                        });
+                    }
+                }
+            } else {
+                document.getElementById('tabName').value = '';
+                document.getElementById('tabUrl').value = '';
+                document.querySelectorAll('#iconSelector i').forEach(el => el.classList.remove('selected'));
+            }
+            document.getElementById('tabModal').classList.add('active');
+        }
+        function closeTabModal() { document.getElementById('tabModal').classList.remove('active'); }
 
+        // Generic Configuration Modal
+        function openConfigModal() {
+            document.getElementById('configRootName').value = firebaseRoot;
+            document.getElementById('configAuthCode').value = '';
+            document.getElementById('configModal').classList.add('active');
+        }
+        function closeConfigModal() { document.getElementById('configModal').classList.remove('active'); }
+        
+        function saveFirebaseConfig() {
+            const code = document.getElementById('configAuthCode').value;
+            const newRoot = document.getElementById('configRootName').value.trim();
+            if(code !== '001122') return showToast('Invalid Access Code', false);
+            if(!newRoot) return showToast('Root map cannot be empty', false);
+
+            localStorage.setItem('udt_firebase_root', newRoot);
+            showToast('Database mapping configured! Rebooting...', true);
+            setTimeout(() => { location.reload(); }, 1500);
+        }
+
+        // Generic Confirm Modal
+        function openConfirmModal(title, message, callbackAction) {
+            document.getElementById('confirmTitle').innerText = title;
+            document.getElementById('confirmMsg').innerText = message;
+            confirmActionCb = callbackAction;
+            document.getElementById('confirmModal').classList.add('active');
+        }
+        function closeConfirmModal() { 
+            document.getElementById('confirmModal').classList.remove('active'); 
+            confirmActionCb = null;
+        }
+        document.getElementById('confirmYesBtn').addEventListener('click', () => {
+            if(confirmActionCb) confirmActionCb();
+            closeConfirmModal();
+        });
+
+        // Theme Modal & Settings
+        function applyThemeVariables(primary, secondary) {
+            document.documentElement.style.setProperty('--primary', primary);
+            document.documentElement.style.setProperty('--secondary', secondary);
+        }
+
+        function loadThemeSelectionUI() {
+            const grid = document.getElementById('themeGrid');
+            grid.innerHTML = '';
+            THEMES.forEach(t => {
+                const circle = document.createElement('div');
+                circle.className = 'theme-circle';
+                circle.style.background = `linear-gradient(135deg, ${t.p} 0%, ${t.s} 100%)`;
+                circle.title = t.name;
+                circle.onclick = () => saveTheme(t.p, t.s);
+                grid.appendChild(circle);
+            });
+        }
+        loadThemeSelectionUI();
+
+        function openThemeModal() { document.getElementById('themeModal').classList.add('active'); }
+        function closeThemeModal() { document.getElementById('themeModal').classList.remove('active'); }
+
+        function saveTheme(primary, secondary) {
+            if (!auth.currentUser) return;
+            database.ref(`${firebaseRoot}/theme`).set({ primary, secondary })
+                .then(() => {
+                    showToast('Theme updated globally!');
+                    closeThemeModal();
+                })
+                .catch(err => showToast(err.message, false));
+        }
+
+        function watchGlobalTheme() {
+            database.ref(`${firebaseRoot}/theme`).on('value', snap => {
+                const data = snap.val();
+                if (data && data.primary && data.secondary) {
+                    applyThemeVariables(data.primary, data.secondary);
+                } else {
+                    applyThemeVariables(THEMES[0].p, THEMES[0].s);
+                }
+            });
+        }
+
+        // --- Render UI ---
+        function renderIconSelector() {
+            const container = document.getElementById('iconSelector');
+            container.innerHTML = '';
+            ICON_LIST.forEach(icon => {
+                const i = document.createElement('i');
+                i.className = icon;
+                i.addEventListener('click', () => {
+                    document.querySelectorAll('#iconSelector i').forEach(el => el.classList.remove('selected'));
+                    i.classList.add('selected');
+                });
+                container.appendChild(i);
+            });
+        }
+        renderIconSelector();
+
+        function renderTabs(tabs) {
+            tabsContainer.innerHTML = '';
+            const user = auth.currentUser;
+            
+            // Sort tabs by our new order variable to track drag/drop accurately
+            tabs.sort((a,b) => (a.order || 0) - (b.order || 0));
+
+            tabs.forEach(tab => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'tab-wrapper';
+
+                const a = document.createElement('a');
+                a.href = tab.url || '#';
+                a.target = '_blank';
+                a.className = 'tab';
+                a.innerHTML = `<i class="${tab.icon || 'fas fa-folder'}"></i><span>${tab.name || 'Tab'}</span>`;
+                wrapper.appendChild(a);
+
+                // Admin Controls
+                if (user) {
+                    const delBtn = document.createElement('button');
+                    delBtn.className = 'tab-delete';
+                    delBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                    delBtn.addEventListener('click', (e) => {
+                        e.preventDefault(); e.stopPropagation();
+                        openConfirmModal("Delete Tab", `Are you sure you want to permanently delete "${tab.name}"?`, () => {
+                            database.ref(`${firebaseRoot}/tabs/${tab.key}`).remove()
+                                .then(() => showToast('Tab deleted'))
+                                .catch(err => showToast(err.message, false));
+                        });
+                    });
+                    wrapper.appendChild(delBtn);
+
+                    // HTML5 Drag and Drop Settings for logged-in admin
+                    wrapper.draggable = true;
+                    wrapper.addEventListener('dragstart', (e) => {
+                        draggedTabKey = tab.key;
+                        e.dataTransfer.effectAllowed = 'move';
+                    });
+                    wrapper.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        wrapper.classList.add('drag-over');
+                    });
+                    wrapper.addEventListener('dragleave', () => wrapper.classList.remove('drag-over'));
+                    wrapper.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        wrapper.classList.remove('drag-over');
+                        if (draggedTabKey && draggedTabKey !== tab.key) {
+                            const fromIdx = currentTabs.findIndex(t => t.key === draggedTabKey);
+                            const toIdx = currentTabs.findIndex(t => t.key === tab.key);
+                            
+                            // Reorder logically
+                            const moved = currentTabs.splice(fromIdx, 1)[0];
+                            currentTabs.splice(toIdx, 0, moved);
+
+                            // Sync order state to firebase
+                            const updates = {};
+                            currentTabs.forEach((t, index) => { updates[`${t.key}/order`] = index; });
+                            database.ref(`${firebaseRoot}/tabs`).update(updates)
+                                .then(() => showToast('Tab arrangement saved', true))
+                                .catch(e => showToast('Failed syncing arrangement', false));
+                        }
+                    });
+                }
+
+                tabsContainer.appendChild(wrapper);
+            });
+
+            if (user) {
+                const addBtn = document.createElement('div');
+                addBtn.className = 'add-tab-btn';
+                addBtn.innerHTML = '<i class="fas fa-plus-circle"></i><span>Add Tab</span>';
+                addBtn.addEventListener('click', () => openTabModal(null));
+                tabsContainer.appendChild(addBtn);
+            }
+        }
+
+        // Database Interactions
+        function loadTabs() {
+            database.ref(`${firebaseRoot}/tabs`).on('value', snap => {
+                const data = snap.val() || {};
+                currentTabs = Object.keys(data).map(key => ({ key, ...data[key] }));
+                renderTabs(currentTabs);
+            });
+        }
+
+        function saveTab() {
+            if (!auth.currentUser) return showToast('Authentication required.', false);
+
+            const name = document.getElementById('tabName').value.trim();
+            const url = document.getElementById('tabUrl').value.trim();
+            const selectedIcon = document.querySelector('#iconSelector i.selected');
+            const icon = selectedIcon ? selectedIcon.className : 'fas fa-folder';
+
+            if (!name) return showToast('Tab name is required', false);
+            if (!url) return showToast('URL is required', false);
+
+            const payload = { name, url, icon };
+
+            if (editingTabKey) {
+                database.ref(`${firebaseRoot}/tabs/${editingTabKey}`).update(payload)
+                    .then(() => { showToast('Tab updated!'); closeTabModal(); })
+                    .catch(err => showToast(err.message, false));
+            } else {
+                // Ensure new tab pushes to the end of arrangement
+                payload.order = currentTabs.length; 
+                database.ref(`${firebaseRoot}/tabs`).push(payload)
+                    .then(() => { showToast('Tab created!'); closeTabModal(); })
+                    .catch(err => showToast(err.message, false));
+            }
+        }
+
+        // Authentication Methods
+        function sendOTP() {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            if (!window.recaptchaVerifier) {
+                window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', { 'size': 'invisible' });
+            }
+            const appVerifier = window.recaptchaVerifier;
+            const btn = document.getElementById('sendOtpBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            btn.disabled = true;
+
+            auth.signInWithPhoneNumber(phoneNumber, appVerifier)
+                .then((result) => {
+                    confirmationResult = result;
+                    showToast('OTP Sent successfully!');
+                    document.getElementById('phone-auth-container').style.display = 'none';
+                    document.getElementById('otp-container').style.display = 'block';
+                })
+                .catch((error) => {
+                    showToast(error.message, false);
+                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send OTP';
+                    btn.disabled = false;
+                });
+        }
+
+        function verifyOTP() {
+            const code = document.getElementById('otpCode').value;
+            if (!code) return showToast('Please enter the OTP', false);
+
+            confirmationResult.confirm(code).then((result) => {
+                showToast('Logged in successfully!');
+                closeLoginModal();
+            }).catch((error) => {
+                showToast('Invalid OTP Code', false);
+            });
+        }
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                loginLink.textContent = 'Logout';
+                loginLink.onclick = () => auth.signOut();
+                
+                document.getElementById('themeBtn').style.display = 'inline-block';
+                document.getElementById('configBtn').style.display = 'inline-block'; // Set configuration gear to visible upon login
+                
+                if (document.getElementById('uploadBtnAction')) document.getElementById('uploadBtnAction').style.display = 'flex';
+                if (document.getElementById('deleteBtnAction')) document.getElementById('deleteBtnAction').style.display = 'flex';
+            } else {
+                loginLink.textContent = 'Login';
+                loginLink.onclick = openLoginModal;
+                
+                document.getElementById('themeBtn').style.display = 'none';
+                document.getElementById('configBtn').style.display = 'none'; // Set configuration gear to hidden when logged out
+                
+                if (document.getElementById('uploadBtnAction')) document.getElementById('uploadBtnAction').style.display = 'none';
+                if (document.getElementById('deleteBtnAction')) document.getElementById('deleteBtnAction').style.display = 'none';
+            }
+            renderTabs(currentTabs);
+        });
+
+        // Bulletin Posters
         function updateItem(idx, data) {
             const grid = document.getElementById('announcementGrid');
             let item = announcementItems[idx];
@@ -466,46 +1015,53 @@
         }
 
         async function uploadPoster() {
-            const code = document.getElementById('adminCode').value;
+            if (!auth.currentUser) return showToast('Authentication required.', false);
+            
             const file = document.getElementById('posterImage').files[0];
-            if(code !== '123123') return showToast('Invalid Code', false);
             if(!file) return showToast('Select Image', false);
 
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = async () => {
-                await database.ref('/portal_v2/posters/').update({ [`poster_${currentImageIndex}`]: reader.result });
+                await database.ref(`${firebaseRoot}/posters/`).update({ [`poster_${currentImageIndex}`]: reader.result });
                 showToast('Uploaded!');
                 closeUploadModal();
                 updateItem(currentImageIndex, reader.result);
             };
         }
 
-        function handleLogin() {
-            auth.signInWithEmailAndPassword(document.getElementById('loginEmail').value, document.getElementById('loginPassword').value)
-                .then(() => { showToast('Logged In'); closeLoginModal(); })
-                .catch(e => showToast(e.message, false));
+        function deletePoster() {
+            openConfirmModal("Remove Poster", "Are you sure you want to permanently delete this poster?", () => {
+                database.ref(`${firebaseRoot}/posters/`).update({ [`poster_${currentImageIndex}`]: DEFAULT_IMAGE })
+                    .then(() => {
+                        showToast('Poster successfully removed.');
+                        updateItem(currentImageIndex, DEFAULT_IMAGE);
+                        closeModal();
+                    })
+                    .catch(err => showToast(err.message, false));
+            });
         }
 
-        auth.onAuthStateChanged(user => {
-            const link = document.getElementById('loginLink');
-            if(user) {
-                link.textContent = 'Logout';
-                link.onclick = () => auth.signOut();
-            } else {
-                link.textContent = 'Login';
-                link.onclick = openLoginModal;
-            }
-        });
-
+        // Core Initialization
         window.onload = () => {
-            database.ref('/portal_v2/posters/').on('value', snap => {
+            watchGlobalTheme();
+            loadTabs();
+            database.ref(`${firebaseRoot}/posters/`).on('value', snap => {
                 const data = snap.val() || {};
                 for(let i=0; i<4; i++) {
                     updateItem(i, data[`poster_${i}`] || DEFAULT_IMAGE);
                 }
             });
         };
+
+        // UI Event Listeners Closures
+        document.getElementById('saveTabBtn').addEventListener('click', saveTab);
+        
+        document.querySelectorAll('.modal, .upload-modal, .login-modal, .tab-modal').forEach(el => {
+            el.addEventListener('click', (e) => {
+                if (e.target === el) el.classList.remove('active');
+            });
+        });
     </script>
 </body>
 </html>
