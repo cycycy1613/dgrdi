@@ -595,7 +595,7 @@
 
     <script>
         // FIREBASE MAP CONFIGURATION LOGIC (Runs first)
-        let firebaseRoot = localStorage.getItem('udt_firebase_root') || 'portal_v4';
+        let firebaseRoot = localStorage.getItem('south_project_root') || 'south_project_v4';
 
         // FIREBASE INITIALIZATION
         const firebaseConfig = {
@@ -747,7 +747,7 @@
             if(code !== '001122') return showToast('Invalid Access Code', false);
             if(!newRoot) return showToast('Root map cannot be empty', false);
 
-            localStorage.setItem('udt_firebase_root', newRoot);
+            localStorage.setItem('south_project_root', newRoot);
             showToast('Database mapping configured! Rebooting...', true);
             setTimeout(() => { location.reload(); }, 1500);
         }
