@@ -1,970 +1,962 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DGRDI Directory</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Business Profile</title>
 
-    <meta property="og:title" content="DGRDI Directory">
-    <meta property="og:description" content="Where Real Estate Partners Find Complete Project Data">
-    <meta property="og:image" content="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/add-a-subheading.png">
-    <meta property="og:type" content="website">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+  <style>
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    .animate-float { animation: float 5s ease-in-out infinite; }
     
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="DGRDI Directory">
-    <meta name="twitter:description" content="Where Real Estate Partners Find Complete Project Data">
-    <meta name="twitter:image" content="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/add-a-subheading.png">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Base Styles & Variables */
-        :root {
-            --dark-blue: #0a1a3a;
-            --grey: #e8e9eb;
-            --black: #111;
-            --yellow: #ffc107;
-            --gold: #d4af37;
-            --light-blue: #4a9fe3;
-            --white: #ffffff;
-            --bg-body: #fdfdfd;
-            --card-bg: #ffffff;
-            --text-main: #111;
-            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            --border-radius: 12px;
-        }
-
-        /* Dark Mode Variables */
-        [data-theme="dark"] {
-            --dark-blue: #050d1d;
-            --bg-body: #0d1117;
-            --card-bg: #161b22;
-            --text-main: #e6edf3;
-            --grey: #30363d;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            line-height: 1.6;
-            transition: background-color 0.3s ease;
-            position: relative;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        /* Animated Background Canvas */
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.7;
-            pointer-events: none;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-
-        /* Header Styles */
-        header {
-            background-color: var(--dark-blue);
-            color: var(--white);
-            padding: 30px 0;
-            position: relative;
-            z-index: 10;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .logo h1 {
-            font-size: clamp(22px, 5vw, 28px);
-            font-weight: 700;
-        }
-
-        .logo h1 span {
-            color: var(--gold);
-        }
-
-        .tagline {
-            font-size: clamp(14px, 4vw, 18px);
-            font-style: italic;
-            color: var(--light-blue);
-            margin-top: 5px;
-        }
-
-        /* Controls Section */
-        .controls {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .controls-inner {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .control-btn {
-            background: var(--white);
-            border: none;
-            padding: 8px 15px;
-            border-radius: 30px;
-            cursor: pointer;
-            color: var(--dark-blue);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: var(--transition);
-            box-shadow: var(--shadow);
-            font-size: 14px;
-        }
-
-        .control-btn:hover {
-            transform: translateY(-2px);
-            background: var(--gold);
-            color: white;
-        }
-
-        /* Daily Quotes Section */
-        .quotes-container {
-            margin: 20px auto 30px;
-            max-width: 1200px;
-            padding: 25px;
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            border-left: 5px solid var(--gold);
-            box-shadow: var(--shadow);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            animation: fadeIn 0.8s ease forwards;
-        }
-
-        .quotes-container i.fa-quote-left {
-            position: absolute;
-            top: 15px;
-            left: 20px;
-            font-size: 30px;
-            color: var(--grey);
-            opacity: 0.5;
-        }
-
-        .quote-greeting {
-            display: block;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--gold);
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        #daily-quote {
-            font-size: clamp(16px, 4vw, 20px);
-            font-weight: 600;
-            color: var(--text-main);
-            font-style: italic;
-            line-height: 1.4;
-        }
-
-        .quote-author {
-            display: block;
-            margin-top: 10px;
-            font-size: 13px;
-            color: var(--light-blue);
-            font-weight: 500;
-        }
-
-        /* Main Content */
-        main {
-            padding: 10px 0 30px;
-        }
-
-        /* Layout Switcher Logic */
-        .projects-grid {
-            display: grid;
-            gap: 20px;
-            transition: all 0.5s ease;
-        }
-
-        .projects-grid.grid-view {
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        }
-
-        .projects-grid.list-view {
-            grid-template-columns: 1fr;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        /* Project Card */
-        .project-card {
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            border: 1px solid var(--grey);
-            display: flex;
-            flex-direction: column;
-            animation: fadeIn 0.6s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .list-view .project-card {
-            flex-direction: row;
-            align-items: stretch;
-        }
-
-        .project-image {
-            width: 100%;
-            aspect-ratio: 16 / 10;
-            background-color: var(--grey);
-            overflow: hidden;
-        }
-
-        .list-view .project-image {
-            width: 35%;
-            max-width: 300px;
-            min-width: 200px;
-            aspect-ratio: auto;
-        }
-
-        .project-card-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.5s ease;
-        }
-
-        .project-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .project-card:hover .project-card-img {
-            transform: scale(1.05);
-        }
-
-        .project-info {
-            padding: 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .project-name {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 12px;
-        }
-
-        .project-details {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 20px;
-            flex-grow: 1;
-        }
-
-        .detail-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            font-size: 14px;
-        }
-
-        .detail-item i {
-            color: var(--gold);
-            width: 20px;
-            margin-top: 4px;
-        }
-
-        .detail-label {
-            font-weight: 600;
-            min-width: 85px;
-            flex-shrink: 0;
-        }
-
-        /* Button Container */
-        .card-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: auto;
-        }
-
-        .see-details-btn {
-            display: inline-block;
-            background-color: var(--dark-blue);
-            color: var(--white);
-            padding: 10px 20px;
-            border-radius: var(--border-radius);
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-            border: 2px solid var(--dark-blue);
-            text-align: center;
-            flex-grow: 1;
-            font-size: 15px;
-        }
-
-        .see-details-btn:hover {
-            background-color: var(--light-blue);
-            border-color: var(--light-blue);
-            color: white;
-        }
-
-        .maps-btn, .copy-link-btn {
-            background-color: var(--grey);
-            color: var(--text-main);
-            border: none;
-            padding: 10px;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 44px;
-            text-decoration: none;
-        }
-        
-        .maps-btn:hover, .copy-link-btn:hover {
-            background-color: var(--gold);
-            color: white;
-        }
-
-        /* Modal Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .modal-content {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: var(--border-radius);
-            width: 90%;
-            max-width: 400px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--gold);
-            transform: scale(0.8);
-            transition: transform 0.3s ease;
-        }
-
-        .modal-overlay.active .modal-content {
-            transform: scale(1);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .modal-header h3 {
-            font-size: 18px;
-            color: var(--dark-blue);
-        }
-
-        [data-theme="dark"] .modal-header h3 {
-            color: var(--gold);
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 20px;
-            color: var(--text-main);
-            cursor: pointer;
-        }
-
-        .map-options-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .map-option-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 15px;
-            background: var(--grey);
-            border-radius: 8px;
-            text-decoration: none;
-            color: var(--text-main);
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .map-option-link:hover {
-            background: var(--gold);
-            color: white;
-            transform: translateX(5px);
-        }
-
-        /* Toast Notification */
-        #toast {
-            visibility: hidden;
-            min-width: 200px;
-            background-color: var(--dark-blue);
-            color: #fff;
-            text-align: center;
-            border-radius: 50px;
-            padding: 12px 24px;
-            position: fixed;
-            z-index: 1000;
-            left: 50%;
-            bottom: 30px;
-            transform: translateX(-50%);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            border: 1px solid var(--gold);
-            font-size: 14px;
-        }
-
-        #toast.show {
-            visibility: visible;
-            animation: slideUp 0.5s forwards, slideDown 0.5s 2.5s forwards;
-        }
-
-        @keyframes slideUp { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
-        @keyframes slideDown { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
-
-        /* Footer */
-        footer {
-            background-color: var(--dark-blue);
-            color: var(--white);
-            padding: 40px 0 20px;
-            margin-top: 40px;
-        }
-
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .footer-logo { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
-        .footer-logo span { color: var(--gold); }
-        .footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px; width: 100%; color: var(--grey); font-size: 14px; margin-top: 30px; }
-
-        /* Media Queries */
-        @media (max-width: 768px) {
-            header { padding: 25px 0; }
-            .header-content { justify-content: center; text-align: center; }
-            .controls-inner { justify-content: center; }
-            .list-view .project-card { flex-direction: column; }
-            .list-view .project-image { width: 100%; max-width: 100%; }
-            main { padding: 20px 0; }
-        }
-
-        @media (max-width: 480px) {
-            .projects-grid.grid-view {
-                grid-template-columns: 1fr;
-            }
-            .control-btn span { display: none; }
-            .control-btn { padding: 10px 12px; }
-        }
-    </style>
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar { height: 8px; width: 8px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
 </head>
-<body>
-    <canvas id="bg-canvas"></canvas>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-blue-500 selection:text-white">
 
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <h1>DGRDI <span>Directory</span></h1>
-                    <div class="tagline">Where Real Estate Partners Find Complete Project Data</div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <div class="controls">
-        <div class="container">
-            <div class="controls-inner">
-                <button class="control-btn" id="layoutToggle" onclick="toggleLayout()">
-                    <i class="fas fa-list" id="layoutIcon"></i>
-                </button>
-                <button class="control-btn" id="locationSort" onclick="sortByLocation()" title="Sort by Nearest">
-                    <i class="fas fa-location-arrow" id="locationIcon"></i>
-                </button>
-                <button class="control-btn" id="themeToggle" onclick="toggleTheme()">
-                    <i class="fas fa-moon" id="themeIcon"></i>
-                </button>
-            </div>
-        </div>
+  <header class="relative bg-white shadow-sm mb-8">
+    <div class="relative h-64 md:h-80 w-full bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 overflow-hidden">
+      <img id="cover-photo" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1600&q=80" alt="Cover" class="w-full h-full object-cover transition-opacity duration-300">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+      
+      <button onclick="editProfileField('cover')" class="admin-only hidden absolute top-4 right-4 bg-white/90 hover:bg-white text-slate-700 px-3 py-1.5 rounded-lg shadow text-sm font-medium transition backdrop-blur-sm">
+        <i class="fa-solid fa-camera mr-1.5"></i> Change Cover
+      </button>
     </div>
 
-    <main>
-        <div class="container">
-            <div class="quotes-container">
-                <i class="fas fa-quote-left"></i>
-                <span class="quote-greeting" id="quote-time-label">Morning Inspiration</span>
-                <p id="daily-quote">"Don't wait to buy real estate. Buy real estate and wait."</p>
-                <span class="quote-author" id="quote-author">— Will Rogers</span>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="relative -mt-20 md:-mt-24 pb-6 border-b border-slate-200 flex flex-col md:flex-row items-center md:items-end justify-between gap-6">
+        
+        <div class="flex flex-col md:flex-row items-center md:items-end gap-5 text-center md:text-left">
+          <div class="relative group">
+            <img id="profile-photo" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" alt="Profile" class="w-36 h-36 md:w-44 md:h-44 rounded-full border-4 border-white shadow-xl object-cover bg-white">
+            <button onclick="editProfileField('avatar')" class="admin-only hidden absolute bottom-2 right-2 bg-blue-600 hover:bg-blue-700 text-white p-2.5 rounded-full shadow-lg transition">
+              <i class="fa-solid fa-camera"></i>
+            </button>
+          </div>
+          
+          <div class="mb-2">
+            <div class="flex items-center justify-center md:justify-start gap-2">
+              <h1 id="profile-name" class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Jane Doe</h1>
+              <button onclick="editProfileField('name')" class="admin-only hidden text-slate-400 hover:text-blue-600 text-lg">
+                <i class="fa-solid fa-pen"></i>
+              </button>
             </div>
-
-            <div class="projects-grid grid-view" id="projectsGrid">
-                
-                <div class="project-card" data-lat="13.8100" data-lng="121.0200">
-                    <div class="project-image">
-                        <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/file_00000000db0c622fbb0386adac0c09ef.png" alt="Batangas - Bayanihan Town" class="project-card-img">
-                    </div>
-                    <div class="project-info">
-                        <h3 class="project-name">Batangas - Bayanihan Town</h3>
-                        <div class="project-details">
-                            <div class="detail-item"><i class="fas fa-home"></i><span class="detail-label">Type:</span><span>Townhouses</span></div>
-                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span class="detail-label">Location:</span><span>San Pascual - Alitagtag, Batangas</span></div>
-                            <div class="detail-item"><i class="fas fa-ruler-combined"></i><span class="detail-label">Land Area:</span><span> 65 Hectares</span></div>
-                        </div>
-                        <div class="card-actions">
-                            <a href="https://bayanihantownbatangas.info/members" class="see-details-btn">Details</a>
-                            <a href="https://maps.app.goo.gl/DPu8m1DmkE7TVNe76" target="_blank" class="maps-btn" title="View on Google Maps">
-                                <i class="fas fa-map-marked-alt"></i>
-                            </a>
-                            <button class="copy-link-btn" onclick="copyToClipboard('https://bayanihantownbatangas.info/members')" title="Copy Link">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card" data-lat="13.7975" data-lng="121.0709">
-                    <div class="project-image">
-                        <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/screenshot-2025-09-02-091838.png" alt="Batangas City - Urban Deca Homes" class="project-card-img">
-                    </div>
-                    <div class="project-info">
-                        <h3 class="project-name">Batangas City - Urban Deca Homes</h3>
-                        <div class="project-details">
-                            <div class="detail-item"><i class="fas fa-home"></i><span class="detail-label">Type:</span><span>Condominiums</span></div>
-                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span class="detail-label">Location:</span><span>Balagtas, Batangas City</span></div>
-                            <div class="detail-item"><i class="fas fa-ruler-combined"></i><span class="detail-label">Land Area:</span><span>8.9 Hectares</span></div>
-                        </div>
-                        <div class="card-actions">
-                            <a href="https://urbandecahomesbatangas.com/members" class="see-details-btn">Details</a>
-                            <a href="https://maps.app.goo.gl/zMxsD4afvUumiEkA8" target="_blank" class="maps-btn" title="View on Google Maps">
-                                <i class="fas fa-map-marked-alt"></i>
-                            </a>
-                            <button class="copy-link-btn" onclick="copyToClipboard('https://urbandecahomesbatangas.com/members')" title="Copy Link">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card" data-lat="14.3939" data-lng="121.0412">
-                    <div class="project-image">
-                        <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/photo_2026-01-14_15-09-33-1.jpg" alt="Cavite & Muntinlupa - Urban Deca Homes" class="project-card-img">
-                    </div>
-                    <div class="project-info">
-                        <h3 class="project-name">Cavite & Muntinlupa - Urban Deca Homes</h3>
-                        <div class="project-details">
-                            <div class="detail-item"><i class="fas fa-home"></i><span class="detail-label">Type:</span><span>Condominiums & Townhouse</span></div>
-                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span class="detail-label">Location:</span><span>Cavite and Muntinlupa</span></div>
-                            <div class="detail-item"><i class="fas fa-ruler-combined"></i><span class="detail-label">Land Area:</span><span> - </span></div>
-                        </div>
-                        <div class="card-actions">
-                            <a href="https://www.dgrdi.digital/south-project" class="see-details-btn">Details</a>
-                            <button class="maps-btn" onclick="openMapModal()" title="View Locations on Google Maps">
-                                <i class="fas fa-map-marked-alt"></i>
-                            </button>
-                            <button class="copy-link-btn" onclick="copyToClipboard('https://www.dgrdi.digital/south-project')" title="Copy Link">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card" data-lat="14.5813" data-lng="121.0488">
-                    <div class="project-image">
-                        <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/chatgpt-image-jan-19-2026-04_09_52-pm.png" alt="Edsa - Urban Deca Tower" class="project-card-img">
-                    </div>
-                    <div class="project-info">
-                        <h3 class="project-name">Edsa Mandaluyong - Urban Deca Tower</h3>
-                        <div class="project-details">
-                            <div class="detail-item"><i class="fas fa-home"></i><span class="detail-label">Type:</span><span>Condominiums</span></div>
-                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span class="detail-label">Location:</span><span>Highway Hills, Mandaluyong City</span></div>
-                            <div class="detail-item"><i class="fas fa-ruler-combined"></i><span class="detail-label">Land Area:</span><span>866.25 sqm</span></div>
-                        </div>
-                        <div class="card-actions">
-                            <a href="https://www.dgrdi.digital/urbandecatoweredsa" class="see-details-btn">Details</a>
-                            <a href="https://maps.app.goo.gl/QKUo148P72F7fy71A" target="_blank" class="maps-btn" title="View on Google Maps">
-                                <i class="fas fa-map-marked-alt"></i>
-                            </a>
-                            <button class="copy-link-btn" onclick="copyToClipboard('https://www.dgrdi.digital/urbandecatoweredsa')" title="Copy Link">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                        </div>
-                    </div>
-                 </div>
-
-                <div class="project-card" data-lat="14.7687" data-lng="120.9469">
-                    <div class="project-image">
-                        <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/chatgpt-image-jan-17-2026-03_21_05-pm.png" alt="Marilao Bulacan - Urban Deca Homes" class="project-card-img">
-                    </div>
-                    <div class="project-info">
-                        <h3 class="project-name">Marilao Bulacan - Urban Deca Homes</h3>
-                        <div class="project-details">
-                            <div class="detail-item"><i class="fas fa-home"></i><span class="detail-label">Type:</span><span>Condominiums</span></div>
-                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span class="detail-label">Location:</span><span>MacArthur Hwy, Marilao Bulacan</span></div>
-                            <div class="detail-item"><i class="fas fa-ruler-combined"></i><span class="detail-label">Land Area:</span><span>14.7 Hectares</span></div>
-                        </div>
-                        <div class="card-actions">
-                            <a href="https://www.dgrdi.digital/urbandecahomesmarilao" class="see-details-btn">Details</a>
-                            <a href="https://maps.app.goo.gl/6tfcxzPQ99DWotvq5" target="_blank" class="maps-btn" title="View on Google Maps">
-                                <i class="fas fa-map-marked-alt"></i>
-                            </a>
-                            <button class="copy-link-btn" onclick="copyToClipboard('https://www.dgrdi.digital/urbandecahomesmarilao')" title="Copy Link">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                        </div>
-                    </div>
-                 </div>
-
-                <div class="project-card" data-lat="14.7433" data-lng="120.9564">
-                    <div class="project-image">
-                        <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/chatgpt-image-jan-17-2026-03_23_46-pm.png" alt="Meycauayan Bulacan - Deca Homes" class="project-card-img">
-                    </div>
-                    <div class="project-info">
-                        <h3 class="project-name">Meycauayan Bulacan - Deca Homes</h3>
-                        <div class="project-details">
-                            <div class="detail-item"><i class="fas fa-home"></i><span class="detail-label">Type:</span><span>Townhouses</span></div>
-                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span class="detail-label">Location:</span><span>Saluysoy, Meycauayan City, Bulacan</span></div>
-                            <div class="detail-item"><i class="fas fa-ruler-combined"></i><span class="detail-label">Land Area:</span><span>41.05 Hectares</span></div>
-                        </div>
-                        <div class="card-actions">
-                            <a href="https://www.dgrdi.digital/decahomesmeycauayan" class="see-details-btn">Details</a>
-                            <a href="https://maps.app.goo.gl/Uh19jhQbmnm6cdyt9" target="_blank" class="maps-btn" title="View on Google Maps">
-                                <i class="fas fa-map-marked-alt"></i>
-                            </a>
-                            <button class="copy-link-btn" onclick="copyToClipboard('https://www.dgrdi.digital/decahomesmeycauayan')" title="Copy Link">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                        </div>
-                    </div>
-                 </div>
-
-                 <div class="project-card" data-lat="14.5598" data-lng="121.0806">
-                    <div class="project-image">
-                        <img src="https://dgcyron.wordpress.com/wp-content/uploads/2026/01/chatgpt-image-jan-17-2026-11_55_03-am.png" alt="Ortigas- Urban Deca Homes" class="project-card-img">
-                    </div>
-                    <div class="project-info">
-                        <h3 class="project-name">Ortigas Pasig - Urban Deca Homes</h3>
-                        <div class="project-details">
-                            <div class="detail-item"><i class="fas fa-home"></i><span class="detail-label">Type:</span><span>Condominiums</span></div>
-                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span class="detail-label">Location:</span><span>Ortigas Ave Extension Pasig City</span></div>
-                            <div class="detail-item"><i class="fas fa-ruler-combined"></i><span class="detail-label">Land Area:</span><span>13.23 Hectares</span></div>
-                        </div>
-                        <div class="card-actions">
-                            <a href="https://www.dgrdi.digital/urbandecahomesortigas" class="see-details-btn">Details</a>
-                            <a href="https://maps.app.goo.gl/r8V5nJqSh9V2HrGbA" target="_blank" class="maps-btn" title="View on Google Maps">
-                                <i class="fas fa-map-marked-alt"></i>
-                            </a>
-                            <button class="copy-link-btn" onclick="copyToClipboard('https://www.dgrdi.digital/urbandecahomesortigas')" title="Copy Link">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <p id="profile-bio" class="text-slate-600 font-medium max-w-lg mt-1">Licensed Real Estate Broker | Helping you find your dream home</p>
+            <button onclick="editProfileField('bio')" class="admin-only hidden text-xs text-blue-600 hover:underline mt-1">Edit Bio</button>
+          </div>
         </div>
-    </main>
 
-    <div class="modal-overlay" id="mapModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Select Project Location</h3>
-                <button class="close-modal" onclick="closeMapModal()"><i class="fas fa-times"></i></button>
-            </div>
-            <ul class="map-options-list">
-                <li><a href="https://maps.app.goo.gl/aWWHnTZ95uC1ZUFP7" target="_blank" class="map-option-link"><i class="fas fa-map-pin"></i> UDH Campville</a></li>
-                <li><a href="https://maps.app.goo.gl/QFPUK9XazHWGHz7b8" target="_blank" class="map-option-link"><i class="fas fa-map-pin"></i> UDH Hampton</a></li>
-                <li><a href="https://maps.app.goo.gl/k4G9BZ9XgSBigWqU7" target="_blank" class="map-option-link"><i class="fas fa-map-pin"></i> UDH Mahogany</a></li>
-                <li><a href="https://maps.app.goo.gl/N39ysVSWzPSqn2jC9" target="_blank" class="map-option-link"><i class="fas fa-map-pin"></i> Bella Vista</a></li>
-            </ul>
+        <div class="flex items-center gap-3 bg-slate-100 p-2 rounded-2xl border border-slate-200/80 shadow-inner">
+          <a id="contact-email" href="mailto:agent@example.com" title="Send Email" class="w-12 h-12 rounded-xl bg-white text-blue-600 hover:bg-blue-600 hover:text-white flex items-center justify-center shadow-sm transition-all duration-200 text-xl transform hover:-translate-y-1">
+            <i class="fa-solid fa-envelope"></i>
+          </a>
+          <a id="contact-phone" href="tel:+1234567890" title="Call Now" class="w-12 h-12 rounded-xl bg-white text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center shadow-sm transition-all duration-200 text-xl transform hover:-translate-y-1">
+            <i class="fa-solid fa-phone"></i>
+          </a>
+          <button onclick="editProfileField('contact')" class="admin-only hidden w-12 h-12 rounded-xl bg-amber-100 text-amber-700 hover:bg-amber-200 flex items-center justify-center text-lg transition">
+            <i class="fa-solid fa-gear"></i>
+          </button>
         </div>
+
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 pb-16">
+
+    <section>
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">Featured Projects</h2>
+          <p class="text-slate-500 text-sm mt-1">Explore available luxury homes and property developments</p>
+        </div>
+        <button onclick="openModal('listing-modal')" class="admin-only hidden bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2.5 rounded-xl font-medium shadow-md transition flex items-center gap-2">
+          <i class="fa-solid fa-plus"></i> Add Listing
+        </button>
+      </div>
+
+      <div id="listings-container" class="flex gap-6 overflow-x-auto custom-scrollbar pb-6 pt-2 snap-x snap-mandatory">
+        </div>
+    </section>
+
+    <section class="bg-gradient-to-br from-indigo-900 via-slate-900 to-blue-900 text-white rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
+      <div class="absolute -top-24 -right-24 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="flex items-center justify-between mb-6 relative z-10">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-bold tracking-tight">Property Reels & Virtual Tours</h2>
+          <p class="text-slate-300 text-sm mt-1">Short video tours and highlights (Up to 10 videos)</p>
+        </div>
+        <button onclick="openModal('reel-modal')" class="admin-only hidden bg-white/10 hover:bg-white/20 border border-white/20 text-white px-4 py-2 rounded-xl font-medium text-sm transition flex items-center gap-2 backdrop-blur-md">
+          <i class="fa-solid fa-video"></i> Add Reel
+        </button>
+      </div>
+
+      <div class="swiper reelsSwiper relative z-10 py-2">
+        <div class="swiper-wrapper" id="reels-container">
+          </div>
+        <div class="swiper-pagination !-bottom-1"></div>
+      </div>
+    </section>
+
+    <section class="max-w-3xl mx-auto">
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">Latest Updates & News</h2>
+          <p class="text-slate-500 text-sm mt-1">Real estate insights, market tips, and announcements</p>
+        </div>
+        <button onclick="openModal('blog-modal')" class="admin-only hidden bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl font-medium shadow-md transition flex items-center gap-2">
+          <i class="fa-solid fa-pen-to-square"></i> New Post
+        </button>
+      </div>
+
+      <div id="blog-container" class="space-y-6">
+        </div>
+
+      <div id="blog-pagination" class="flex justify-between items-center mt-8 pt-4 border-t border-slate-200">
+        <button id="btn-prev-page" onclick="changeBlogPage(-1)" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed font-medium text-sm transition">
+          <i class="fa-solid fa-arrow-left mr-2"></i> Previous
+        </button>
+        <span id="blog-page-info" class="text-sm font-semibold text-slate-500">Page 1</span>
+        <button id="btn-next-page" onclick="changeBlogPage(1)" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed font-medium text-sm transition">
+          Next <i class="fa-solid fa-arrow-right ml-2"></i>
+        </button>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm text-center">
+      <div class="flex items-center justify-center gap-3 mb-6">
+        <h3 class="text-xl font-bold text-slate-800">Connect With Me</h3>
+        <button onclick="openModal('social-modal')" class="admin-only hidden text-blue-600 hover:text-blue-800 text-sm font-medium">
+          <i class="fa-solid fa-plus-circle"></i> Add Social Link
+        </button>
+      </div>
+      <div id="socials-container" class="flex flex-wrap justify-center gap-4">
+        </div>
+    </section>
+
+  </main>
+
+  <footer id="footer-section" class="bg-slate-900 text-slate-300 pt-12 pb-8 border-t border-slate-800">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <img id="footer-logo" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=100&q=80" alt="Logo" class="w-10 h-10 rounded-lg object-cover bg-white">
+          <span id="footer-brand-name" class="text-xl font-bold text-white tracking-wide">Jane Doe Realty</span>
+        </div>
+        <p id="footer-about" class="text-sm text-slate-400 leading-relaxed">Providing top-tier real estate services with integrity, transparency, and professional expertise.</p>
+        <button onclick="editFooterDetails()" class="admin-only hidden mt-3 text-xs text-blue-400 hover:underline">Edit Footer Info</button>
+      </div>
+
+      <div>
+        <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Quick Navigation</h4>
+        <ul id="footer-links-container" class="space-y-2 text-sm">
+          </ul>
+        <button onclick="openModal('footer-link-modal')" class="admin-only hidden mt-3 text-xs text-blue-400 hover:underline">+ Add Link</button>
+      </div>
+
+      <div class="flex flex-col justify-between">
+        <div>
+          <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Portal Access</h4>
+          <p class="text-xs text-slate-400 mb-4">Site administrators can log in to modify listings, posts, and media in real time.</p>
+        </div>
+        <div>
+          <button id="auth-btn" onclick="handleAuthClick()" class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-4 py-2 rounded-xl text-sm font-medium transition">
+            <i class="fa-solid fa-lock"></i> <span>Admin Login</span>
+          </button>
+        </div>
+      </div>
     </div>
 
-    <div id="toast">Link copied to clipboard!</div>
+    <div class="max-w-6xl mx-auto px-4 border-t border-slate-800/80 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+      <p>&copy; <span id="year"></span> All Rights Reserved.</p>
+      <p class="flex items-center gap-1">Powered by Real Estate Business Platform</p>
+    </div>
+  </footer>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">DGRDI <span>Directory</span></div>
-                <div class="footer-bottom">
-                    <p>© 2026 DGRDI Directory. All rights reserved.</p>
-                </div>
-            </div>
+
+  <div id="login-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl border border-slate-100 transform transition-all">
+      <div class="text-center mb-6">
+        <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl shadow-inner">
+          <i class="fa-solid fa-user-shield"></i>
         </div>
-    </footer>
+        <h3 class="text-xl font-bold text-slate-900">Admin Login</h3>
+        <p class="text-xs text-slate-500 mt-1">Enter your credentials to modify site contents</p>
+      </div>
+      <form onsubmit="submitLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Username</label>
+          <input type="text" id="login-user" required class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Password</label>
+          <input type="password" id="login-pass" required class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm">
+        </div>
+        <p id="login-error" class="text-xs text-red-500 hidden text-center font-medium"></p>
+        <div class="flex gap-3 pt-2">
+          <button type="button" onclick="closeModal('login-modal')" class="w-1/2 py-2.5 rounded-xl border border-slate-300 text-slate-600 text-sm font-medium hover:bg-slate-50">Cancel</button>
+          <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium shadow-md">Sign In</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-    <script>
-        /* --- Quotes Logic --- */
-        const quotesData = {
-            morning: [
-                { quote: "Every morning is a new opportunity to build a legacy. Win the day, one lead at a time.", author: "Sales Excellence" },
-                { quote: "To be successful in real estate, you must always and consistently put your clients' best interests first.", author: "Anthony Hitt" },
-                { quote: "Rise and grind. Your next closed deal is waiting for your enthusiasm.", author: "Success Mindset" }
-            ],
-            afternoon: [
-                { quote: "The best investment on Earth is earth. Keep pushing, the close is near.", author: "Louis Glickman" },
-                { quote: "Value is not just in the price; it's in the service and integrity you provide.", author: "Good Values" },
-                { quote: "Ninety percent of all millionaires become so through owning real estate.", author: "Andrew Carnegie" }
-            ],
-            evening: [
-                { quote: "Success is the sum of small efforts, repeated day in and day out. Rest well, tomorrow we build more.", author: "Robert Collier" },
-                { quote: "Reflect on today's wins, learn from the losses, and prepare for a bigger tomorrow.", author: "Daily Growth" },
-                { quote: "Real estate is an imperishable asset, ever increasing in value. You are selling the future.", author: "Russell Sage" }
-            ]
-        };
+  <div id="listing-details-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md hidden z-50 flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl my-8 relative">
+      <button onclick="closeModal('listing-details-modal')" class="absolute top-4 right-4 z-10 bg-slate-900/50 hover:bg-slate-900 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+      <div id="listing-details-content">
+        </div>
+    </div>
+  </div>
 
-        function updateDailyQuote() {
-            const now = new Date();
-            const hour = now.getHours();
-            let period = "";
-            let label = "";
+  <div id="listing-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden z-50 flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl p-6 md:p-8 max-w-xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl my-8">
+      <h3 class="text-xl font-bold text-slate-900 mb-4">Add Project Listing</h3>
+      <form onsubmit="saveListing(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Project Name</label>
+          <input type="text" id="list-name" required class="w-full px-3 py-2 border rounded-xl text-sm">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Location</label>
+            <input type="text" id="list-location" required class="w-full px-3 py-2 border rounded-xl text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Total Contract Price (TCP)</label>
+            <input type="text" id="list-tcp" placeholder="e.g. $450,000" required class="w-full px-3 py-2 border rounded-xl text-sm">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Monthly Amortization</label>
+          <input type="text" id="list-amort" placeholder="e.g. $1,800/mo" required class="w-full px-3 py-2 border rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Description</label>
+          <textarea id="list-desc" rows="3" required class="w-full px-3 py-2 border rounded-xl text-sm"></textarea>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Photo URLs (Up to 10 URLs, comma separated)</label>
+          <textarea id="list-photos" rows="3" placeholder="https://..., https://..." required class="w-full px-3 py-2 border rounded-xl text-sm"></textarea>
+          <span class="text-[10px] text-slate-400">First image link will be used as the card cover.</span>
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="button" onclick="closeModal('listing-modal')" class="w-1/2 py-2.5 rounded-xl border text-slate-600 text-sm">Cancel</button>
+          <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium shadow">Save Listing</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-            if (hour >= 5 && hour < 12) {
-                period = "morning";
-                label = "Morning Inspiration";
-            } else if (hour >= 12 && hour < 18) {
-                period = "afternoon";
-                label = "Afternoon Momentum";
-            } else {
-                period = "evening";
-                label = "Evening Reflection";
-            }
+  <div id="faq-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl">
+      <h3 class="text-lg font-bold text-slate-900 mb-4">Add FAQ to Project</h3>
+      <input type="hidden" id="faq-listing-id">
+      <form onsubmit="saveFAQ(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Question</label>
+          <input type="text" id="faq-question" required class="w-full px-3 py-2 border rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Answer</label>
+          <textarea id="faq-answer" rows="3" required class="w-full px-3 py-2 border rounded-xl text-sm"></textarea>
+        </div>
+        <div class="flex gap-3">
+          <button type="button" onclick="closeModal('faq-modal')" class="w-1/2 py-2 rounded-xl border text-slate-600 text-sm">Cancel</button>
+          <button type="submit" class="w-1/2 py-2 rounded-xl bg-blue-600 text-white text-sm shadow">Add FAQ</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-            const dailyQuotes = quotesData[period];
-            const quoteIndex = now.getDate() % dailyQuotes.length;
-            const selected = dailyQuotes[quoteIndex];
+  <div id="reel-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl">
+      <h3 class="text-lg font-bold text-slate-900 mb-4">Add Video Reel</h3>
+      <form onsubmit="saveReel(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Reel Title</label>
+          <input type="text" id="reel-title" required class="w-full px-3 py-2 border rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Direct Video Source URL (.mp4)</label>
+          <input type="url" id="reel-url" placeholder="https://example.com/video.mp4" required class="w-full px-3 py-2 border rounded-xl text-sm">
+        </div>
+        <div class="flex gap-3">
+          <button type="button" onclick="closeModal('reel-modal')" class="w-1/2 py-2 rounded-xl border text-slate-600 text-sm">Cancel</button>
+          <button type="submit" class="w-1/2 py-2 rounded-xl bg-blue-600 text-white text-sm shadow">Save Reel</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-            document.getElementById('quote-time-label').innerText = label;
-            document.getElementById('daily-quote').innerText = `"${selected.quote}"`;
-            document.getElementById('quote-author').innerText = `— ${selected.author}`;
+  <div id="blog-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-lg w-full shadow-2xl">
+      <h3 class="text-lg font-bold text-slate-900 mb-4">Create Feed Post</h3>
+      <form onsubmit="saveBlog(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Image Source URL (Optional)</label>
+          <input type="url" id="blog-img" class="w-full px-3 py-2 border rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Post Caption / Content</label>
+          <textarea id="blog-caption" rows="4" required class="w-full px-3 py-2 border rounded-xl text-sm"></textarea>
+        </div>
+        <div class="flex gap-3">
+          <button type="button" onclick="closeModal('blog-modal')" class="w-1/2 py-2 rounded-xl border text-slate-600 text-sm">Cancel</button>
+          <button type="submit" class="w-1/2 py-2 rounded-xl bg-blue-600 text-white text-sm shadow">Post Feed</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="social-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl">
+      <h3 class="text-lg font-bold text-slate-900 mb-4">Add Social Account Link</h3>
+      <form onsubmit="saveSocial(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Platform Name</label>
+          <input type="text" id="social-name" placeholder="e.g. Instagram, LinkedIn, TikTok" required class="w-full px-3 py-2 border rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">FontAwesome Icon Class</label>
+          <input type="text" id="social-icon" placeholder="fa-brands fa-instagram" required class="w-full px-3 py-2 border rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Account URL</label>
+          <input type="url" id="social-url" required class="w-full px-3 py-2 border rounded-xl text-sm">
+        </div>
+        <div class="flex gap-3">
+          <button type="button" onclick="closeModal('social-modal')" class="w-1/2 py-2 rounded-xl border text-slate-600 text-sm">Cancel</button>
+          <button type="submit" class="w-1/2 py-2 rounded-xl bg-blue-600 text-white text-sm shadow">Save Link</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="footer-link-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl">
+      <h3 class="text-lg font-bold text-slate-900 mb-4">Add Footer Link</h3>
+      <form onsubmit="saveFooterLink(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Link Label</label>
+          <input type="text" id="footlink-label" required class="w-full px-3 py-2 border rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">URL</label>
+          <input type="text" id="footlink-url" required class="w-full px-3 py-2 border rounded-xl text-sm">
+        </div>
+        <div class="flex gap-3">
+          <button type="button" onclick="closeModal('footer-link-modal')" class="w-1/2 py-2 rounded-xl border text-slate-600 text-sm">Cancel</button>
+          <button type="submit" class="w-1/2 py-2 rounded-xl bg-blue-600 text-white text-sm shadow">Add Link</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, set, onValue, push, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    // Provided Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyBdNGSSfPLBORjVvnJM3IVqxFZByw3iJWM",
+      authDomain: "btb-announcement.firebaseapp.com",
+      projectId: "btb-announcement",
+      storageBucket: "btb-announcement.firebasestorage.app",
+      messagingSenderId: "1047737510079",
+      appId: "1:1047737510079:web:9add56a0c7375fa0f4be0a",
+      databaseURL: "https://btb-announcement-default-rtdb.firebaseio.com"
+    };
+
+    // Initialize Firebase Realtime Database
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Global App State
+    window.db = db;
+    window.ref = ref;
+    window.set = set;
+    window.push = push;
+    window.remove = remove;
+    
+    window.isAdmin = false;
+    window.blogPage = 1;
+    window.blogPostsPerPage = 3;
+    window.allBlogs = [];
+    window.allListings = {};
+
+    // Dynamic Swiper Instance
+    let swiperInstance = null;
+
+    document.getElementById('year').innerText = new Date().getFullYear();
+
+    // ================= REALTIME DB LISTENERS =================
+
+    // 1. Profile Data
+    onValue(ref(db, 'profile'), (snapshot) => {
+      const data = snapshot.val();
+      if(data) {
+        if(data.cover) document.getElementById('cover-photo').src = data.cover;
+        if(data.avatar) document.getElementById('profile-photo').src = data.avatar;
+        if(data.name) document.getElementById('profile-name').innerText = data.name;
+        if(data.bio) document.getElementById('profile-bio').innerText = data.bio;
+        if(data.email) document.getElementById('contact-email').href = `mailto:${data.email}`;
+        if(data.phone) document.getElementById('contact-phone').href = `tel:${data.phone}`;
+      }
+    });
+
+    // 2. Project Listings
+    onValue(ref(db, 'listings'), (snapshot) => {
+      const data = snapshot.val() || {};
+      window.allListings = data;
+      renderListings(data);
+    });
+
+    // 3. Reels Video Carousel
+    onValue(ref(db, 'reels'), (snapshot) => {
+      const data = snapshot.val() || {};
+      renderReels(data);
+    });
+
+    // 4. Blog Posts
+    onValue(ref(db, 'blogs'), (snapshot) => {
+      const data = snapshot.val() || {};
+      const sorted = Object.entries(data).map(([key, val]) => ({ id: key, ...val }))
+                           .sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
+      window.allBlogs = sorted;
+      renderBlogFeed();
+    });
+
+    // 5. Social Accounts
+    onValue(ref(db, 'socials'), (snapshot) => {
+      const data = snapshot.val() || {};
+      renderSocials(data);
+    });
+
+    // 6. Footer Info
+    onValue(ref(db, 'footer'), (snapshot) => {
+      const data = snapshot.val();
+      if(data) {
+        if(data.logo) document.getElementById('footer-logo').src = data.logo;
+        if(data.brand) document.getElementById('footer-brand-name').innerText = data.brand;
+        if(data.about) document.getElementById('footer-about').innerText = data.about;
+        if(data.links) renderFooterLinks(data.links);
+      }
+    });
+
+    // Swiper Carousel Initialization
+    window.initSwiper = function() {
+      if(swiperInstance) swiperInstance.destroy();
+      swiperInstance = new Swiper('.reelsSwiper', {
+        slidesPerView: 1.2,
+        spaceBetween: 16,
+        pagination: { el: '.swiper-pagination', clickable: true },
+        breakpoints: {
+          640: { slidesPerView: 2.2, spaceBetween: 20 },
+          1024: { slidesPerView: 3.5, spaceBetween: 24 }
         }
+      });
+    }
 
-        /* --- Dark Mode Logic --- */
-        function toggleTheme() {
-            const body = document.documentElement;
-            const icon = document.getElementById('themeIcon');
+  </script>
+
+  <script>
+    // ---------- AUTHENTICATION ----------
+    function handleAuthClick() {
+      if(window.isAdmin) {
+        window.isAdmin = false;
+        updateAdminUI();
+        alert('You have logged out.');
+      } else {
+        openModal('login-modal');
+      }
+    }
+
+    function submitLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('login-user').value.trim();
+      const pass = document.getElementById('login-pass').value.trim();
+      const errEl = document.getElementById('login-error');
+
+      if(user === "cmbp1613" && pass === "001122") {
+        window.isAdmin = true;
+        errEl.classList.add('hidden');
+        closeModal('login-modal');
+        document.getElementById('login-user').value = '';
+        document.getElementById('login-pass').value = '';
+        updateAdminUI();
+      } else {
+        errEl.innerText = "Invalid Admin Credentials.";
+        errEl.classList.remove('hidden');
+      }
+    }
+
+    function updateAdminUI() {
+      const adminElements = document.querySelectorAll('.admin-only');
+      const authBtn = document.getElementById('auth-btn');
+
+      if(window.isAdmin) {
+        adminElements.forEach(el => el.classList.remove('hidden'));
+        authBtn.innerHTML = `<i class="fa-solid fa-right-from-bracket"></i> <span>Logout Admin</span>`;
+        authBtn.classList.replace('bg-slate-800', 'bg-red-600');
+        authBtn.classList.replace('hover:bg-slate-700', 'hover:bg-red-700');
+      } else {
+        adminElements.forEach(el => el.classList.add('hidden'));
+        authBtn.innerHTML = `<i class="fa-solid fa-lock"></i> <span>Admin Login</span>`;
+        authBtn.classList.replace('bg-red-600', 'bg-slate-800');
+        authBtn.classList.replace('hover:bg-red-700', 'hover:bg-slate-700');
+      }
+      // Re-render feed and listings to apply delete buttons
+      if(window.allBlogs) renderBlogFeed();
+      if(window.allListings) renderListings(window.allListings);
+    }
+
+    // ---------- PROFILE UPDATES ----------
+    function editProfileField(type) {
+      if(!window.isAdmin) return;
+      if(type === 'cover') {
+        const url = prompt("Enter Cover Photo URL:");
+        if(url) window.set(window.ref(window.db, 'profile/cover'), url);
+      } else if(type === 'avatar') {
+        const url = prompt("Enter Profile Photo URL:");
+        if(url) window.set(window.ref(window.db, 'profile/avatar'), url);
+      } else if(type === 'name') {
+        const name = prompt("Enter Agent Name:");
+        if(name) window.set(window.ref(window.db, 'profile/name'), name);
+      } else if(type === 'bio') {
+        const bio = prompt("Enter Bio Details:");
+        if(bio) window.set(window.ref(window.db, 'profile/bio'), bio);
+      } else if(type === 'contact') {
+        const email = prompt("Enter Contact Email:");
+        const phone = prompt("Enter Contact Phone Number:");
+        if(email) window.set(window.ref(window.db, 'profile/email'), email);
+        if(phone) window.set(window.ref(window.db, 'profile/phone'), phone);
+      }
+    }
+
+    // ---------- PROJECT LISTINGS ----------
+    function saveListing(e) {
+      e.preventDefault();
+      const name = document.getElementById('list-name').value;
+      const location = document.getElementById('list-location').value;
+      const tcp = document.getElementById('list-tcp').value;
+      const amort = document.getElementById('list-amort').value;
+      const desc = document.getElementById('list-desc').value;
+      const photosRaw = document.getElementById('list-photos').value;
+      const photos = photosRaw.split(',').map(url => url.trim()).filter(url => url.length > 0).slice(0, 10);
+
+      const newRef = window.push(window.ref(window.db, 'listings'));
+      window.set(newRef, { name, location, tcp, amort, desc, photos }).then(() => {
+        closeModal('listing-modal');
+        e.target.reset();
+      });
+    }
+
+    function renderListings(listings) {
+      const container = document.getElementById('listings-container');
+      container.innerHTML = '';
+
+      const keys = Object.keys(listings);
+      if(keys.length === 0) {
+        container.innerHTML = `<div class="w-full text-center py-8 text-slate-400 text-sm">No project listings added yet.</div>`;
+        return;
+      }
+
+      keys.forEach(id => {
+        const item = listings[id];
+        const cardPhoto = (item.photos && item.photos.length > 0) ? item.photos[0] : 'https://via.placeholder.com/400x300';
+        
+        const card = document.createElement('div');
+        card.className = "min-w-[280px] sm:min-w-[320px] max-w-[320px] bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col justify-between cursor-pointer group snap-start relative";
+        
+        card.innerHTML = `
+          ${window.isAdmin ? `<button onclick="event.stopPropagation(); deleteItem('listings/${id}')" class="absolute top-3 right-3 bg-red-600 text-white p-2 rounded-full text-xs shadow-lg z-20 hover:bg-red-700"><i class="fa-solid fa-trash"></i></button>` : ''}
+          <div onclick="openListingDetails('${id}')">
+            <div class="relative h-48 overflow-hidden">
+              <img src="${cardPhoto}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <div class="absolute top-3 left-3 bg-blue-600/90 text-white text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md backdrop-blur-md">
+                ${item.location}
+              </div>
+            </div>
+            <div class="p-5">
+              <h3 class="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition line-clamp-1">${item.name}</h3>
+              <div class="mt-3 space-y-1.5 border-t border-slate-100 pt-3 text-xs text-slate-600">
+                <div class="flex justify-between"><span class="text-slate-400">TCP:</span> <span class="font-bold text-slate-800">${item.tcp}</span></div>
+                <div class="flex justify-between"><span class="text-slate-400">Monthly:</span> <span class="font-semibold text-emerald-600">${item.amort}</span></div>
+              </div>
+            </div>
+          </div>
+          <div onclick="openListingDetails('${id}')" class="px-5 py-3 bg-slate-50 border-t border-slate-100 text-center text-xs font-semibold text-blue-600 hover:bg-blue-50 transition">
+            View Details & FAQs <i class="fa-solid fa-chevron-right ml-1"></i>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function openListingDetails(id) {
+      const item = window.allListings[id];
+      if(!item) return;
+
+      const modalContent = document.getElementById('listing-details-content');
+      const photos = item.photos || [];
+      const faqs = item.faqs ? Object.entries(item.faqs) : [];
+
+      modalContent.innerHTML = `
+        <div class="relative h-64 md:h-80 w-full bg-slate-900">
+          <img id="detail-main-img" src="${photos[0] || 'https://via.placeholder.com/600'}" class="w-full h-full object-cover">
+        </div>
+
+        ${photos.length > 1 ? `
+          <div class="flex gap-2 p-4 overflow-x-auto bg-slate-100 border-b custom-scrollbar">
+            ${photos.map(p => `<img src="${p}" onclick="document.getElementById('detail-main-img').src='${p}'" class="w-16 h-12 object-cover rounded-lg cursor-pointer border-2 border-transparent hover:border-blue-500 transition">`).join('')}
+          </div>
+        ` : ''}
+
+        <div class="p-6 md:p-8">
+          <div class="flex justify-between items-start flex-wrap gap-2 mb-4">
+            <div>
+              <h2 class="text-2xl font-bold text-slate-900">${item.name}</h2>
+              <p class="text-sm text-slate-500"><i class="fa-solid fa-location-dot text-red-500 mr-1"></i> ${item.location}</p>
+            </div>
+            <div class="text-right">
+              <span class="block text-xl font-extrabold text-blue-600">${item.tcp}</span>
+              <span class="text-xs text-emerald-600 font-semibold">${item.amort}</span>
+            </div>
+          </div>
+
+          <div class="border-t border-slate-100 pt-4 mb-6">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Description</h4>
+            <p class="text-slate-600 text-sm leading-relaxed">${item.desc}</p>
+          </div>
+
+          <div class="border-t border-slate-200 pt-6">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="text-lg font-bold text-slate-800">Frequently Asked Questions</h3>
+              ${window.isAdmin ? `<button onclick="openAddFAQ('${id}')" class="text-xs bg-blue-100 text-blue-700 px-3 py-1.5 rounded-lg font-medium hover:bg-blue-200"><i class="fa-solid fa-plus mr-1"></i> Add FAQ</button>` : ''}
+            </div>
+
+            <div class="space-y-3" id="faq-list">
+              ${faqs.length === 0 ? `<p class="text-xs text-slate-400 italic">No FAQs added for this property yet.</p>` : ''}
+              ${faqs.map(([fKey, faq]) => `
+                <div class="border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
+                  <button onclick="toggleFAQ('${fKey}')" class="w-full text-left p-4 font-semibold text-sm text-slate-800 flex justify-between items-center hover:bg-slate-100 transition">
+                    <span>${faq.question}</span>
+                    <i class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform" id="faq-icon-${fKey}"></i>
+                  </button>
+                  <div id="faq-ans-${fKey}" class="hidden p-4 pt-0 text-xs text-slate-600 border-t border-slate-100 bg-white">
+                    ${faq.answer}
+                    ${window.isAdmin ? `<div class="mt-2 text-right"><button onclick="deleteItem('listings/${id}/faqs/${fKey}'); closeModal('listing-details-modal');" class="text-red-500 text-[10px] hover:underline">Delete FAQ</button></div>` : ''}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+
+      openModal('listing-details-modal');
+    }
+
+    function toggleFAQ(fKey) {
+      const ans = document.getElementById(`faq-ans-${fKey}`);
+      const icon = document.getElementById(`faq-icon-${fKey}`);
+      if(ans) {
+        ans.classList.toggle('hidden');
+        icon.classList.toggle('rotate-180');
+      }
+    }
+
+    function openAddFAQ(listingId) {
+      document.getElementById('faq-listing-id').value = listingId;
+      openModal('faq-modal');
+    }
+
+    function saveFAQ(e) {
+      e.preventDefault();
+      const listingId = document.getElementById('faq-listing-id').value;
+      const question = document.getElementById('faq-question').value;
+      const answer = document.getElementById('faq-answer').value;
+
+      const newRef = window.push(window.ref(window.db, `listings/${listingId}/faqs`));
+      window.set(newRef, { question, answer }).then(() => {
+        closeModal('faq-modal');
+        closeModal('listing-details-modal');
+        e.target.reset();
+      });
+    }
+
+    // ---------- REELS CAROUSEL ----------
+    function saveReel(e) {
+      e.preventDefault();
+      const title = document.getElementById('reel-title').value;
+      const url = document.getElementById('reel-url').value;
+
+      const newRef = window.push(window.ref(window.db, 'reels'));
+      window.set(newRef, { title, url }).then(() => {
+        closeModal('reel-modal');
+        e.target.reset();
+      });
+    }
+
+    function renderReels(reels) {
+      const container = document.getElementById('reels-container');
+      container.innerHTML = '';
+      
+      const entries = Object.entries(reels).slice(0, 10); // Cap at 10
+      if(entries.length === 0) {
+        container.innerHTML = `<div class="swiper-slide text-center text-slate-400 text-xs py-12">No video reels added.</div>`;
+        window.initSwiper();
+        return;
+      }
+
+      entries.forEach(([id, reel]) => {
+        const slide = document.createElement('div');
+        slide.className = 'swiper-slide';
+        slide.innerHTML = `
+          <div class="relative bg-black rounded-2xl overflow-hidden aspect-[9/16] shadow-xl group">
+            ${window.isAdmin ? `<button onclick="deleteItem('reels/${id}')" class="absolute top-2 right-2 bg-red-600 text-white p-2 rounded-full text-xs z-30 shadow hover:bg-red-700"><i class="fa-solid fa-trash"></i></button>` : ''}
             
-            if (body.getAttribute('data-theme') === 'dark') {
-                body.removeAttribute('data-theme');
-                icon.className = 'fas fa-moon';
-            } else {
-                body.setAttribute('data-theme', 'dark');
-                icon.className = 'fas fa-sun';
-            }
-        }
-
-        /* --- Layout Toggle Logic --- */
-        function toggleLayout() {
-            const grid = document.getElementById('projectsGrid');
-            const icon = document.getElementById('layoutIcon');
-
-            if (grid.classList.contains('grid-view')) {
-                grid.classList.replace('grid-view', 'list-view');
-                icon.className = 'fas fa-th-large';
-            } else {
-                grid.classList.replace('list-view', 'grid-view');
-                icon.className = 'fas fa-list';
-            }
-        }
-
-        /* --- Location Sorting Logic --- */
-        function sortByLocation() {
-            if (!navigator.geolocation) {
-                alert("Geolocation is not supported by your browser.");
-                return;
-            }
-
-            const icon = document.getElementById('locationIcon');
-            icon.classList.add('fa-spin');
-
-            navigator.geolocation.getCurrentPosition((position) => {
-                const userLat = position.coords.latitude;
-                const userLng = position.coords.longitude;
-
-                const grid = document.getElementById('projectsGrid');
-                const projects = Array.from(grid.querySelectorAll('.project-card'));
-
-                projects.sort((a, b) => {
-                    const latA = parseFloat(a.dataset.lat);
-                    const lngA = parseFloat(a.dataset.lng);
-                    const latB = parseFloat(b.dataset.lat);
-                    const lngB = parseFloat(b.dataset.lng);
-
-                    const distA = calculateDistance(userLat, userLng, latA, lngA);
-                    const distB = calculateDistance(userLat, userLng, latB, lngB);
-
-                    return distA - distB;
-                });
-
-                projects.forEach(project => {
-                    project.style.animation = 'none';
-                    grid.appendChild(project);
-                    setTimeout(() => project.style.animation = '', 10);
-                });
-
-                icon.classList.remove('fa-spin');
-                
-                const originalText = document.getElementById("toast").innerText;
-                document.getElementById("toast").innerText = "Sorted by nearest projects!";
-                showToast();
-                setTimeout(() => { document.getElementById("toast").innerText = originalText; }, 3000);
-
-            }, (error) => {
-                icon.classList.remove('fa-spin');
-                alert("Location access denied or unavailable.");
-            });
-        }
-
-        function calculateDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371; 
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            return R * c;
-        }
-
-        /* --- Modal Logic --- */
-        function openMapModal() {
-            document.getElementById('mapModal').classList.add('active');
-        }
-
-        function closeMapModal() {
-            document.getElementById('mapModal').classList.remove('active');
-        }
-
-        window.onclick = function(event) {
-            const modal = document.getElementById('mapModal');
-            if (event.target == modal) {
-                closeMapModal();
-            }
-        }
-
-        /* --- Clipboard Logic --- */
-        function copyToClipboard(text) {
-            const tempInput = document.createElement("textarea");
-            tempInput.value = text;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand("copy");
-            document.body.removeChild(tempInput);
-            showToast();
-        }
-
-        function showToast() {
-            const toast = document.getElementById("toast");
-            toast.className = "show";
-            setTimeout(() => { toast.className = ""; }, 3000);
-        }
-
-        /* --- Animated Background Canvas --- */
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function initCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            particles = [];
-            const particleCount = window.innerWidth < 768 ? 20 : 35; 
+            <video src="${reel.url}" class="reel-video w-full h-full object-cover" loop playsinline muted></video>
             
-            for (let i = 0; i < particleCount; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 80 + 40,
-                    dx: (Math.random() - 0.5) * 0.4,
-                    dy: (Math.random() - 0.5) * 0.4,
-                    color: Math.random() > 0.5 ? '212, 175, 55' : '74, 159, 227'
-                });
-            }
-        }
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-4 pointer-events-none">
+              <p class="font-bold text-sm text-white line-clamp-2">${reel.title}</p>
+              <span class="text-[10px] text-slate-300 mt-1 flex items-center gap-1"><i class="fa-solid fa-play text-[8px]"></i> Hover/Click to play</span>
+            </div>
+          </div>
+        `;
+        
+        // Video Play back behavior controls
+        const video = slide.querySelector('video');
+        slide.addEventListener('mouseenter', () => playSingleVideo(video));
+        slide.addEventListener('mouseleave', () => video.pause());
+        slide.addEventListener('click', () => {
+          if(video.paused) playSingleVideo(video);
+          else video.pause();
+        });
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(${p.color}, 0.18)`; 
-                ctx.fill();
-                
-                p.x += p.dx;
-                p.y += p.dy;
+        container.appendChild(slide);
+      });
 
-                if (p.x < -p.radius) p.x = canvas.width + p.radius;
-                if (p.x > canvas.width + p.radius) p.x = -p.radius;
-                if (p.y < -p.radius) p.y = canvas.height + p.radius;
-                if (p.y > canvas.height + p.radius) p.y = -p.radius;
-            });
-            requestAnimationFrame(animate);
-        }
+      window.initSwiper();
+    }
 
-        window.addEventListener('resize', initCanvas);
-        initCanvas();
-        animate();
-        updateDailyQuote();
-    </script>
+    function playSingleVideo(targetVideo) {
+      document.querySelectorAll('.reel-video').forEach(v => {
+        if(v !== targetVideo) v.pause();
+      });
+      targetVideo.play().catch(() => {});
+    }
+
+    // ---------- BLOG POSTS FEED & PAGINATION ----------
+    function saveBlog(e) {
+      e.preventDefault();
+      const img = document.getElementById('blog-img').value;
+      const caption = document.getElementById('blog-caption').value;
+
+      const newRef = window.push(window.ref(window.db, 'blogs'));
+      window.set(newRef, { img, caption, timestamp: Date.now() }).then(() => {
+        closeModal('blog-modal');
+        e.target.reset();
+      });
+    }
+
+    function renderBlogFeed() {
+      const container = document.getElementById('blog-container');
+      container.innerHTML = '';
+
+      const total = window.allBlogs.length;
+      if(total === 0) {
+        container.innerHTML = `<div class="text-center text-slate-400 py-8 text-sm">No news updates available.</div>`;
+        document.getElementById('blog-pagination').classList.add('hidden');
+        return;
+      }
+
+      document.getElementById('blog-pagination').classList.remove('hidden');
+      
+      const start = (window.blogPage - 1) * window.blogPostsPerPage;
+      const end = start + window.blogPostsPerPage;
+      const paginatedPosts = window.allBlogs.slice(start, end);
+
+      paginatedPosts.forEach(post => {
+        const postDate = new Date(post.timestamp || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        const isLongText = post.caption.length > 200;
+        
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden p-5 transition hover:shadow-md relative";
+        card.innerHTML = `
+          ${window.isAdmin ? `<button onclick="deleteItem('blogs/${post.id}')" class="absolute top-4 right-4 bg-red-600 text-white w-7 h-7 rounded-full text-xs flex items-center justify-center hover:bg-red-700 shadow"><i class="fa-solid fa-trash"></i></button>` : ''}
+          
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 font-bold flex items-center justify-center text-sm">
+              <i class="fa-solid fa-user-tie"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-slate-800 text-sm">Property Announcement</h4>
+              <span class="text-[11px] text-slate-400">${postDate}</span>
+            </div>
+          </div>
+
+          <div class="text-slate-700 text-sm leading-relaxed mb-4">
+            <span id="blog-text-short-${post.id}">
+              ${isLongText ? post.caption.substring(0, 200) + '...' : post.caption}
+            </span>
+            ${isLongText ? `
+              <span id="blog-text-full-${post.id}" class="hidden">${post.caption}</span>
+              <button onclick="toggleBlogText('${post.id}')" id="blog-btn-${post.id}" class="text-blue-600 font-semibold text-xs ml-1 hover:underline">View More</button>
+            ` : ''}
+          </div>
+
+          ${post.img ? `<div class="rounded-xl overflow-hidden max-h-96 bg-slate-100"><img src="${post.img}" class="w-full h-full object-cover"></div>` : ''}
+        `;
+        container.appendChild(card);
+      });
+
+      // Pagination Controls Update
+      const totalPages = Math.ceil(total / window.blogPostsPerPage) || 1;
+      document.getElementById('blog-page-info').innerText = `Page ${window.blogPage} of ${totalPages}`;
+      document.getElementById('btn-prev-page').disabled = window.blogPage === 1;
+      document.getElementById('btn-next-page').disabled = window.blogPage >= totalPages;
+    }
+
+    function toggleBlogText(id) {
+      const shortEl = document.getElementById(`blog-text-short-${id}`);
+      const fullEl = document.getElementById(`blog-text-full-${id}`);
+      const btn = document.getElementById(`blog-btn-${id}`);
+
+      if(fullEl.classList.contains('hidden')) {
+        fullEl.classList.remove('hidden');
+        shortEl.classList.add('hidden');
+        btn.innerText = "View Less";
+      } else {
+        fullEl.classList.add('hidden');
+        shortEl.classList.remove('hidden');
+        btn.innerText = "View More";
+      }
+    }
+
+    function changeBlogPage(direction) {
+      window.blogPage += direction;
+      renderBlogFeed();
+    }
+
+    // ---------- SOCIAL ACCOUNTS ----------
+    function saveSocial(e) {
+      e.preventDefault();
+      const name = document.getElementById('social-name').value;
+      const icon = document.getElementById('social-icon').value;
+      const url = document.getElementById('social-url').value;
+
+      const newRef = window.push(window.ref(window.db, 'socials'));
+      window.set(newRef, { name, icon, url }).then(() => {
+        closeModal('social-modal');
+        e.target.reset();
+      });
+    }
+
+    function renderSocials(socials) {
+      const container = document.getElementById('socials-container');
+      container.innerHTML = '';
+      
+      const entries = Object.entries(socials);
+      if(entries.length === 0) {
+        container.innerHTML = `<span class="text-xs text-slate-400">No social media profiles added.</span>`;
+        return;
+      }
+
+      entries.forEach(([id, item]) => {
+        const btn = document.createElement('div');
+        btn.className = "relative group";
+        btn.innerHTML = `
+          <a href="${item.url}" target="_blank" class="flex items-center gap-2 bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 px-4 py-2.5 rounded-xl font-medium text-xs transition duration-200 border border-slate-200/80 shadow-sm">
+            <i class="${item.icon} text-base"></i>
+            <span>${item.name}</span>
+          </a>
+          ${window.isAdmin ? `<button onclick="deleteItem('socials/${id}')" class="absolute -top-2 -right-2 bg-red-600 text-white w-5 h-5 rounded-full text-[10px] flex items-center justify-center shadow hover:bg-red-700"><i class="fa-solid fa-x"></i></button>` : ''}
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+    // ---------- FOOTER MODIFICATIONS ----------
+    function editFooterDetails() {
+      if(!window.isAdmin) return;
+      const brand = prompt("Enter Brand / Business Name:");
+      const about = prompt("Enter Short Footer Info:");
+      const logo = prompt("Enter Logo Image URL:");
+
+      if(brand) window.set(window.ref(window.db, 'footer/brand'), brand);
+      if(about) window.set(window.ref(window.db, 'footer/about'), about);
+      if(logo) window.set(window.ref(window.db, 'footer/logo'), logo);
+    }
+
+    function saveFooterLink(e) {
+      e.preventDefault();
+      const label = document.getElementById('footlink-label').value;
+      const url = document.getElementById('footlink-url').value;
+
+      const newRef = window.push(window.ref(window.db, 'footer/links'));
+      window.set(newRef, { label, url }).then(() => {
+        closeModal('footer-link-modal');
+        e.target.reset();
+      });
+    }
+
+    function renderFooterLinks(links) {
+      const container = document.getElementById('footer-links-container');
+      container.innerHTML = '';
+
+      Object.entries(links).forEach(([id, item]) => {
+        const li = document.createElement('li');
+        li.className = "flex items-center justify-between";
+        li.innerHTML = `
+          <a href="${item.url}" class="hover:text-blue-400 transition">${item.label}</a>
+          ${window.isAdmin ? `<button onclick="deleteItem('footer/links/${id}')" class="text-red-400 hover:text-red-600 text-xs ml-2"><i class="fa-solid fa-trash"></i></button>` : ''}
+        `;
+        container.appendChild(li);
+      });
+    }
+
+    // ---------- GENERIC UTILITIES ----------
+    function deleteItem(path) {
+      if(confirm('Are you sure you want to delete this item?')) {
+        window.remove(window.ref(window.db, path));
+      }
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+  </script>
 </body>
 </html>
