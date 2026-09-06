@@ -3,7 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agent Business Profile</title>
+  
+  <!-- Dynamic Meta Tags (Open Graph & Twitter Share Thumbnail/Title/Tagline) -->
+  <title id="meta-doc-title">Jane Doe | Real Estate Agent</title>
+  <meta name="description" id="meta-doc-desc" content="Licensed Real Estate Broker | Helping you find your dream home & high-yield real estate investments">
+  
+  <meta property="og:type" content="website">
+  <meta property="og:title" id="og-title" content="Jane Doe">
+  <meta property="og:description" id="og-desc" content="Licensed Real Estate Broker | Helping you find your dream home & high-yield real estate investments">
+  <meta property="og:image" id="og-image" content="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1600&q=80">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" id="tw-title" content="Jane Doe">
+  <meta name="twitter:description" id="tw-desc" content="Licensed Real Estate Broker | Helping you find your dream home & high-yield real estate investments">
+  <meta name="twitter:image" id="tw-image" content="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1600&q=80">
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -15,7 +28,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 
   <style>
-    /* Subtle Background Animation */
     @keyframes floatLight {
       0%, 100% { transform: translateY(0px) scale(1); }
       50% { transform: translateY(-12px) scale(1.02); }
@@ -28,9 +40,8 @@
     }
     .animate-pulse-glow { animation: pulseGlow 6s ease-in-out infinite; }
     
-    /* Light Theme Glassmorphism */
     .glass-panel {
-      background: rgba(255, 255, 255, 0.75);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.8);
@@ -63,14 +74,9 @@
       border-radius: 4px !important;
     }
 
-    /* Color Helpers */
-    .bg-custom-navy { background-color: #003366; }
-    .text-custom-navy { color: #003366; }
-    .border-custom-navy { border-color: #003366; }
-    
-    .bg-custom-gold { background-color: #f1c40f; }
-    .text-custom-gold { color: #f1c40f; }
-    .border-custom-gold { border-color: #f1c40f; }
+    .draggable-item { cursor: grab; }
+    .draggable-item:active { cursor: grabbing; }
+    .dragging { opacity: 0.4; }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-700 font-sans antialiased selection:bg-[#003366] selection:text-white flex flex-col min-h-screen relative overflow-x-hidden">
@@ -90,7 +96,7 @@
   <div class="fixed top-[-10%] left-[-10%] w-[45vw] h-[45vw] bg-sky-200/40 rounded-full blur-3xl pointer-events-none animate-float"></div>
   <div class="fixed bottom-[-10%] right-[-10%] w-[45vw] h-[45vw] bg-amber-100/50 rounded-full blur-3xl pointer-events-none animate-pulse-glow"></div>
 
-  <!-- ================= HERO & PROFILE HEADER SECTION ================= -->
+  <!-- ================= PROFILE SECTION ================= -->
   <header id="hero" class="relative mb-8 sm:mb-12">
     <!-- Hero Cover Container -->
     <div class="relative h-60 sm:h-72 md:h-80 w-full bg-slate-900 overflow-hidden">
@@ -102,35 +108,35 @@
         <i class="fa-solid fa-camera text-[#f1c40f]"></i> Change Cover
       </button>
 
-      <!-- Navigation Drawer Menu -->
+      <!-- Navigation Menu Drawer -->
       <div class="absolute top-4 right-4 z-30">
         <div class="relative">
           <button id="burger-menu-btn" onclick="toggleBurgerMenu()" class="bg-white/90 hover:bg-white text-[#003366] border border-white/50 px-3.5 py-2 rounded-md shadow-md flex items-center gap-2 text-xs font-semibold backdrop-blur-md transition active:scale-95">
             <i class="fa-solid fa-bars text-[#003366]"></i> Menu
           </button>
 
-          <!-- Dropdown Navigation Links -->
+          <!-- Dropdown Links with Unified Colors (Admin login button switches green/red) -->
           <div id="burger-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white/95 border border-slate-200 rounded-lg shadow-xl p-1.5 z-50 text-slate-700 backdrop-blur-xl">
-            <a href="#hero" onclick="toggleBurgerMenu()" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium hover:bg-slate-100 transition">
-              <i class="fa-solid fa-house text-[#003366] w-4"></i> Home
+            <a href="#hero" onclick="toggleBurgerMenu()" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium text-slate-700 hover:bg-slate-100 transition">
+              <i class="fa-solid fa-house text-slate-700 w-4"></i> Home
             </a>
-            <a href="#projects" onclick="toggleBurgerMenu()" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium hover:bg-slate-100 transition">
-              <i class="fa-solid fa-building text-[#003366] w-4"></i> Projects
+            <a href="#projects" onclick="toggleBurgerMenu()" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium text-slate-700 hover:bg-slate-100 transition">
+              <i class="fa-solid fa-building text-slate-700 w-4"></i> Projects
             </a>
-            <a href="#reels" onclick="toggleBurgerMenu()" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium hover:bg-slate-100 transition">
-              <i class="fa-solid fa-clapperboard text-[#003366] w-4"></i> Reels
+            <a href="#reels" onclick="toggleBurgerMenu()" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium text-slate-700 hover:bg-slate-100 transition">
+              <i class="fa-solid fa-clapperboard text-slate-700 w-4"></i> Reels
             </a>
-            <a href="#updates" onclick="toggleBurgerMenu()" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium hover:bg-slate-100 transition">
-              <i class="fa-solid fa-newspaper text-[#003366] w-4"></i> Updates
+            <a href="#updates" onclick="toggleBurgerMenu()" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium text-slate-700 hover:bg-slate-100 transition">
+              <i class="fa-solid fa-newspaper text-slate-700 w-4"></i> Updates
             </a>
-            <a href="#connect" onclick="toggleBurgerMenu()" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium hover:bg-slate-100 transition">
-              <i class="fa-solid fa-paper-plane text-[#003366] w-4"></i> Connect
+            <a href="#connect" onclick="toggleBurgerMenu()" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium text-slate-700 hover:bg-slate-100 transition">
+              <i class="fa-solid fa-paper-plane text-slate-700 w-4"></i> Connect
             </a>
-            <a href="#lead-capture" onclick="toggleBurgerMenu()" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-semibold text-[#003366] hover:bg-slate-100 transition border-t border-slate-100 mt-1 pt-2">
-              <i class="fa-solid fa-calendar-check text-[#f1c40f] w-4"></i> Inquiry
+            <a href="#lead-capture" onclick="toggleBurgerMenu()" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium text-slate-700 hover:bg-slate-100 transition border-t border-slate-100 mt-1 pt-2">
+              <i class="fa-solid fa-calendar-check text-slate-700 w-4"></i> Inquiry
             </a>
-            <!-- Admin Login / Logout Menu Item -->
-            <button id="menu-auth-btn" onclick="toggleBurgerMenu(); handleAuthClick();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-bold text-amber-600 bg-amber-50 hover:bg-amber-100 transition mt-1">
+            <!-- Dynamic Admin Button: Green logged out, Red logged in -->
+            <button id="menu-auth-btn" onclick="toggleBurgerMenu(); handleAuthClick();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-bold transition mt-1 text-emerald-600 bg-emerald-50 hover:bg-emerald-100">
               <i class="fa-solid fa-lock w-4"></i> <span id="menu-auth-label">Admin Login</span>
             </button>
           </div>
@@ -138,12 +144,11 @@
       </div>
     </div>
 
-    <!-- Align Header Profile Info & Layout -->
+    <!-- Profile Info Block -->
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="glass-panel rounded-xl p-5 sm:p-6 -mt-16 sm:-mt-20 relative z-10 shadow-lg flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
         
         <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left w-full md:w-auto">
-          <!-- Reduced Corner Radius Avatar -->
           <div class="relative group flex-shrink-0">
             <img id="profile-photo" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" alt="Profile" class="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-lg border-2 border-white shadow-md object-cover bg-white">
             <button onclick="editProfileField('avatar')" class="admin-only hidden absolute bottom-1 right-1 bg-[#003366] hover:bg-[#002244] text-[#f1c40f] p-2 rounded-md shadow transition active:scale-95">
@@ -163,7 +168,7 @@
           </div>
         </div>
 
-        <!-- Header Quick Contact Buttons -->
+        <!-- Contact Options -->
         <div class="flex items-center gap-2.5 w-full md:w-auto justify-center sm:justify-start pt-2 md:pt-0 border-t md:border-t-0 border-slate-200/60">
           <a id="contact-email" href="mailto:agent@example.com" title="Send Email" class="px-4 py-2 rounded-md bg-[#003366] text-white hover:bg-[#002244] text-xs font-semibold flex items-center gap-2 shadow-sm transition active:scale-95">
             <i class="fa-solid fa-envelope text-[#f1c40f]"></i> <span>Email</span>
@@ -180,10 +185,10 @@
     </div>
   </header>
 
-  <!-- ================= MAIN BODY CONTENT ================= -->
+  <!-- ================= MAIN CONTENT ================= -->
   <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16 pb-16 flex-grow w-full relative z-10">
 
-    <!-- 1. FEATURED PROJECT LISTINGS -->
+    <!-- B. FEATURED PROJECTS SECTION -->
     <section id="projects">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
@@ -199,14 +204,14 @@
       </div>
     </section>
 
-    <!-- 2. REELS & VIRTUAL TOURS SECTION -->
+    <!-- C. REELS & VIRTUAL TOURS CAROUSEL SECTION -->
     <section id="reels" class="glass-panel-dark text-white rounded-xl p-5 sm:p-7 shadow-xl relative overflow-hidden">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 relative z-10">
         <div>
-          <h2 class="text-2xl font-bold tracking-tight">Property Reels & Virtual Tours</h2>
-          <p class="text-slate-300 text-xs mt-0.5">Short video walkthroughs with native audio support</p>
+          <h2 class="text-2xl font-bold tracking-tight">Reels & Virtual Tours Carousel</h2>
+          <p class="text-slate-300 text-xs mt-0.5">Hover cursor over video to preview playback. Auto-stops when out of view.</p>
         </div>
-        <button onclick="openModal('reel-modal')" class="admin-only hidden bg-white/10 hover:bg-white/20 border border-white/20 text-white px-3.5 py-2 rounded-md font-medium text-xs transition flex items-center justify-center gap-1.5 backdrop-blur-md active:scale-95 self-start sm:self-auto">
+        <button onclick="openReelModal()" class="admin-only hidden bg-white/10 hover:bg-white/20 border border-white/20 text-white px-3.5 py-2 rounded-md font-medium text-xs transition flex items-center justify-center gap-1.5 backdrop-blur-md active:scale-95 self-start sm:self-auto">
           <i class="fa-solid fa-video text-[#f1c40f]"></i> Add Video Reel
         </button>
       </div>
@@ -218,7 +223,7 @@
       </div>
     </section>
 
-    <!-- 3. LATEST UPDATES & NEWS SECTION -->
+    <!-- D. LATEST UPDATES & NEWS SECTION -->
     <section id="updates" class="max-w-4xl mx-auto w-full">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
@@ -244,7 +249,7 @@
       </div>
     </section>
 
-    <!-- 4. CONNECT WITH ME SECTION -->
+    <!-- E. CONNECT WITH ME SECTION -->
     <section id="connect" class="glass-panel rounded-xl p-6 sm:p-8 text-center max-w-4xl mx-auto w-full">
       <div class="flex items-center justify-center gap-2 mb-1">
         <h2 class="text-2xl font-bold text-[#003366] tracking-tight">Connect With Me</h2>
@@ -258,7 +263,7 @@
       </div>
     </section>
 
-    <!-- 5. LEAD CAPTURE SECTION -->
+    <!-- F. LEAD FORM SECTION -->
     <section id="lead-capture" class="glass-panel-dark text-white rounded-xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
       <div class="max-w-3xl mx-auto relative z-10">
         <div class="flex justify-between items-start gap-4 mb-5">
@@ -267,7 +272,7 @@
             <h2 class="text-2xl font-bold mt-1 tracking-tight">Request Property Information</h2>
             <p class="text-slate-300 text-xs mt-0.5">Leave your contact details and our agent will connect with you shortly.</p>
           </div>
-          <button onclick="openModal('lead-settings-modal')" class="admin-only hidden bg-white/10 hover:bg-white/20 text-white p-2 rounded-md border border-white/20 text-xs" title="Lead Capture Settings">
+          <button onclick="openModal('lead-settings-modal')" class="admin-only hidden bg-white/10 hover:bg-white/20 text-white p-2 rounded-md border border-white/20 text-xs" title="Lead Capture & Integration Settings">
             <i class="fa-solid fa-sliders"></i>
           </button>
         </div>
@@ -300,7 +305,7 @@
 
   </main>
 
-  <!-- ================= FOOTER SECTION ================= -->
+  <!-- G. FOOTER SECTION -->
   <footer id="footer-section" class="bg-[#001f3f] text-slate-300 pt-10 pb-6 border-t border-[#001a33] mt-auto relative z-10">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
       
@@ -314,10 +319,11 @@
       </div>
 
       <div>
-        <h4 class="text-white font-semibold mb-3 text-xs uppercase tracking-wider">Quick Navigation</h4>
+        <!-- Renamed Quick Navigation to Related Links -->
+        <h4 class="text-white font-semibold mb-3 text-xs uppercase tracking-wider">Related Links</h4>
         <ul id="footer-links-container" class="space-y-2 text-xs">
         </ul>
-        <button onclick="openModal('footer-link-modal')" class="admin-only hidden mt-2 text-[11px] font-medium text-[#f1c40f] hover:underline">+ Add Footer Link</button>
+        <button onclick="openModal('footer-link-modal')" class="admin-only hidden mt-2 text-[11px] font-medium text-[#f1c40f] hover:underline">+ Add Related Link</button>
       </div>
 
       <div class="flex flex-col justify-between">
@@ -336,7 +342,7 @@
 
   <!-- ================= MODALS & POPUPS ================= -->
 
-  <!-- AUTO LEAD POPUP MODAL -->
+  <!-- POPUP LEAD CAPTURE MODAL -->
   <div id="lead-popup-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
     <div class="glass-panel bg-white/95 rounded-xl p-6 max-w-md w-full shadow-2xl relative border border-slate-200">
       <button onclick="closeModal('lead-popup-modal')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 text-base p-1">
@@ -372,22 +378,44 @@
     </div>
   </div>
 
-  <!-- LEAD CAPTURE SETTINGS MODAL (ADMIN ONLY) -->
+  <!-- LEAD SETTINGS & INTEGRATIONS MODAL (ADMIN ONLY) -->
   <div id="lead-settings-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl border border-slate-200">
-      <h3 class="text-base font-bold text-slate-800 mb-3">Lead Capture Settings</h3>
+    <div class="bg-white rounded-xl p-6 max-w-lg w-full shadow-2xl border border-slate-200">
+      <h3 class="text-base font-bold text-slate-800 mb-1">Lead Capture & Integrations Settings</h3>
+      <p class="text-xs text-slate-500 mb-4">Configure recipient parameters, Google Sheets Apps Script URL, and optional Telegram Bot integrations.</p>
+      
       <form onsubmit="saveLeadSettings(event)" class="space-y-3.5">
         <div>
           <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Notification Email</label>
           <input type="email" id="setting-lead-email" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
         <div>
-          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Notification Phone/WhatsApp Number</label>
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Notification Phone Number</label>
           <input type="text" id="setting-lead-phone" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
-        <div class="flex gap-2.5 pt-1">
+        <div>
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Google Spreadsheet Webhook URL (Apps Script Endpoint)</label>
+          <input type="url" id="setting-sheet-url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
+          <span class="text-[10px] text-slate-400 mt-0.5 block">Captured form submissions will be encoded to this Google Sheet.</span>
+        </div>
+        
+        <div class="border-t border-slate-200 pt-3">
+          <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Telegram Bot Integration (Optional)</h4>
+          <div class="space-y-2">
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-500 uppercase">Telegram Bot Token API</label>
+              <input type="text" id="setting-tg-token" placeholder="123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ" class="w-full px-3 py-1.5 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-500 uppercase">Telegram Chat ID</label>
+              <input type="text" id="setting-tg-chatid" placeholder="-1001234567890 or User ID" class="w-full px-3 py-1.5 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-2.5 pt-2">
           <button type="button" onclick="closeModal('lead-settings-modal')" class="w-1/2 py-2 rounded-md border border-slate-300 text-slate-600 text-xs font-medium">Cancel</button>
-          <button type="submit" class="w-1/2 py-2 rounded-md bg-[#003366] hover:bg-[#002244] text-white text-xs font-semibold shadow active:scale-95 transition">Save Settings</button>
+          <button type="submit" class="w-1/2 py-2 rounded-md bg-[#003366] hover:bg-[#002244] text-white text-xs font-semibold shadow active:scale-95 transition">Save Integrations</button>
         </div>
       </form>
     </div>
@@ -421,7 +449,7 @@
     </div>
   </div>
 
-  <!-- LISTING DETAILS MODAL -->
+  <!-- PROJECT LISTING DETAILS MODAL (Admin photo add/remove controls inside) -->
   <div id="listing-details-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl my-auto relative border border-slate-100">
       <button onclick="closeModal('listing-details-modal')" class="absolute top-3 right-3 z-30 bg-slate-900/60 hover:bg-slate-900 text-white w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md transition active:scale-95 shadow">
@@ -432,7 +460,7 @@
     </div>
   </div>
 
-  <!-- BLOG DETAILS MODAL -->
+  <!-- BLOG POST DETAILS MODAL -->
   <div id="blog-details-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl my-auto relative border border-slate-100 p-5 sm:p-7">
       <button onclick="closeModal('blog-details-modal')" class="absolute top-3 right-3 z-30 bg-slate-100 hover:bg-slate-200 text-slate-700 w-8 h-8 rounded-full flex items-center justify-center transition active:scale-95">
@@ -443,7 +471,7 @@
     </div>
   </div>
 
-  <!-- ADD / EDIT LISTING MODAL -->
+  <!-- ADD LISTING MODAL -->
   <div id="listing-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white rounded-xl p-6 max-w-xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl my-auto border border-slate-100">
       <h3 class="text-lg font-bold text-slate-800 mb-3">Add Project Listing</h3>
@@ -459,30 +487,28 @@
           </div>
           <div>
             <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Total Price (₱ Peso)</label>
-            <input type="text" id="list-tcp" placeholder="e.g. ₱3,500,000" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
+            <input type="text" id="list-tcp" placeholder="3,500,000" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
           </div>
         </div>
         <div>
           <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Monthly Amortization</label>
-          <input type="text" id="list-amort" placeholder="e.g. ₱15,000 / month" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
+          <input type="text" id="list-amort" placeholder="15,000 / month" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
         <div>
-          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Description</label>
-          <textarea id="list-desc" rows="3" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none"></textarea>
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Description (HTML, Spacing, Bold, Links, Emojis Enabled)</label>
+          <textarea id="list-desc" rows="3" required placeholder="Enter description... <b>Bold</b> or <a href='...'>Links</a>" class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none"></textarea>
         </div>
         <div>
           <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Photo URLs (Comma-separated)</label>
           <textarea id="list-photos" rows="2" placeholder="https://..., https://..." required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none"></textarea>
-          <span class="text-[10px] text-slate-400 mt-1 block">Photos will be displayed inside the project card modal view.</span>
         </div>
         
-        <!-- Dynamic Link Buttons Section -->
         <div class="border-t border-slate-200 pt-3">
-          <label class="block text-[11px] font-medium text-slate-600 mb-2 uppercase tracking-wider">Custom Link Buttons</label>
+          <label class="block text-[11px] font-medium text-slate-600 mb-2 uppercase tracking-wider">Custom Action Buttons (Inside Modal Only)</label>
           <div id="custom-buttons-inputs" class="space-y-2">
           </div>
           <button type="button" onclick="addCustomButtonInputRow()" class="mt-2 text-xs font-semibold text-[#003366] hover:underline flex items-center gap-1">
-            <i class="fa-solid fa-plus-circle"></i> Add Button Link
+            <i class="fa-solid fa-plus-circle"></i> Add Link Button
           </button>
         </div>
 
@@ -516,17 +542,18 @@
     </div>
   </div>
 
-  <!-- REEL MODAL -->
+  <!-- ADD / EDIT REEL MODAL -->
   <div id="reel-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl border border-slate-100">
-      <h3 class="text-base font-bold text-slate-800 mb-3">Add Video Reel</h3>
+      <h3 id="reel-modal-title" class="text-base font-bold text-slate-800 mb-3">Add Video Reel</h3>
+      <input type="hidden" id="reel-edit-id">
       <form onsubmit="saveReel(event)" class="space-y-3.5">
         <div>
           <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Reel Title</label>
           <input type="text" id="reel-title" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
         <div>
-          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Video Source URL (MP4 Format Recommended)</label>
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Video Source Link (URL MP4 recommended)</label>
           <input type="url" id="reel-url" placeholder="https://example.com/video.mp4" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
         <div class="flex gap-2.5 pt-1">
@@ -547,8 +574,9 @@
           <input type="text" id="blog-title" placeholder="e.g. New Housing Development Unveiled" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
         <div>
-          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Image Source URLs (Comma-separated for multiple)</label>
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Thumbnail & Image URLs (Comma-separated for multiple)</label>
           <textarea id="blog-img" rows="2" placeholder="https://..., https://..." class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none"></textarea>
+          <span class="text-[10px] text-slate-400 mt-0.5 block">1st Image will be displayed as full size post thumbnail.</span>
         </div>
         <div>
           <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Post Caption / Announcement</label>
@@ -562,7 +590,7 @@
     </div>
   </div>
 
-  <!-- FULLSCREEN LIGHTBOX MODAL -->
+  <!-- LIGHTBOX IMAGE VIEWER -->
   <div id="image-viewer-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
     <button onclick="closeModal('image-viewer-modal')" class="absolute top-4 right-4 text-white/80 hover:text-white text-xl p-2 z-20">
       <i class="fa-solid fa-xmark"></i>
@@ -578,10 +606,10 @@
     </div>
   </div>
 
-  <!-- SOCIAL ACCOUNT MODAL WITH ICON PICKER -->
+  <!-- SOCIAL LINK MODAL -->
   <div id="social-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl border border-slate-100">
-      <h3 class="text-base font-bold text-slate-800 mb-3">Add Social Media Profile</h3>
+      <h3 class="text-base font-bold text-slate-800 mb-3">Add Social Profile</h3>
       <form onsubmit="saveSocial(event)" class="space-y-3.5">
         <div>
           <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Platform Name</label>
@@ -610,7 +638,7 @@
   <!-- FOOTER LINK MODAL -->
   <div id="footer-link-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl border border-slate-100">
-      <h3 class="text-base font-bold text-slate-800 mb-3">Add Footer Link</h3>
+      <h3 class="text-base font-bold text-slate-800 mb-3">Add Related Link</h3>
       <form onsubmit="saveFooterLink(event)" class="space-y-3.5">
         <div>
           <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Link Label</label>
@@ -631,12 +659,11 @@
   <!-- Swiper JS Script -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
-  <!-- Firebase App & Database Scripts -->
+  <!-- Firebase App & Realtime DB Core Modules -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, set, onValue, push, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    // Firebase Credentials Setup
     const firebaseConfig = {
       apiKey: "AIzaSyCq9fPSLPMZ8p6Km4O4SvyB-OZNRMKS79s",
       authDomain: "dtr-online.firebaseapp.com",
@@ -647,11 +674,9 @@
       appId: "1:660180421531:web:931d4e3fb183521bc9ef3e"
     };
 
-    // Firebase Initialization
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // Global Window Bindings
     window.db = db;
     window.ref = ref;
     window.set = set;
@@ -663,14 +688,16 @@
     window.blogPostsPerPage = 3;
     window.allBlogs = [];
     window.allListings = {};
+    window.allReels = [];
+    window.allSocials = [];
+    window.allFooterLinks = [];
     window.profileData = {};
-    window.leadSettings = { email: 'agent@example.com', phone: '+1234567890' };
+    window.leadSettings = { email: 'agent@example.com', phone: '+1234567890', sheetUrl: '', tgToken: '', tgChatId: '' };
 
     let swiperInstance = null;
 
     document.getElementById('year').innerText = new Date().getFullYear();
 
-    // Loading State Tracker
     let loadedSections = { profile: false, listings: false, reels: false, blogs: false, socials: false, footer: false };
 
     function checkDataLoaded(section) {
@@ -686,30 +713,44 @@
       }
     }
 
-    // Show Auto Lead Modal Popup on Load
-    setTimeout(() => {
-      openModal('lead-popup-modal');
-    }, 1500);
+    setTimeout(() => { openModal('lead-popup-modal'); }, 1500);
 
-    // Load Lead Settings Recipient Data
+    // Sync Lead Settings
     onValue(ref(db, 'leadSettings'), (snapshot) => {
       const data = snapshot.val();
       if(data) {
         window.leadSettings = data;
         document.getElementById('setting-lead-email').value = data.email || '';
         document.getElementById('setting-lead-phone').value = data.phone || '';
+        document.getElementById('setting-sheet-url').value = data.sheetUrl || '';
+        document.getElementById('setting-tg-token').value = data.tgToken || '';
+        document.getElementById('setting-tg-chatid').value = data.tgChatId || '';
       }
     });
 
-    // Realtime Database Listeners
+    // Sync Profile & Share Meta Tags
     onValue(ref(db, 'profile'), (snapshot) => {
       const data = snapshot.val();
       if(data) {
         window.profileData = data;
-        if(data.cover) document.getElementById('cover-photo').src = data.cover;
+        if(data.cover) {
+          document.getElementById('cover-photo').src = data.cover;
+          document.getElementById('og-image').setAttribute('content', data.cover);
+          document.getElementById('tw-image').setAttribute('content', data.cover);
+        }
         if(data.avatar) document.getElementById('profile-photo').src = data.avatar;
-        if(data.name) document.getElementById('profile-name').innerText = data.name;
-        if(data.bio) document.getElementById('profile-bio').innerText = data.bio;
+        if(data.name) {
+          document.getElementById('profile-name').innerText = data.name;
+          document.getElementById('meta-doc-title').innerText = `${data.name} | Real Estate Agent`;
+          document.getElementById('og-title').setAttribute('content', data.name);
+          document.getElementById('tw-title').setAttribute('content', data.name);
+        }
+        if(data.bio) {
+          document.getElementById('profile-bio').innerText = data.bio;
+          document.getElementById('meta-doc-desc').setAttribute('content', data.bio);
+          document.getElementById('og-desc').setAttribute('content', data.bio);
+          document.getElementById('tw-desc').setAttribute('content', data.bio);
+        }
         if(data.email) {
           document.getElementById('contact-email').href = `mailto:${data.email}`;
           if(!window.leadSettings.email) window.leadSettings.email = data.email;
@@ -731,7 +772,9 @@
 
     onValue(ref(db, 'reels'), (snapshot) => {
       const data = snapshot.val() || {};
-      renderReels(data);
+      const arr = Array.isArray(data) ? data : Object.entries(data).map(([key, val]) => ({ id: key, ...val }));
+      window.allReels = arr;
+      renderReels(arr);
       checkDataLoaded('reels');
     });
 
@@ -746,7 +789,9 @@
 
     onValue(ref(db, 'socials'), (snapshot) => {
       const data = snapshot.val() || {};
-      renderSocials(data);
+      const arr = Array.isArray(data) ? data : Object.entries(data).map(([key, val]) => ({ id: key, ...val }));
+      window.allSocials = arr;
+      renderSocials(arr);
       checkDataLoaded('socials');
     });
 
@@ -756,21 +801,21 @@
         if(data.logo) document.getElementById('footer-logo').src = data.logo;
         if(data.brand) document.getElementById('footer-brand-name').innerText = data.brand;
         if(data.about) document.getElementById('footer-about').innerText = data.about;
-        if(data.links) renderFooterLinks(data.links);
+        if(data.links) {
+          const arr = Array.isArray(data.links) ? data.links : Object.entries(data.links).map(([k, v]) => ({ id: k, ...v }));
+          window.allFooterLinks = arr;
+          renderFooterLinks(arr);
+        }
       }
       checkDataLoaded('footer');
     });
 
-    // Swiper Reel Initialization with 4-second Autoplay
+    // Swiper Carousel Initialization
     window.initSwiper = function() {
       if(swiperInstance) swiperInstance.destroy();
       swiperInstance = new Swiper('.reelsSwiper', {
         slidesPerView: 1.2,
         spaceBetween: 14,
-        autoplay: {
-          delay: 4000,
-          disableOnInteraction: false,
-        },
         pagination: { el: '.swiper-pagination', clickable: true },
         breakpoints: {
           480: { slidesPerView: 1.8, spaceBetween: 16 },
@@ -780,7 +825,6 @@
       });
     };
 
-    // Render Social Media Icon Picker
     window.initIconPicker = function() {
       const icons = [
         { name: 'Facebook', class: 'fa-brands fa-facebook-f' },
@@ -823,7 +867,16 @@
   </script>
 
   <script>
-    // ---------- BURGER MENU TOGGLE ----------
+    // Helper to format Peso Currency Symbol
+    function formatPeso(val) {
+      if(!val) return '₱0';
+      const clean = val.toString().replace(/[^0-9.]/g, '');
+      if(!clean) return val;
+      const num = parseFloat(clean);
+      return '₱' + (isNaN(num) ? val : num.toLocaleString('en-PH'));
+    }
+
+    // Burger Menu Logic
     function toggleBurgerMenu() {
       const dropdown = document.getElementById('burger-dropdown');
       if (dropdown) dropdown.classList.toggle('hidden');
@@ -837,7 +890,7 @@
       }
     });
 
-    // ---------- MODAL CONTROLLERS ----------
+    // Modal Visibility Logic
     function openModal(id) {
       const modal = document.getElementById(id);
       if(modal) modal.classList.remove('hidden');
@@ -848,12 +901,12 @@
       if(modal) modal.classList.add('hidden');
     }
 
-    // ---------- AUTHENTICATION ----------
+    // Auth & Navigation Color Logic
     function handleAuthClick() {
       if(window.isAdmin) {
         window.isAdmin = false;
         updateAdminUI();
-        alert('Logged out from admin panel.');
+        alert('Logged out from admin mode.');
       } else {
         openModal('login-modal');
       }
@@ -881,24 +934,34 @@
     function updateAdminUI() {
       const adminElements = document.querySelectorAll('.admin-only');
       const menuAuthLabel = document.getElementById('menu-auth-label');
+      const menuAuthBtn = document.getElementById('menu-auth-btn');
 
       if(window.isAdmin) {
         adminElements.forEach(el => el.classList.remove('hidden'));
         if (menuAuthLabel) menuAuthLabel.innerText = "Logout Admin";
+        if (menuAuthBtn) {
+          menuAuthBtn.className = "w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-bold transition mt-1 text-red-600 bg-red-50 hover:bg-red-100";
+        }
       } else {
         adminElements.forEach(el => el.classList.add('hidden'));
         if (menuAuthLabel) menuAuthLabel.innerText = "Admin Login";
+        if (menuAuthBtn) {
+          menuAuthBtn.className = "w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-bold transition mt-1 text-emerald-600 bg-emerald-50 hover:bg-emerald-100";
+        }
       }
 
       if(window.allBlogs) renderBlogFeed();
       if(window.allListings) renderListings(window.allListings);
+      if(window.allReels) renderReels(window.allReels);
+      if(window.allSocials) renderSocials(window.allSocials);
+      if(window.allFooterLinks) renderFooterLinks(window.allFooterLinks);
     }
 
-    // ---------- PROFILE UPDATES ----------
+    // A. Profile Section Actions
     function editProfileField(type) {
       if(!window.isAdmin) return;
       if(type === 'cover') {
-        const url = prompt("Enter Cover / Hero Photo URL:");
+        const url = prompt("Enter Cover Photo URL:");
         if(url) window.set(window.ref(window.db, 'profile/cover'), url);
       } else if(type === 'avatar') {
         const url = prompt("Enter Profile Photo URL:");
@@ -917,88 +980,13 @@
       }
     }
 
-    // ---------- FOOTER UPDATES ----------
-    function editFooterDetails() {
-      if(!window.isAdmin) return;
-      const logo = prompt("Enter Footer Logo Image URL:");
-      const brand = prompt("Enter Brand / Business Name:");
-      const about = prompt("Enter Footer About Text:");
-
-      if(logo) window.set(window.ref(window.db, 'footer/logo'), logo);
-      if(brand) window.set(window.ref(window.db, 'footer/brand'), brand);
-      if(about) window.set(window.ref(window.db, 'footer/about'), about);
-    }
-
-    function saveFooterLink(e) {
-      e.preventDefault();
-      const label = document.getElementById('footlink-label').value;
-      const url = document.getElementById('footlink-url').value;
-
-      const newRef = window.push(window.ref(window.db, 'footer/links'));
-      window.set(newRef, { label, url }).then(() => {
-        closeModal('footer-link-modal');
-        e.target.reset();
-      });
-    }
-
-    function renderFooterLinks(linksObj) {
-      const container = document.getElementById('footer-links-container');
-      if(!container) return;
-      container.innerHTML = '';
-      
-      Object.entries(linksObj).forEach(([id, link]) => {
-        const li = document.createElement('li');
-        li.className = "flex items-center justify-between";
-        li.innerHTML = `
-          <a href="${link.url}" target="_blank" class="hover:text-white transition flex items-center gap-1.5">
-            <i class="fa-solid fa-chevron-right text-[10px] text-[#f1c40f]"></i> ${link.label}
-          </a>
-          ${window.isAdmin ? `<button onclick="deleteItem('footer/links/${id}')" class="text-red-400 hover:text-red-300 ml-2"><i class="fa-solid fa-trash text-[10px]"></i></button>` : ''}
-        `;
-        container.appendChild(li);
-      });
-    }
-
-    // ---------- LEAD FORM SUBMISSION ----------
-    function saveLeadSettings(e) {
-      e.preventDefault();
-      const email = document.getElementById('setting-lead-email').value.trim();
-      const phone = document.getElementById('setting-lead-phone').value.trim();
-
-      window.set(window.ref(window.db, 'leadSettings'), { email, phone }).then(() => {
-        window.leadSettings = { email, phone };
-        alert('Lead recipient settings updated!');
-        closeModal('lead-settings-modal');
-      });
-    }
-
-    function submitLeadForm(e, isPopup = false) {
-      e.preventDefault();
-      const name = isPopup ? document.getElementById('popup-lead-name').value : document.getElementById('lead-name').value;
-      const phone = isPopup ? document.getElementById('popup-lead-phone').value : document.getElementById('lead-phone').value;
-      const email = isPopup ? document.getElementById('popup-lead-email').value : document.getElementById('lead-email').value;
-      const msg = isPopup ? 'Inquiry from Popup Form' : document.getElementById('lead-message').value;
-
-      const recipientEmail = window.leadSettings.email || 'agent@example.com';
-      const mailtoUrl = `mailto:${recipientEmail}?subject=New Property Lead Request from ${encodeURIComponent(name)}&body=Name: ${encodeURIComponent(name)}%0D%0APhone: ${encodeURIComponent(phone)}%0D%0AEmail: ${encodeURIComponent(email)}%0D%0AMessage: ${encodeURIComponent(msg)}`;
-
-      // Save to Firebase
-      const newRef = window.push(window.ref(window.db, 'leads'));
-      window.set(newRef, { name, phone, email, message: msg, recipient: recipientEmail, timestamp: Date.now() }).then(() => {
-        alert(`Thank you! Your request has been sent to the agent (${recipientEmail}).`);
-        if(isPopup) closeModal('lead-popup-modal');
-        e.target.reset();
-        window.location.href = mailtoUrl;
-      });
-    }
-
-    // ---------- FEATURED PROJECTS ----------
+    // B. Featured Projects Logic
     function addCustomButtonInputRow(label = '', url = '') {
       const container = document.getElementById('custom-buttons-inputs');
       const row = document.createElement('div');
       row.className = 'flex gap-2 items-center custom-btn-row';
       row.innerHTML = `
-        <input type="text" placeholder="Button Name" value="${label}" class="w-1/2 px-2.5 py-1.5 border border-slate-300 rounded-md text-xs btn-label">
+        <input type="text" placeholder="Button Label" value="${label}" class="w-1/2 px-2.5 py-1.5 border border-slate-300 rounded-md text-xs btn-label">
         <input type="url" placeholder="URL" value="${url}" class="w-1/2 px-2.5 py-1.5 border border-slate-300 rounded-md text-xs btn-url">
         <button type="button" onclick="this.parentElement.remove()" class="text-red-500 hover:text-red-700 p-1.5 text-xs"><i class="fa-solid fa-trash"></i></button>
       `;
@@ -1009,8 +997,8 @@
       e.preventDefault();
       const name = document.getElementById('list-name').value;
       const location = document.getElementById('list-location').value;
-      const tcp = document.getElementById('list-tcp').value;
-      const amort = document.getElementById('list-amort').value;
+      const tcp = formatPeso(document.getElementById('list-tcp').value);
+      const amort = document.getElementById('list-amort').value.includes('₱') ? document.getElementById('list-amort').value : formatPeso(document.getElementById('list-amort').value);
       const desc = document.getElementById('list-desc').value;
       const photosRaw = document.getElementById('list-photos').value;
       const photos = photosRaw.split(',').map(url => url.trim()).filter(url => url.length > 0);
@@ -1043,7 +1031,6 @@
       keys.forEach(id => {
         const item = listings[id];
         const photos = (item.photos && item.photos.length > 0) ? item.photos : ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80'];
-        const customBtns = item.customButtons || [];
 
         const card = document.createElement('div');
         card.className = "glass-panel bg-white/90 rounded-xl border border-slate-200/90 overflow-hidden shadow-sm hover-lift flex flex-col justify-between relative group";
@@ -1052,10 +1039,8 @@
           ${window.isAdmin ? `<button onclick="deleteItem('listings/${id}')" class="absolute top-2.5 right-2.5 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs shadow z-20 flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-trash"></i></button>` : ''}
           
           <div>
-            <!-- Single Featured Cover Image on Card Display -->
             <div class="relative h-48 sm:h-52 overflow-hidden bg-slate-900 cursor-pointer" onclick="openListingDetails('${id}')">
               <img src="${photos[0]}" alt="${item.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-              
               <div class="absolute top-2.5 left-2.5 bg-[#003366]/80 text-white text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded backdrop-blur-md border border-white/10 z-10">
                 <i class="fa-solid fa-location-dot text-[#f1c40f] mr-1"></i> ${item.location}
               </div>
@@ -1063,34 +1048,23 @@
 
             <div class="p-4 sm:p-5">
               <h3 onclick="openListingDetails('${id}')" class="text-base sm:text-lg font-bold text-[#003366] hover:text-[#002244] cursor-pointer transition-colors line-clamp-1">${item.name}</h3>
-              <p class="text-xs text-slate-500 mt-1.5 line-clamp-2 leading-relaxed">${item.desc}</p>
+              <div class="text-xs text-slate-500 mt-1.5 line-clamp-2 leading-relaxed">${item.desc}</div>
               
               <div class="mt-3.5 pt-3 border-t border-slate-100 grid grid-cols-2 gap-2 text-xs">
                 <div>
                   <span class="text-slate-400 font-medium block text-[10px]">Total Price</span>
-                  <span class="font-bold text-[#003366] text-xs sm:text-sm">${item.tcp}</span>
+                  <span class="font-bold text-[#003366] text-xs sm:text-sm">${item.tcp.startsWith('₱') ? item.tcp : '₱'+item.tcp}</span>
                 </div>
                 <div>
                   <span class="text-slate-400 font-medium block text-[10px]">Monthly starts</span>
                   <span class="font-semibold text-emerald-600 text-xs">${item.amort}</span>
                 </div>
               </div>
-
-              ${customBtns.length > 0 ? `
-                <div class="mt-3 space-y-1.5 pt-2 border-t border-slate-100">
-                  ${customBtns.map(btn => `
-                    <button onclick="window.open('${btn.url}', '_blank')" class="w-full py-1.5 px-2.5 bg-[#003366]/10 hover:bg-[#003366] hover:text-white text-[#003366] font-semibold rounded text-xs transition flex items-center justify-between shadow-sm">
-                      <span>${btn.label}</span>
-                      <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                    </button>
-                  `).join('')}
-                </div>
-              ` : ''}
             </div>
           </div>
 
           <div onclick="openListingDetails('${id}')" class="px-4 py-2.5 bg-slate-50 border-t border-slate-100 text-center text-xs font-semibold text-[#003366] hover:bg-[#003366] hover:text-white cursor-pointer transition flex items-center justify-center gap-1">
-            <span>View Photos Carousel & Details</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            <span>View Full Modal Details</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
           </div>
         `;
 
@@ -1098,7 +1072,7 @@
       });
     }
 
-    // Modal Details View with Accordion FAQ
+    // Listing Details Modal View with HTML formatted description, action links, & Admin photo tools
     function openListingDetails(id) {
       const item = window.allListings[id];
       if(!item) return;
@@ -1129,13 +1103,34 @@
           ` : ''}
         </div>
 
-        ${photos.length > 1 ? `
-          <div class="flex gap-2 p-3 overflow-x-auto bg-slate-50 border-b custom-scrollbar">
-            ${photos.map((p, idx) => `<img src="${p}" onclick="setModalCarouselSlide('${id}', ${idx})" class="w-14 h-10 object-cover rounded cursor-pointer border border-transparent hover:border-[#003366] transition flex-shrink-0">`).join('')}
-          </div>
-        ` : ''}
+        <div class="flex gap-2 p-3 overflow-x-auto bg-slate-50 border-b custom-scrollbar items-center">
+          ${photos.map((p, idx) => `
+            <div class="relative group flex-shrink-0">
+              <img src="${p}" onclick="setModalCarouselSlide('${id}', ${idx})" class="w-14 h-10 object-cover rounded cursor-pointer border border-transparent hover:border-[#003366] transition">
+              ${window.isAdmin && photos.length > 1 ? `
+                <button onclick="deleteListingPhoto('${id}', ${idx})" class="absolute -top-1 -right-1 bg-red-600 text-white w-4 h-4 rounded-full text-[9px] flex items-center justify-center shadow" title="Delete Photo"><i class="fa-solid fa-xmark"></i></button>
+              ` : ''}
+            </div>
+          `).join('')}
+          ${window.isAdmin ? `
+            <button onclick="addListingPhoto('${id}')" class="px-2.5 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded text-xs font-semibold flex items-center gap-1 flex-shrink-0">
+              <i class="fa-solid fa-plus text-[10px]"></i> Add Photo
+            </button>
+          ` : ''}
+        </div>
 
         <div class="p-5 sm:p-7 space-y-5">
+          ${customBtns.length > 0 ? `
+            <div class="flex flex-wrap gap-2 pb-2 border-b border-slate-100">
+              ${customBtns.map(btn => `
+                <button onclick="window.open('${btn.url}', '_blank')" class="px-4 py-2 bg-[#003366] hover:bg-[#002244] text-white font-semibold rounded-md text-xs transition shadow flex items-center gap-1.5">
+                  <span>${btn.label}</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                </button>
+              `).join('')}
+            </div>
+          ` : ''}
+
           <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
             <div>
               <h2 class="text-xl sm:text-2xl font-bold text-[#003366] tracking-tight">${item.name}</h2>
@@ -1143,29 +1138,15 @@
             </div>
             <div class="bg-[#003366]/5 p-3 rounded-lg border border-[#003366]/10 inline-block">
               <span class="block text-[10px] font-semibold text-slate-400 uppercase">Total Price</span>
-              <span class="block text-lg font-bold text-[#003366]">${item.tcp}</span>
+              <span class="block text-lg font-bold text-[#003366]">${item.tcp.startsWith('₱') ? item.tcp : '₱'+item.tcp}</span>
               <span class="text-xs text-emerald-600 font-medium">Monthly starts ${item.amort}</span>
             </div>
           </div>
 
           <div class="border-t border-slate-100 pt-4">
             <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Description</h4>
-            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">${item.desc}</p>
+            <div class="text-slate-600 text-xs sm:text-sm leading-relaxed whitespace-pre-line">${item.desc}</div>
           </div>
-
-          ${customBtns.length > 0 ? `
-            <div class="border-t border-slate-100 pt-4">
-              <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Links & Resources</h4>
-              <div class="flex flex-wrap gap-2">
-                ${customBtns.map(btn => `
-                  <button onclick="window.open('${btn.url}', '_blank')" class="px-3.5 py-2 bg-[#003366] hover:bg-[#002244] text-white font-medium rounded-md text-xs transition shadow-sm flex items-center gap-1.5">
-                    <span>${btn.label}</span>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                  </button>
-                `).join('')}
-              </div>
-            </div>
-          ` : ''}
 
           <div class="border-t border-slate-100 pt-4">
             <div class="flex justify-between items-center mb-3">
@@ -1194,6 +1175,27 @@
       `;
 
       openModal('listing-details-modal');
+    }
+
+    function addListingPhoto(id) {
+      const url = prompt("Enter Image URL to add:");
+      if(url && window.allListings[id]) {
+        const photos = window.allListings[id].photos || [];
+        photos.push(url);
+        window.set(window.ref(window.db, `listings/${id}/photos`), photos).then(() => {
+          openListingDetails(id);
+        });
+      }
+    }
+
+    function deleteListingPhoto(id, photoIdx) {
+      if(confirm("Remove this image from project?")) {
+        const photos = window.allListings[id].photos || [];
+        photos.splice(photoIdx, 1);
+        window.set(window.ref(window.db, `listings/${id}/photos`), photos).then(() => {
+          openListingDetails(id);
+        });
+      }
     }
 
     function toggleFaq(faqId) {
@@ -1241,40 +1243,65 @@
       setModalCarouselSlide(id, current);
     }
 
-    // ---------- REELS VIDEO SECTION ----------
+    // C. Reels & Virtual Tours Logic (Hover Autoplay, Off-screen Auto Pause)
+    function openReelModal(editId = null, title = '', url = '') {
+      document.getElementById('reel-edit-id').value = editId || '';
+      document.getElementById('reel-title').value = title || '';
+      document.getElementById('reel-url').value = url || '';
+      document.getElementById('reel-modal-title').innerText = editId ? 'Edit Video Reel' : 'Add Video Reel';
+      openModal('reel-modal');
+    }
+
     function saveReel(e) {
       e.preventDefault();
+      const editId = document.getElementById('reel-edit-id').value;
       const title = document.getElementById('reel-title').value;
       const url = document.getElementById('reel-url').value;
 
-      const newRef = window.push(window.ref(window.db, 'reels'));
-      window.set(newRef, { title, url }).then(() => {
-        closeModal('reel-modal');
-        e.target.reset();
-      });
+      if(editId) {
+        const itemIdx = window.allReels.findIndex(r => r.id === editId);
+        if(itemIdx !== -1) window.allReels[itemIdx] = { ...window.allReels[itemIdx], title, url };
+        window.set(window.ref(window.db, 'reels'), window.allReels).then(() => {
+          closeModal('reel-modal');
+          e.target.reset();
+        });
+      } else {
+        const newRef = window.push(window.ref(window.db, 'reels'));
+        window.set(newRef, { title, url }).then(() => {
+          closeModal('reel-modal');
+          e.target.reset();
+        });
+      }
     }
 
     function renderReels(reels) {
       const container = document.getElementById('reels-container');
       container.innerHTML = '';
 
-      const keys = Object.keys(reels);
-      if(keys.length === 0) {
+      if(!reels || reels.length === 0) {
         container.innerHTML = `<div class="swiper-slide text-center py-10 text-slate-300 text-xs">No video reels added yet.</div>`;
         window.initSwiper();
         return;
       }
 
-      keys.forEach(id => {
-        const reel = reels[id];
+      reels.forEach((reel, idx) => {
         const slide = document.createElement('div');
-        slide.className = 'swiper-slide';
+        slide.className = 'swiper-slide draggable-item';
+        slide.setAttribute('draggable', window.isAdmin ? 'true' : 'false');
+        slide.dataset.index = idx;
 
         slide.innerHTML = `
-          <div class="relative bg-slate-900 rounded-lg overflow-hidden shadow-lg border border-white/10 group aspect-[9/16]" onmouseenter="playReelVideo(this)" onclick="playReelVideo(this)">
-            ${window.isAdmin ? `<button onclick="event.stopPropagation(); deleteItem('reels/${id}')" class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs shadow z-20 flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-trash"></i></button>` : ''}
+          <div class="relative bg-slate-900 rounded-lg overflow-hidden shadow-lg border border-white/10 group aspect-[9/16]" 
+               onmouseenter="hoverPlayReel(this)" onmouseleave="hoverStopReel(this)">
             
-            <video src="${reel.url}" controls controlsList="nodownload" class="w-full h-full object-cover" preload="metadata"></video>
+            ${window.isAdmin ? `
+              <div class="absolute top-2 right-2 flex gap-1 z-20">
+                <button onclick="event.stopPropagation(); openReelModal('${reel.id}', '${reel.title.replace(/'/g, "\\'")}', '${reel.url}')" class="bg-blue-600 hover:bg-blue-700 text-white w-7 h-7 rounded-md text-xs shadow flex items-center justify-center transition active:scale-95" title="Edit Reel"><i class="fa-solid fa-pen"></i></button>
+                <button onclick="event.stopPropagation(); deleteReel('${reel.id}')" class="bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs shadow flex items-center justify-center transition active:scale-95" title="Delete Reel"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            ` : ''}
+            
+            <video src="${reel.url}" controls controlsList="nodownload" class="w-full h-full object-cover reel-video-el" preload="metadata"></video>
             
             <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent pointer-events-none">
               <h4 class="text-xs font-semibold text-white line-clamp-1">${reel.title}</h4>
@@ -1284,17 +1311,86 @@
         container.appendChild(slide);
       });
 
+      if(window.isAdmin) setupReelDragDrop();
       window.initSwiper();
+      setupReelObserver();
     }
 
-    function playReelVideo(wrapper) {
+    function hoverPlayReel(wrapper) {
+      const allVid = document.querySelectorAll('.reel-video-el');
+      allVid.forEach(v => {
+        if(!v.paused) v.pause();
+      });
+
       const vid = wrapper.querySelector('video');
       if(vid) {
         vid.play().catch(() => {});
       }
     }
 
-    // ---------- LATEST NEWS & UPDATES ----------
+    function hoverStopReel(wrapper) {
+      const vid = wrapper.querySelector('video');
+      if(vid) {
+        vid.pause();
+        vid.currentTime = 0;
+      }
+    }
+
+    function setupReelObserver() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) {
+            const vid = entry.target.querySelector('video');
+            if (vid && !vid.paused) {
+              vid.pause();
+              vid.currentTime = 0;
+            }
+          }
+        });
+      }, { threshold: 0.5 });
+
+      document.querySelectorAll('#reels-container .swiper-slide').forEach(slide => observer.observe(slide));
+    }
+
+    function deleteReel(id) {
+      if(confirm('Delete this video reel?')) {
+        const updated = window.allReels.filter(r => r.id !== id);
+        window.set(window.ref(window.db, 'reels'), updated);
+      }
+    }
+
+    function setupReelDragDrop() {
+      const container = document.getElementById('reels-container');
+      let dragIdx = null;
+
+      container.querySelectorAll('.draggable-item').forEach(item => {
+        item.addEventListener('dragstart', (e) => {
+          dragIdx = e.currentTarget.dataset.index;
+          e.currentTarget.classList.add('dragging');
+        });
+
+        item.addEventListener('dragend', (e) => {
+          e.currentTarget.classList.remove('dragging');
+        });
+
+        item.addEventListener('dragover', (e) => {
+          e.preventDefault();
+        });
+
+        item.addEventListener('drop', (e) => {
+          e.preventDefault();
+          const targetIdx = e.currentTarget.dataset.index;
+          if(dragIdx !== null && targetIdx !== undefined && dragIdx !== targetIdx) {
+            const reordered = [...window.allReels];
+            const [moved] = reordered.splice(dragIdx, 1);
+            reordered.splice(targetIdx, 0, moved);
+            window.set(window.ref(window.db, 'reels'), reordered);
+          }
+        });
+      });
+    }
+
+    // D. Latest Updates & News Section
     function saveBlog(e) {
       e.preventDefault();
       const title = document.getElementById('blog-title').value;
@@ -1325,6 +1421,9 @@
       const end = start + window.blogPostsPerPage;
       const pageItems = window.allBlogs.slice(start, end);
 
+      const agentName = window.profileData.name || 'Jane Doe';
+      const agentPhoto = window.profileData.avatar || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80';
+
       pageItems.forEach(post => {
         const images = post.images || [];
         const isLong = post.caption.length > 140;
@@ -1337,16 +1436,22 @@
         card.innerHTML = `
           ${window.isAdmin ? `<button onclick="event.stopPropagation(); deleteItem('blogs/${post.id}')" class="absolute top-3 right-3 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs shadow z-20 flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-trash"></i></button>` : ''}
           
-          <div class="flex items-center gap-2 text-[10px] text-slate-400 mb-2">
-            <i class="fa-solid fa-clock text-[#f1c40f]"></i>
-            <span>${new Date(post.timestamp || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+          <div class="flex items-center gap-2.5 mb-3 border-b border-slate-100 pb-2.5">
+            <img src="${agentPhoto}" alt="${agentName}" class="w-8 h-8 rounded-full object-cover ring-1 ring-[#003366]">
+            <div>
+              <h4 class="text-xs font-bold text-[#003366] leading-tight">${agentName}</h4>
+              <span class="text-[10px] text-slate-400 flex items-center gap-1">
+                <i class="fa-solid fa-clock text-[#f1c40f]"></i>
+                ${new Date(post.timestamp || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+              </span>
+            </div>
           </div>
 
           <h3 class="text-base sm:text-lg font-bold text-[#003366] mb-2 leading-snug">${post.title || 'Market Update'}</h3>
 
           ${images.length > 0 ? `
-            <div class="mb-3 rounded-lg overflow-hidden bg-slate-900 max-h-72">
-              <img src="${images[0]}" alt="Post attachment" class="w-full h-full object-cover">
+            <div class="mb-3 rounded-lg overflow-hidden bg-slate-900 w-full">
+              <img src="${images[0]}" alt="Post attachment" class="w-full h-auto max-h-[500px] object-cover">
             </div>
           ` : ''}
 
@@ -1354,7 +1459,7 @@
 
           ${isLong || images.length > 1 ? `
             <div class="mt-2 text-xs font-semibold text-[#003366] hover:underline flex items-center gap-1">
-              <span>Tap to view more</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+              <span>Read Full Post</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
             </div>
           ` : ''}
         `;
@@ -1378,11 +1483,16 @@
 
       const container = document.getElementById('blog-details-content');
       const images = post.images || [];
+      const agentName = window.profileData.name || 'Jane Doe';
+      const agentPhoto = window.profileData.avatar || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80';
 
       container.innerHTML = `
-        <div class="flex items-center gap-2 text-xs text-slate-400 mb-2">
-          <i class="fa-solid fa-clock text-[#f1c40f]"></i>
-          <span>${new Date(post.timestamp || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+        <div class="flex items-center gap-2.5 mb-3 border-b pb-2">
+          <img src="${agentPhoto}" alt="${agentName}" class="w-9 h-9 rounded-full object-cover">
+          <div>
+            <h4 class="text-xs font-bold text-[#003366]">${agentName}</h4>
+            <span class="text-[10px] text-slate-400">${new Date(post.timestamp || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+          </div>
         </div>
 
         <h2 class="text-xl font-bold text-[#003366] mb-3">${post.title || 'Market Update'}</h2>
@@ -1390,7 +1500,7 @@
         ${images.length > 0 ? `
           <div class="grid ${images.length > 1 ? 'grid-cols-2' : 'grid-cols-1'} gap-2 mb-4">
             ${images.map((img, idx) => `
-              <img src="${img}" onclick="openImageViewer(${JSON.stringify(images).replace(/"/g, '&quot;')}, ${idx})" class="w-full h-48 sm:h-56 object-cover rounded-lg cursor-pointer hover:opacity-90 transition">
+              <img src="${img}" onclick="openImageViewer(${JSON.stringify(images).replace(/"/g, '&quot;')}, ${idx})" class="w-full h-auto max-h-80 object-cover rounded-lg cursor-pointer hover:opacity-90 transition">
             `).join('')}
           </div>
         ` : ''}
@@ -1401,7 +1511,7 @@
       openModal('blog-details-modal');
     }
 
-    // Lightbox Viewer
+    // Lightbox Controls
     let viewerImages = [];
     let viewerIndex = 0;
 
@@ -1414,9 +1524,7 @@
 
     function updateViewerImage() {
       const img = document.getElementById('viewer-image');
-      if(img && viewerImages.length > 0) {
-        img.src = viewerImages[viewerIndex];
-      }
+      if(img && viewerImages.length > 0) img.src = viewerImages[viewerIndex];
     }
 
     function navigateViewer(dir) {
@@ -1425,7 +1533,7 @@
       updateViewerImage();
     }
 
-    // ---------- SOCIAL MEDIA LINKS ----------
+    // E. Connect With Me Section (Removable & Draggable)
     function saveSocial(e) {
       e.preventDefault();
       const name = document.getElementById('social-name').value;
@@ -1443,36 +1551,228 @@
       const container = document.getElementById('socials-container');
       container.innerHTML = '';
 
-      const keys = Object.keys(socials);
-      if(keys.length === 0) {
+      if(!socials || socials.length === 0) {
         container.innerHTML = `<div class="col-span-full text-center py-6 text-slate-400 text-xs">No social links added yet.</div>`;
         return;
       }
 
-      keys.forEach(id => {
-        const item = socials[id];
-        const card = document.createElement('a');
-        card.href = item.url;
-        card.target = "_blank";
-        card.className = "flex items-center gap-3 p-3 bg-white/80 border border-slate-200 rounded-lg shadow-sm hover:border-[#003366] transition group relative";
+      socials.forEach((item, idx) => {
+        const card = document.createElement('div');
+        card.className = "flex items-center justify-between p-3 bg-white/80 border border-slate-200 rounded-lg shadow-sm hover:border-[#003366] transition group relative draggable-item";
+        card.setAttribute('draggable', window.isAdmin ? 'true' : 'false');
+        card.dataset.index = idx;
 
         card.innerHTML = `
-          ${window.isAdmin ? `<button onclick="event.preventDefault(); event.stopPropagation(); deleteItem('socials/${id}')" class="absolute top-1 right-1 text-red-500 hover:text-red-700 text-xs p-1"><i class="fa-solid fa-trash"></i></button>` : ''}
-          <div class="w-8 h-8 rounded-full bg-[#003366]/10 text-[#003366] flex items-center justify-center group-hover:bg-[#003366] group-hover:text-white transition">
-            <i class="${item.icon} text-sm"></i>
-          </div>
-          <span class="text-xs font-semibold text-slate-700 group-hover:text-[#003366] truncate">${item.name}</span>
+          <a href="${item.url}" target="_blank" class="flex items-center gap-2.5 truncate flex-grow">
+            <div class="w-7 h-7 rounded-full bg-[#003366]/10 text-[#003366] flex items-center justify-center group-hover:bg-[#003366] group-hover:text-white transition flex-shrink-0">
+              <i class="${item.icon} text-xs"></i>
+            </div>
+            <span class="text-xs font-semibold text-slate-700 group-hover:text-[#003366] truncate">${item.name}</span>
+          </a>
+          ${window.isAdmin ? `
+            <button onclick="deleteSocial('${item.id}')" class="text-red-500 hover:text-red-700 text-xs p-1 ml-1" title="Delete Link">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          ` : ''}
         `;
         container.appendChild(card);
       });
+
+      if(window.isAdmin) setupSocialDragDrop();
     }
 
-    // ---------- GLOBAL DELETE ITEM ----------
+    function deleteSocial(id) {
+      if(confirm("Remove this social link?")) {
+        const updated = window.allSocials.filter(s => s.id !== id);
+        window.set(window.ref(window.db, 'socials'), updated);
+      }
+    }
+
+    function setupSocialDragDrop() {
+      const container = document.getElementById('socials-container');
+      let dragIdx = null;
+
+      container.querySelectorAll('.draggable-item').forEach(item => {
+        item.addEventListener('dragstart', (e) => {
+          dragIdx = e.currentTarget.dataset.index;
+          e.currentTarget.classList.add('dragging');
+        });
+
+        item.addEventListener('dragend', (e) => {
+          e.currentTarget.classList.remove('dragging');
+        });
+
+        item.addEventListener('dragover', (e) => {
+          e.preventDefault();
+        });
+
+        item.addEventListener('drop', (e) => {
+          e.preventDefault();
+          const targetIdx = e.currentTarget.dataset.index;
+          if(dragIdx !== null && targetIdx !== undefined && dragIdx !== targetIdx) {
+            const reordered = [...window.allSocials];
+            const [moved] = reordered.splice(dragIdx, 1);
+            reordered.splice(targetIdx, 0, moved);
+            window.set(window.ref(window.db, 'socials'), reordered);
+          }
+        });
+      });
+    }
+
+    // F. Lead Form Section (Google Sheets Encoding & Telegram Bot Notification)
+    function saveLeadSettings(e) {
+      e.preventDefault();
+      const email = document.getElementById('setting-lead-email').value.trim();
+      const phone = document.getElementById('setting-lead-phone').value.trim();
+      const sheetUrl = document.getElementById('setting-sheet-url').value.trim();
+      const tgToken = document.getElementById('setting-tg-token').value.trim();
+      const tgChatId = document.getElementById('setting-tg-chatid').value.trim();
+
+      window.set(window.ref(window.db, 'leadSettings'), { email, phone, sheetUrl, tgToken, tgChatId }).then(() => {
+        window.leadSettings = { email, phone, sheetUrl, tgToken, tgChatId };
+        alert('Lead integrations & settings updated successfully!');
+        closeModal('lead-settings-modal');
+      });
+    }
+
+    function submitLeadForm(e, isPopup = false) {
+      e.preventDefault();
+      const name = isPopup ? document.getElementById('popup-lead-name').value : document.getElementById('lead-name').value;
+      const phone = isPopup ? document.getElementById('popup-lead-phone').value : document.getElementById('lead-phone').value;
+      const email = isPopup ? document.getElementById('popup-lead-email').value : document.getElementById('lead-email').value;
+      const msg = isPopup ? 'Inquiry from Popup Form' : document.getElementById('lead-message').value;
+
+      const recipientEmail = window.leadSettings.email || 'agent@example.com';
+      const sheetUrl = window.leadSettings.sheetUrl;
+      const tgToken = window.leadSettings.tgToken;
+      const tgChatId = window.leadSettings.tgChatId;
+
+      // 1. Encode Data to Google Spreadsheet if URL configured
+      if(sheetUrl) {
+        fetch(sheetUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, phone, email, message: msg, date: new Date().toISOString() })
+        }).catch(err => console.log('Spreadsheet post error:', err));
+      }
+
+      // 2. Dispatch Telegram Notification if Token & Chat ID configured
+      if(tgToken && tgChatId) {
+        const tgMsg = encodeURIComponent(`📥 *New Lead Capture Received*\n\n👤 *Name:* ${name}\n📞 *Phone:* ${phone}\n✉️ *Email:* ${email}\n💬 *Message:* ${msg}`);
+        fetch(`https://api.telegram.org/bot${tgToken}/sendMessage?chat_id=${tgChatId}&text=${tgMsg}&parse_mode=Markdown`)
+          .catch(err => console.log('Telegram API error:', err));
+      }
+
+      // 3. Save to Firebase Data Store
+      const newRef = window.push(window.ref(window.db, 'leads'));
+      window.set(newRef, { name, phone, email, message: msg, recipient: recipientEmail, timestamp: Date.now() }).then(() => {
+        alert(`Thank you! Your request has been logged and sent to the agent.`);
+        if(isPopup) closeModal('lead-popup-modal');
+        e.target.reset();
+      });
+    }
+
+    // G. Footer Section Logic (Related Links, Draggable & Removable)
+    function editFooterDetails() {
+      if(!window.isAdmin) return;
+      const logo = prompt("Enter Footer Logo Image URL:");
+      const brand = prompt("Enter Brand Name:");
+      const about = prompt("Enter Footer About Text:");
+
+      if(logo) window.set(window.ref(window.db, 'footer/logo'), logo);
+      if(brand) window.set(window.ref(window.db, 'footer/brand'), brand);
+      if(about) window.set(window.ref(window.db, 'footer/about'), about);
+    }
+
+    function saveFooterLink(e) {
+      e.preventDefault();
+      const label = document.getElementById('footlink-label').value;
+      const url = document.getElementById('footlink-url').value;
+
+      const newRef = window.push(window.ref(window.db, 'footer/links'));
+      window.set(newRef, { label, url }).then(() => {
+        closeModal('footer-link-modal');
+        e.target.reset();
+      });
+    }
+
+    function renderFooterLinks(links) {
+      const container = document.getElementById('footer-links-container');
+      if(!container) return;
+      container.innerHTML = '';
+      
+      if(!links || links.length === 0) {
+        container.innerHTML = `<li class="text-slate-500 text-xs">No related links added.</li>`;
+        return;
+      }
+
+      links.forEach((link, idx) => {
+        const li = document.createElement('li');
+        li.className = "flex items-center justify-between draggable-item";
+        li.setAttribute('draggable', window.isAdmin ? 'true' : 'false');
+        li.dataset.index = idx;
+
+        li.innerHTML = `
+          <a href="${link.url}" target="_blank" class="hover:text-white transition flex items-center gap-1.5 truncate">
+            <i class="fa-solid fa-chevron-right text-[10px] text-[#f1c40f]"></i> ${link.label}
+          </a>
+          ${window.isAdmin ? `
+            <button onclick="deleteFooterLink('${link.id}')" class="text-red-400 hover:text-red-300 ml-2" title="Delete Link">
+              <i class="fa-solid fa-trash text-[10px]"></i>
+            </button>
+          ` : ''}
+        `;
+        container.appendChild(li);
+      });
+
+      if(window.isAdmin) setupFooterLinkDragDrop();
+    }
+
+    function deleteFooterLink(id) {
+      if(confirm("Delete this related link?")) {
+        const updated = window.allFooterLinks.filter(l => l.id !== id);
+        window.set(window.ref(window.db, 'footer/links'), updated);
+      }
+    }
+
+    function setupFooterLinkDragDrop() {
+      const container = document.getElementById('footer-links-container');
+      let dragIdx = null;
+
+      container.querySelectorAll('.draggable-item').forEach(item => {
+        item.addEventListener('dragstart', (e) => {
+          dragIdx = e.currentTarget.dataset.index;
+          e.currentTarget.classList.add('dragging');
+        });
+
+        item.addEventListener('dragend', (e) => {
+          e.currentTarget.classList.remove('dragging');
+        });
+
+        item.addEventListener('dragover', (e) => {
+          e.preventDefault();
+        });
+
+        item.addEventListener('drop', (e) => {
+          e.preventDefault();
+          const targetIdx = e.currentTarget.dataset.index;
+          if(dragIdx !== null && targetIdx !== undefined && dragIdx !== targetIdx) {
+            const reordered = [...window.allFooterLinks];
+            const [moved] = reordered.splice(dragIdx, 1);
+            reordered.splice(targetIdx, 0, moved);
+            window.set(window.ref(window.db, 'footer/links'), reordered);
+          }
+        });
+      });
+    }
+
+    // Global Database Delete Helper
     function deleteItem(path) {
       if(!window.isAdmin) return;
       if(confirm('Are you sure you want to delete this item?')) {
         window.remove(window.ref(window.db, path)).then(() => {
-          alert('Item deleted.');
+          alert('Item removed.');
           closeModal('listing-details-modal');
         });
       }
