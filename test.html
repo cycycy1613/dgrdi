@@ -5,35 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agent Business Profile</title>
 
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
+  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
+  <!-- Swiper JS CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 
   <style>
-    /* Smooth Fluid Animations & Custom UI Treatments */
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-8px); }
-    }
-    .animate-float { animation: float 5s ease-in-out infinite; }
-
+    /* Fluid Animations & Visual Styling Treatments */
     @keyframes pulseGlow {
-      0%, 100% { opacity: 0.4; transform: scale(1); }
-      50% { opacity: 0.8; transform: scale(1.05); }
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.05); }
     }
-    .animate-pulse-glow { animation: pulseGlow 4s ease-in-out infinite; }
+    .animate-pulse-glow { animation: pulseGlow 5s ease-in-out infinite; }
     
     .glass-card {
-      background: rgba(255, 255, 255, 0.88);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.6);
     }
 
     .glass-dark {
-      background: rgba(15, 23, 42, 0.75);
+      background: rgba(15, 23, 42, 0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -44,58 +41,93 @@
     }
     .hover-lift:hover {
       transform: translateY(-6px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
     }
     
     .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 9999px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    .swiper-pagination-bullet-active {
+      background: #2563eb !important;
+      width: 20px !important;
+      border-radius: 9999px !important;
+    }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-blue-500 selection:text-white flex flex-col min-h-screen">
 
-  <header class="relative bg-white shadow-sm mb-8 sm:mb-12">
-    <div class="relative h-64 sm:h-72 md:h-96 w-full bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-900 overflow-hidden">
-      <img id="cover-photo" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1600&q=80" alt="Cover" class="w-full h-full object-cover transition-opacity duration-500 opacity-90">
-      <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-900/20 to-transparent"></div>
+  <!-- ================= HERO & PROFILE HEADER SECTION ================= -->
+  <header id="hero" class="relative bg-slate-900 shadow-lg mb-8 sm:mb-12">
+    <!-- Hero / Cover Photo -->
+    <div class="relative h-80 sm:h-96 md:h-[28rem] lg:h-[32rem] w-full bg-gradient-to-r from-slate-950 via-indigo-950 to-blue-950 overflow-hidden">
+      <img id="cover-photo" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1600&q=80" alt="Cover" class="w-full h-full object-cover transition-opacity duration-500 opacity-80">
+      <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-black/30"></div>
       
-      <button onclick="editProfileField('cover')" class="admin-only hidden absolute top-4 right-4 bg-white/90 hover:bg-white text-slate-800 px-3.5 py-2 rounded-xl shadow-lg text-xs sm:text-sm font-semibold transition-all duration-200 backdrop-blur-md flex items-center gap-2 transform active:scale-95">
-        <i class="fa-solid fa-camera text-blue-600"></i> Change Cover
+      <!-- Change Cover Button (Admin Only) -->
+      <button onclick="editProfileField('cover')" class="admin-only hidden absolute top-4 right-4 bg-white/90 hover:bg-white text-slate-900 px-3.5 py-2 rounded-xl shadow-lg text-xs sm:text-sm font-semibold transition-all duration-200 backdrop-blur-md flex items-center gap-2 transform active:scale-95 z-20">
+        <i class="fa-solid fa-camera text-blue-600"></i> Change Cover Hero
       </button>
+
+      <!-- Quick Section Anchor Navigation Bar -->
+      <div class="absolute top-4 left-4 right-16 sm:right-auto z-20">
+        <nav class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto custom-scrollbar max-w-full p-1.5 rounded-2xl glass-dark shadow-xl">
+          <a href="#hero" class="px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold text-white/90 hover:text-white hover:bg-white/15 transition-all flex items-center gap-1.5 whitespace-nowrap">
+            <i class="fa-solid fa-house text-blue-400"></i> Home
+          </a>
+          <a href="#projects" class="px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold text-white/90 hover:text-white hover:bg-white/15 transition-all flex items-center gap-1.5 whitespace-nowrap">
+            <i class="fa-solid fa-building text-blue-400"></i> Projects
+          </a>
+          <a href="#reels" class="px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold text-white/90 hover:text-white hover:bg-white/15 transition-all flex items-center gap-1.5 whitespace-nowrap">
+            <i class="fa-solid fa-clapperboard text-blue-400"></i> Reels
+          </a>
+          <a href="#updates" class="px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold text-white/90 hover:text-white hover:bg-white/15 transition-all flex items-center gap-1.5 whitespace-nowrap">
+            <i class="fa-solid fa-newspaper text-blue-400"></i> Updates
+          </a>
+          <a href="#connect" class="px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold text-white/90 hover:text-white hover:bg-white/15 transition-all flex items-center gap-1.5 whitespace-nowrap">
+            <i class="fa-solid fa-paper-plane text-blue-400"></i> Connect
+          </a>
+          <a href="#lead-capture" class="px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold text-emerald-300 hover:text-white hover:bg-emerald-600/30 transition-all flex items-center gap-1.5 whitespace-nowrap">
+            <i class="fa-solid fa-calendar-check text-emerald-400"></i> Inquiry
+          </a>
+        </nav>
+      </div>
     </div>
 
+    <!-- Profile & Bio Overlay Card -->
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="relative -mt-20 sm:-mt-24 md:-mt-28 pb-6 border-b border-slate-200/80 flex flex-col md:flex-row items-center md:items-end justify-between gap-6">
+      <div class="relative -mt-20 sm:-mt-24 md:-mt-28 pb-8 flex flex-col md:flex-row items-center md:items-end justify-between gap-6 z-10">
         
         <div class="flex flex-col md:flex-row items-center md:items-end gap-5 text-center md:text-left">
           <div class="relative group">
-            <img id="profile-photo" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" alt="Profile" class="w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full border-4 border-white shadow-2xl object-cover bg-white transition-transform duration-300 group-hover:scale-[1.02]">
-            <button onclick="editProfileField('avatar')" class="admin-only hidden absolute bottom-2 right-2 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-xl transition-all duration-200 transform hover:scale-110 active:scale-95">
+            <img id="profile-photo" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" alt="Profile" class="w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-3xl border-4 border-white shadow-2xl object-cover bg-white transition-transform duration-300 group-hover:scale-[1.02] ring-4 ring-slate-900/10">
+            <button onclick="editProfileField('avatar')" class="admin-only hidden absolute bottom-2 right-2 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-2xl shadow-xl transition-all duration-200 transform hover:scale-110 active:scale-95">
               <i class="fa-solid fa-camera text-sm"></i>
             </button>
           </div>
           
-          <div class="mb-1 sm:mb-2">
+          <div class="mb-1 sm:mb-2 text-white md:text-slate-900">
             <div class="flex items-center justify-center md:justify-start gap-2.5">
-              <h1 id="profile-name" class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Jane Doe</h1>
+              <h1 id="profile-name" class="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-slate-900">Jane Doe</h1>
               <button onclick="editProfileField('name')" class="admin-only hidden text-slate-400 hover:text-blue-600 text-base sm:text-lg transition-colors p-1" title="Edit Name">
                 <i class="fa-solid fa-pen"></i>
               </button>
             </div>
-            <p id="profile-bio" class="text-slate-600 font-medium text-xs sm:text-sm md:text-base max-w-lg mt-1 leading-relaxed">Licensed Real Estate Broker | Helping you find your dream home</p>
+            <p id="profile-bio" class="text-slate-600 font-medium text-xs sm:text-sm md:text-base max-w-xl mt-1.5 leading-relaxed">Licensed Real Estate Broker | Helping you find your dream home & high-yield real estate investments</p>
             <button onclick="editProfileField('bio')" class="admin-only hidden text-xs font-semibold text-blue-600 hover:text-blue-700 hover:underline mt-1 inline-block">Edit Bio</button>
           </div>
         </div>
 
-        <div class="flex items-center gap-3 bg-slate-100/90 backdrop-blur-md p-2 rounded-2xl border border-slate-200 shadow-inner">
-          <a id="contact-email" href="mailto:agent@example.com" title="Send Email" class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white text-blue-600 hover:bg-blue-600 hover:text-white flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-200 text-lg sm:text-xl transform hover:-translate-y-0.5 active:scale-95">
-            <i class="fa-solid fa-envelope"></i>
+        <!-- Quick Contact Actions -->
+        <div class="flex items-center gap-3 bg-white p-2.5 rounded-2xl border border-slate-200 shadow-lg">
+          <a id="contact-email" href="mailto:agent@example.com" title="Send Email" class="px-4 py-2.5 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white font-bold text-xs sm:text-sm flex items-center gap-2 shadow-sm transition-all duration-200 transform hover:-translate-y-0.5 active:scale-95">
+            <i class="fa-solid fa-envelope text-base"></i> <span class="hidden sm:inline">Email Agent</span>
           </a>
-          <a id="contact-phone" href="tel:+1234567890" title="Call Now" class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-200 text-lg sm:text-xl transform hover:-translate-y-0.5 active:scale-95">
-            <i class="fa-solid fa-phone"></i>
+          <a id="contact-phone" href="tel:+1234567890" title="Call Now" class="px-4 py-2.5 rounded-xl bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white font-bold text-xs sm:text-sm flex items-center gap-2 shadow-sm transition-all duration-200 transform hover:-translate-y-0.5 active:scale-95">
+            <i class="fa-solid fa-phone text-base"></i> <span class="hidden sm:inline">Call Now</span>
           </a>
-          <button onclick="editProfileField('contact')" class="admin-only hidden w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-amber-100 text-amber-700 hover:bg-amber-200 flex items-center justify-center text-lg transition-colors shadow-sm active:scale-95" title="Edit Contact Info">
+          <button onclick="editProfileField('contact')" class="admin-only hidden w-10 h-10 rounded-xl bg-amber-50 text-amber-700 hover:bg-amber-100 flex items-center justify-center text-sm transition-colors shadow-sm active:scale-95" title="Edit Contact Info">
             <i class="fa-solid fa-gear"></i>
           </button>
         </div>
@@ -104,33 +136,36 @@
     </div>
   </header>
 
+  <!-- ================= MAIN BODY CONTENT ================= -->
   <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16 pb-16 flex-grow w-full">
 
-    <section>
+    <!-- 1. FEATURED PROJECT LISTINGS -->
+    <section id="projects">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
         <div>
           <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Featured Projects</h2>
-          <p class="text-slate-500 text-xs sm:text-sm mt-1">Explore available luxury homes and property developments</p>
+          <p class="text-slate-500 text-xs sm:text-sm mt-1">Explore available luxury homes, condominiums, and land developments</p>
         </div>
         <button onclick="openModal('listing-modal')" class="admin-only hidden bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2.5 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 text-xs sm:text-sm active:scale-95 self-start sm:self-auto">
-          <i class="fa-solid fa-plus"></i> Add Listing
+          <i class="fa-solid fa-plus"></i> Add Project Listing
         </button>
       </div>
 
-      <div id="listings-container" class="flex gap-4 sm:gap-6 overflow-x-auto custom-scrollbar pb-6 pt-2 snap-x snap-mandatory min-h-[22rem]">
+      <div id="listings-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       </div>
     </section>
 
-    <section class="bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 text-white rounded-3xl p-5 sm:p-8 shadow-2xl relative overflow-hidden">
+    <!-- 2. REELS & VIRTUAL TOURS -->
+    <section id="reels" class="bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 text-white rounded-3xl p-5 sm:p-8 shadow-2xl relative overflow-hidden">
       <div class="absolute -top-24 -right-24 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-glow"></div>
       
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 relative z-10">
         <div>
           <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Property Reels & Virtual Tours</h2>
-          <p class="text-slate-300 text-xs sm:text-sm mt-1">Short video tours and highlights (Up to 10 videos)</p>
+          <p class="text-slate-300 text-xs sm:text-sm mt-1">Short video walkthroughs and property highlights</p>
         </div>
         <button onclick="openModal('reel-modal')" class="admin-only hidden bg-white/10 hover:bg-white/20 border border-white/20 text-white px-4 py-2.5 rounded-xl font-medium text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 backdrop-blur-md active:scale-95 self-start sm:self-auto">
-          <i class="fa-solid fa-video text-blue-400"></i> Add Reel
+          <i class="fa-solid fa-video text-blue-400"></i> Add Video Reel
         </button>
       </div>
 
@@ -141,14 +176,15 @@
       </div>
     </section>
 
-    <section class="max-w-3xl mx-auto w-full">
+    <!-- 3. LATEST UPDATES & NEWS -->
+    <section id="updates" class="max-w-3xl mx-auto w-full">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
         <div>
           <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Latest Updates & News</h2>
-          <p class="text-slate-500 text-xs sm:text-sm mt-1">Real estate insights, market tips, and announcements</p>
+          <p class="text-slate-500 text-xs sm:text-sm mt-1">Real estate market updates, advisories, and property announcements</p>
         </div>
         <button onclick="openModal('blog-modal')" class="admin-only hidden bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 text-xs sm:text-sm active:scale-95 self-start sm:self-auto">
-          <i class="fa-solid fa-pen-to-square"></i> New Post
+          <i class="fa-solid fa-pen-to-square"></i> Create Post
         </button>
       </div>
 
@@ -166,19 +202,63 @@
       </div>
     </section>
 
-    <section class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm text-center">
-      <div class="flex items-center justify-center gap-3 mb-6">
-        <h3 class="text-lg sm:text-xl font-extrabold text-slate-800 tracking-tight">Connect With Me</h3>
+    <!-- 4. CONNECT WITH ME SECTION -->
+    <section id="connect" class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-sm text-center max-w-4xl mx-auto">
+      <div class="flex items-center justify-center gap-3 mb-2">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Connect With Me</h2>
         <button onclick="openModal('social-modal')" class="admin-only hidden text-blue-600 hover:text-blue-800 text-xs sm:text-sm font-semibold transition-colors">
           <i class="fa-solid fa-plus-circle mr-1"></i> Add Link
         </button>
       </div>
-      <div id="socials-container" class="flex flex-wrap justify-center gap-3 sm:gap-4">
+      <p class="text-slate-500 text-xs sm:text-sm mb-8">Follow my official social media profiles and channels</p>
+      
+      <div id="socials-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
+      </div>
+    </section>
+
+    <!-- 5. LEAD CAPTURE SECTION (PRE-FOOTER) -->
+    <section id="lead-capture" class="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+      <div class="max-w-3xl mx-auto relative z-10">
+        <div class="flex justify-between items-start gap-4 mb-6">
+          <div>
+            <span class="bg-blue-500/30 text-blue-300 border border-blue-400/30 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">Fast Response</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold mt-2 tracking-tight">Request Property Information</h2>
+            <p class="text-slate-300 text-xs sm:text-sm mt-1">Leave your contact details and our agent will connect with you shortly.</p>
+          </div>
+          <button onclick="openModal('lead-settings-modal')" class="admin-only hidden bg-white/10 hover:bg-white/20 text-white p-2.5 rounded-xl border border-white/20 text-xs" title="Lead Capture Settings">
+            <i class="fa-solid fa-sliders"></i>
+          </button>
+        </div>
+
+        <form onsubmit="submitLeadForm(event)" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1 uppercase tracking-wider">Your Full Name</label>
+              <input type="text" id="lead-name" required placeholder="e.g. John Smith" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1 uppercase tracking-wider">Contact Number</label>
+              <input type="tel" id="lead-phone" required placeholder="e.g. +63 912 345 6789" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1 uppercase tracking-wider">Email Address</label>
+            <input type="email" id="lead-email" required placeholder="e.g. john@example.com" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1 uppercase tracking-wider">Message or Preferred Property (Optional)</label>
+            <textarea id="lead-message" rows="2" placeholder="I am interested in learning more about..." class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"></textarea>
+          </div>
+          <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold rounded-xl shadow-lg transition-all duration-200 text-sm sm:text-base flex items-center justify-center gap-2 active:scale-[0.99]">
+            <i class="fa-solid fa-paper-plane"></i> Send Request To Agent
+          </button>
+        </form>
       </div>
     </section>
 
   </main>
 
+  <!-- ================= FOOTER SECTION ================= -->
   <footer id="footer-section" class="bg-slate-900 text-slate-300 pt-12 pb-8 border-t border-slate-800 mt-auto">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 mb-8">
       
@@ -195,7 +275,7 @@
         <h4 class="text-white font-bold mb-4 text-xs sm:text-sm uppercase tracking-wider">Quick Navigation</h4>
         <ul id="footer-links-container" class="space-y-2.5 text-xs sm:text-sm">
         </ul>
-        <button onclick="openModal('footer-link-modal')" class="admin-only hidden mt-3 text-xs font-semibold text-blue-400 hover:text-blue-300 hover:underline">+ Add Link</button>
+        <button onclick="openModal('footer-link-modal')" class="admin-only hidden mt-3 text-xs font-semibold text-blue-400 hover:text-blue-300 hover:underline">+ Add Footer Link</button>
       </div>
 
       <div class="flex flex-col justify-between">
@@ -217,15 +297,74 @@
     </div>
   </footer>
 
+  <!-- ================= MODALS & POPUPS ================= -->
 
+  <!-- AUTO LEAD POPUP MODAL -->
+  <div id="lead-popup-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative border border-slate-100">
+      <button onclick="closeModal('lead-popup-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg p-2">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl shadow-inner">
+          <i class="fa-solid fa-house-user"></i>
+        </div>
+        <h3 class="text-xl font-extrabold text-slate-900">Request Call or Message</h3>
+        <p class="text-xs text-slate-500 mt-1">Leave your details to receive personalized property consultations.</p>
+      </div>
+
+      <form onsubmit="submitLeadForm(event, true)" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Full Name</label>
+          <input type="text" id="popup-lead-name" required placeholder="e.g. John Doe" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Contact Number</label>
+          <input type="tel" id="popup-lead-phone" required placeholder="e.g. +63 912 345 6789" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Email Address</label>
+          <input type="email" id="popup-lead-email" required placeholder="e.g. john@example.com" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="button" onclick="closeModal('lead-popup-modal')" class="w-1/2 py-2.5 rounded-xl border border-slate-300 text-slate-600 text-xs sm:text-sm font-semibold hover:bg-slate-50">Skip to Browse</button>
+          <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold shadow-md transition active:scale-95">Send Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- LEAD CAPTURE SETTINGS MODAL (ADMIN ONLY) -->
+  <div id="lead-settings-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl">
+      <h3 class="text-lg font-extrabold text-slate-900 mb-4">Lead Capture Settings</h3>
+      <form onsubmit="saveLeadSettings(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Notification Email</label>
+          <input type="email" id="setting-lead-email" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Notification Phone/WhatsApp Number</label>
+          <input type="text" id="setting-lead-phone" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="button" onclick="closeModal('lead-settings-modal')" class="w-1/2 py-2.5 rounded-xl border border-slate-300 text-slate-600 text-xs sm:text-sm font-semibold">Cancel</button>
+          <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold shadow-md active:scale-95 transition">Save Settings</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADMIN LOGIN MODAL -->
   <div id="login-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border border-slate-100 transform transition-all">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border border-slate-100">
       <div class="text-center mb-6">
         <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl shadow-inner">
           <i class="fa-solid fa-user-shield"></i>
         </div>
         <h3 class="text-xl font-extrabold text-slate-900">Admin Login</h3>
-        <p class="text-xs text-slate-500 mt-1">Enter your credentials to modify site contents</p>
+        <p class="text-xs text-slate-500 mt-1">Enter credentials to modify site contents</p>
       </div>
       <form onsubmit="submitLogin(event)" class="space-y-4">
         <div>
@@ -245,8 +384,9 @@
     </div>
   </div>
 
+  <!-- LISTING DETAILS MODAL -->
   <div id="listing-details-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-    <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl my-auto relative">
+    <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl my-auto relative border border-slate-100">
       <button onclick="closeModal('listing-details-modal')" class="absolute top-4 right-4 z-20 bg-slate-900/60 hover:bg-slate-900 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md transition-all active:scale-95 shadow-lg">
         <i class="fa-solid fa-xmark text-lg"></i>
       </button>
@@ -255,6 +395,7 @@
     </div>
   </div>
 
+  <!-- ADD / EDIT LISTING MODAL -->
   <div id="listing-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md hidden z-50 flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl my-auto">
       <h3 class="text-xl font-extrabold text-slate-900 mb-4">Add Project Listing</h3>
@@ -269,23 +410,35 @@
             <input type="text" id="list-location" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Total Contract Price (TCP)</label>
-            <input type="text" id="list-tcp" placeholder="e.g. $450,000" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Total Price (₱ Peso)</label>
+            <input type="text" id="list-tcp" placeholder="e.g. ₱3,500,000" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
           </div>
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Monthly Amortization</label>
-          <input type="text" id="list-amort" placeholder="e.g. $1,800/mo" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <input type="text" id="list-amort" placeholder="e.g. ₱15,000 / month" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Description</label>
           <textarea id="list-desc" rows="3" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Photo URLs (Comma-separated, up to 10)</label>
+          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Photo URLs (Comma-separated)</label>
           <textarea id="list-photos" rows="3" placeholder="https://..., https://..." required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
-          <span class="text-[10px] text-slate-400 mt-1 block">First photo will be set as primary card cover.</span>
+          <span class="text-[10px] text-slate-400 mt-1 block">Photos automatically slide in card preview every 4 seconds.</span>
         </div>
+        
+        <!-- Dynamic Link Buttons Section -->
+        <div class="border-t border-slate-200 pt-4">
+          <label class="block text-xs font-bold text-slate-700 mb-2 uppercase tracking-wider">Custom Link Buttons</label>
+          <div id="custom-buttons-inputs" class="space-y-2">
+            <!-- Dynamic button input rows appended here -->
+          </div>
+          <button type="button" onclick="addCustomButtonInputRow()" class="mt-2 text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1">
+            <i class="fa-solid fa-plus-circle"></i> Add Button Link
+          </button>
+        </div>
+
         <div class="flex gap-3 pt-2">
           <button type="button" onclick="closeModal('listing-modal')" class="w-1/2 py-2.5 rounded-xl border border-slate-300 text-slate-600 text-xs sm:text-sm font-semibold hover:bg-slate-50">Cancel</button>
           <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold shadow-md active:scale-95 transition">Save Listing</button>
@@ -294,6 +447,7 @@
     </div>
   </div>
 
+  <!-- FAQ MODAL -->
   <div id="faq-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl">
       <h3 class="text-lg font-extrabold text-slate-900 mb-4">Add FAQ to Project</h3>
@@ -315,6 +469,7 @@
     </div>
   </div>
 
+  <!-- REEL MODAL -->
   <div id="reel-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl">
       <h3 class="text-lg font-extrabold text-slate-900 mb-4">Add Video Reel</h3>
@@ -324,7 +479,7 @@
           <input type="text" id="reel-title" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Direct Video Source URL (.mp4)</label>
+          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Video Source URL (MP4, Web, or Social Link)</label>
           <input type="url" id="reel-url" placeholder="https://example.com/video.mp4" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
         <div class="flex gap-3 pt-1">
@@ -335,50 +490,74 @@
     </div>
   </div>
 
+  <!-- BLOG / NEWS POST MODAL -->
   <div id="blog-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-6 max-w-lg w-full shadow-2xl">
-      <h3 class="text-lg font-extrabold text-slate-900 mb-4">Create Feed Post</h3>
+      <h3 class="text-lg font-extrabold text-slate-900 mb-4">Create Post Update</h3>
       <form onsubmit="saveBlog(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Image Source URL (Optional)</label>
-          <input type="url" id="blog-img" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Image Source URLs (Comma-separated for multiple)</label>
+          <textarea id="blog-img" rows="2" placeholder="https://..., https://..." class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Post Caption / Content</label>
+          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Post Caption / Announcement</label>
           <textarea id="blog-caption" rows="4" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
         </div>
         <div class="flex gap-3 pt-1">
           <button type="button" onclick="closeModal('blog-modal')" class="w-1/2 py-2.5 rounded-xl border border-slate-300 text-slate-600 text-xs sm:text-sm font-semibold">Cancel</button>
-          <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold shadow-md active:scale-95 transition">Post Feed</button>
+          <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold shadow-md active:scale-95 transition">Publish Post</button>
         </div>
       </form>
     </div>
   </div>
 
+  <!-- FULLSCREEN IMAGE VIEWER LIGHTBOX MODAL -->
+  <div id="image-viewer-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-lg hidden z-50 flex items-center justify-center p-4">
+    <button onclick="closeModal('image-viewer-modal')" class="absolute top-5 right-5 text-white/80 hover:text-white text-2xl p-2 z-20">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <button id="viewer-prev" onclick="navigateViewer(-1)" class="absolute left-4 text-white/80 hover:text-white text-3xl p-3 z-20 bg-slate-900/50 hover:bg-slate-900 rounded-full flex items-center justify-center">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <button id="viewer-next" onclick="navigateViewer(1)" class="absolute right-4 text-white/80 hover:text-white text-3xl p-3 z-20 bg-slate-900/50 hover:bg-slate-900 rounded-full flex items-center justify-center">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+    <div class="max-w-5xl max-h-[85vh] overflow-hidden flex items-center justify-center">
+      <img id="viewer-image" src="" alt="Fullscreen preview" class="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl">
+    </div>
+  </div>
+
+  <!-- SOCIAL ACCOUNT MODAL WITH ICON PICKER -->
   <div id="social-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl">
-      <h3 class="text-lg font-extrabold text-slate-900 mb-4">Add Social Account Link</h3>
+      <h3 class="text-lg font-extrabold text-slate-900 mb-4">Add Social Media Profile</h3>
       <form onsubmit="saveSocial(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Platform Name</label>
-          <input type="text" id="social-name" placeholder="e.g. Instagram, LinkedIn, TikTok" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <input type="text" id="social-name" placeholder="e.g. Facebook, Instagram" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
+        
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">FontAwesome Icon Class</label>
-          <input type="text" id="social-icon" placeholder="fa-brands fa-instagram" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Select Social Icon</label>
+          <div id="icon-picker-container" class="grid grid-cols-6 gap-2 p-3 border border-slate-200 rounded-2xl bg-slate-50 max-h-36 overflow-y-auto">
+            <!-- Icons populated dynamically -->
+          </div>
+          <input type="hidden" id="social-icon" required>
         </div>
+
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Account URL</label>
-          <input type="url" id="social-url" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Profile / Account URL</label>
+          <input type="url" id="social-url" placeholder="https://..." required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
         <div class="flex gap-3 pt-1">
           <button type="button" onclick="closeModal('social-modal')" class="w-1/2 py-2.5 rounded-xl border border-slate-300 text-slate-600 text-xs sm:text-sm font-semibold">Cancel</button>
-          <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold shadow-md active:scale-95 transition">Save Link</button>
+          <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold shadow-md active:scale-95 transition">Save Profile</button>
         </div>
       </form>
     </div>
   </div>
 
+  <!-- FOOTER LINK MODAL -->
   <div id="footer-link-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl">
       <h3 class="text-lg font-extrabold text-slate-900 mb-4">Add Footer Link</h3>
@@ -399,9 +578,10 @@
     </div>
   </div>
 
-
+  <!-- Swiper JS Script -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
+  <!-- Firebase App & Database Scripts -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, set, onValue, push, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -421,7 +601,7 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // Global Bindings
+    // Global Window Bindings
     window.db = db;
     window.ref = ref;
     window.set = set;
@@ -433,10 +613,17 @@
     window.blogPostsPerPage = 3;
     window.allBlogs = [];
     window.allListings = {};
+    window.profileData = {};
+    window.leadSettings = { email: 'agent@example.com', phone: '+1234567890' };
 
     let swiperInstance = null;
 
     document.getElementById('year').innerText = new Date().getFullYear();
+
+    // Show Auto Lead Modal Popup on Load
+    setTimeout(() => {
+      openModal('lead-popup-modal');
+    }, 1200);
 
     // ================= REALTIME DB LISTENERS & AUTO SYNC =================
 
@@ -444,12 +631,19 @@
     onValue(ref(db, 'profile'), (snapshot) => {
       const data = snapshot.val();
       if(data) {
+        window.profileData = data;
         if(data.cover) document.getElementById('cover-photo').src = data.cover;
         if(data.avatar) document.getElementById('profile-photo').src = data.avatar;
         if(data.name) document.getElementById('profile-name').innerText = data.name;
         if(data.bio) document.getElementById('profile-bio').innerText = data.bio;
-        if(data.email) document.getElementById('contact-email').href = `mailto:${data.email}`;
-        if(data.phone) document.getElementById('contact-phone').href = `tel:${data.phone}`;
+        if(data.email) {
+          document.getElementById('contact-email').href = `mailto:${data.email}`;
+          window.leadSettings.email = data.email;
+        }
+        if(data.phone) {
+          document.getElementById('contact-phone').href = `tel:${data.phone}`;
+          window.leadSettings.phone = data.phone;
+        }
       }
     });
 
@@ -492,7 +686,7 @@
       }
     });
 
-    // Initialize/Re-initialize Swiper Carousel
+    // Swiper Carousel Initialization
     window.initSwiper = function() {
       if(swiperInstance) swiperInstance.destroy();
       swiperInstance = new Swiper('.reelsSwiper', {
@@ -505,8 +699,48 @@
           1024: { slidesPerView: 3.5, spaceBetween: 24 }
         }
       });
-    }
+    };
 
+    // Render Social Media Icon Picker
+    window.initIconPicker = function() {
+      const icons = [
+        { name: 'Facebook', class: 'fa-brands fa-facebook-f' },
+        { name: 'Messenger', class: 'fa-brands fa-facebook-messenger' },
+        { name: 'Instagram', class: 'fa-brands fa-instagram' },
+        { name: 'WhatsApp', class: 'fa-brands fa-whatsapp' },
+        { name: 'TikTok', class: 'fa-brands fa-tiktok' },
+        { name: 'YouTube', class: 'fa-brands fa-youtube' },
+        { name: 'Telegram', class: 'fa-brands fa-telegram' },
+        { name: 'Viber', class: 'fa-brands fa-viber' },
+        { name: 'LinkedIn', class: 'fa-brands fa-linkedin-in' },
+        { name: 'X / Twitter', class: 'fa-brands fa-x-twitter' },
+        { name: 'Globe / Website', class: 'fa-solid fa-globe' },
+        { name: 'Envelope Email', class: 'fa-solid fa-envelope' }
+      ];
+
+      const container = document.getElementById('icon-picker-container');
+      if(!container) return;
+      container.innerHTML = '';
+
+      icons.forEach((icon, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `p-2.5 rounded-xl border flex items-center justify-center text-slate-700 hover:bg-blue-600 hover:text-white transition ${idx === 0 ? 'border-blue-600 bg-blue-50 text-blue-600' : 'border-slate-200'}`;
+        btn.innerHTML = `<i class="${icon.class} text-base"></i>`;
+        btn.onclick = () => {
+          document.querySelectorAll('#icon-picker-container button').forEach(b => {
+            b.classList.remove('border-blue-600', 'bg-blue-50', 'text-blue-600');
+            b.classList.add('border-slate-200');
+          });
+          btn.classList.add('border-blue-600', 'bg-blue-50', 'text-blue-600');
+          document.getElementById('social-icon').value = icon.class;
+        };
+        container.appendChild(btn);
+        if(idx === 0) document.getElementById('social-icon').value = icon.class;
+      });
+    };
+
+    window.initIconPicker();
   </script>
 
   <script>
@@ -515,7 +749,7 @@
       if(window.isAdmin) {
         window.isAdmin = false;
         updateAdminUI();
-        alert('You have logged out.');
+        alert('Logged out from admin panel.');
       } else {
         openModal('login-modal');
       }
@@ -560,11 +794,11 @@
       if(window.allListings) renderListings(window.allListings);
     }
 
-    // ---------- PROFILE UPDATES (AUTOMATIC FIREBASE SYNC) ----------
+    // ---------- PROFILE UPDATES ----------
     function editProfileField(type) {
       if(!window.isAdmin) return;
       if(type === 'cover') {
-        const url = prompt("Enter Cover Photo URL:");
+        const url = prompt("Enter Cover / Hero Photo URL:");
         if(url) window.set(window.ref(window.db, 'profile/cover'), url);
       } else if(type === 'avatar') {
         const url = prompt("Enter Profile Photo URL:");
@@ -583,7 +817,21 @@
       }
     }
 
-    // ---------- PROJECT LISTINGS MANAGEMENT ----------
+    // ---------- PROJECT LISTINGS MANAGEMENT & CAROUSEL ----------
+    let listingCarousels = {};
+
+    function addCustomButtonInputRow(label = '', url = '') {
+      const container = document.getElementById('custom-buttons-inputs');
+      const row = document.createElement('div');
+      row.className = 'flex gap-2 items-center custom-btn-row';
+      row.innerHTML = `
+        <input type="text" placeholder="Button Name (e.g. Check Inventory)" value="${label}" class="w-1/2 px-3 py-2 border border-slate-300 rounded-xl text-xs btn-label">
+        <input type="url" placeholder="URL (e.g. https://...)" value="${url}" class="w-1/2 px-3 py-2 border border-slate-300 rounded-xl text-xs btn-url">
+        <button type="button" onclick="this.parentElement.remove()" class="text-red-500 hover:text-red-700 p-2 text-xs"><i class="fa-solid fa-trash"></i></button>
+      `;
+      container.appendChild(row);
+    }
+
     function saveListing(e) {
       e.preventDefault();
       const name = document.getElementById('list-name').value;
@@ -592,12 +840,21 @@
       const amort = document.getElementById('list-amort').value;
       const desc = document.getElementById('list-desc').value;
       const photosRaw = document.getElementById('list-photos').value;
-      const photos = photosRaw.split(',').map(url => url.trim()).filter(url => url.length > 0).slice(0, 10);
+      const photos = photosRaw.split(',').map(url => url.trim()).filter(url => url.length > 0);
+
+      // Collect dynamic buttons
+      const customButtons = [];
+      document.querySelectorAll('.custom-btn-row').forEach(row => {
+        const bLabel = row.querySelector('.btn-label').value.trim();
+        const bUrl = row.querySelector('.btn-url').value.trim();
+        if(bLabel && bUrl) customButtons.push({ label: bLabel, url: bUrl });
+      });
 
       const newRef = window.push(window.ref(window.db, 'listings'));
-      window.set(newRef, { name, location, tcp, amort, desc, photos }).then(() => {
+      window.set(newRef, { name, location, tcp, amort, desc, photos, customButtons }).then(() => {
         closeModal('listing-modal');
         e.target.reset();
+        document.getElementById('custom-buttons-inputs').innerHTML = '';
       });
     }
 
@@ -605,44 +862,116 @@
       const container = document.getElementById('listings-container');
       container.innerHTML = '';
 
+      // Clear existing intervals
+      Object.keys(listingCarousels).forEach(key => clearInterval(listingCarousels[key]));
+      listingCarousels = {};
+
       const keys = Object.keys(listings);
       if(keys.length === 0) {
-        container.innerHTML = `<div class="w-full text-center py-12 text-slate-400 text-sm flex items-center justify-center border-2 border-dashed border-slate-200 rounded-2xl">No project listings added yet.</div>`;
+        container.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400 text-sm border-2 border-dashed border-slate-200 rounded-2xl">No project listings added yet.</div>`;
         return;
       }
 
       keys.forEach(id => {
         const item = listings[id];
-        const cardPhoto = (item.photos && item.photos.length > 0) ? item.photos[0] : 'https://via.placeholder.com/400x300';
-        
+        const photos = (item.photos && item.photos.length > 0) ? item.photos : ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80'];
+        const customBtns = item.customButtons || [];
+
         const card = document.createElement('div');
-        card.className = "min-w-[270px] sm:min-w-[300px] max-w-[310px] bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-sm hover-lift flex flex-col justify-between cursor-pointer group snap-start relative";
-        
+        card.className = "bg-white rounded-3xl border border-slate-200/90 overflow-hidden shadow-sm hover-lift flex flex-col justify-between relative group";
+
         card.innerHTML = `
-          ${window.isAdmin ? `<button onclick="event.stopPropagation(); deleteItem('listings/${id}')" class="absolute top-3 right-3 bg-red-600 hover:bg-red-700 text-white w-8 h-8 rounded-full text-xs shadow-lg z-20 flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-trash"></i></button>` : ''}
-          <div onclick="openListingDetails('${id}')">
-            <div class="relative h-48 overflow-hidden bg-slate-100">
-              <img src="${cardPhoto}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-              <div class="absolute top-3 left-3 bg-blue-600/90 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg backdrop-blur-md shadow-sm">
-                ${item.location}
+          ${window.isAdmin ? `<button onclick="deleteItem('listings/${id}')" class="absolute top-3 right-3 bg-red-600 hover:bg-red-700 text-white w-8 h-8 rounded-full text-xs shadow-lg z-20 flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-trash"></i></button>` : ''}
+          
+          <div>
+            <!-- Image Carousel Container -->
+            <div class="relative h-56 sm:h-60 overflow-hidden bg-slate-900 group">
+              <div id="carousel-slides-${id}" class="w-full h-full relative">
+                ${photos.map((p, idx) => `
+                  <img src="${p}" alt="${item.name}" class="carousel-slide-${id} absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${idx === 0 ? 'opacity-100' : 'opacity-0'}">
+                `).join('')}
               </div>
+
+              <!-- Location Tag -->
+              <div class="absolute top-3 left-3 bg-slate-950/70 text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full backdrop-blur-md border border-white/10 z-10">
+                <i class="fa-solid fa-location-dot text-red-400 mr-1"></i> ${item.location}
+              </div>
+
+              <!-- Carousel Indicators -->
+              ${photos.length > 1 ? `
+                <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
+                  ${photos.map((_, idx) => `<span class="carousel-dot-${id} w-2 h-2 rounded-full bg-white/50 transition-all ${idx === 0 ? '!bg-white !w-5' : ''}"></span>`).join('')}
+                </div>
+              ` : ''}
             </div>
-            <div class="p-5">
-              <h3 class="text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">${item.name}</h3>
-              <div class="mt-3 space-y-1.5 border-t border-slate-100 pt-3 text-xs text-slate-600">
-                <div class="flex justify-between"><span class="text-slate-400">TCP:</span> <span class="font-bold text-slate-800">${item.tcp}</span></div>
-                <div class="flex justify-between"><span class="text-slate-400">Monthly:</span> <span class="font-bold text-emerald-600">${item.amort}</span></div>
+
+            <div class="p-5 sm:p-6">
+              <h3 onclick="openListingDetails('${id}')" class="text-lg sm:text-xl font-extrabold text-slate-900 hover:text-blue-600 cursor-pointer transition-colors line-clamp-1">${item.name}</h3>
+              <p class="text-xs text-slate-500 mt-2 line-clamp-2 leading-relaxed">${item.desc}</p>
+              
+              <div class="mt-4 pt-4 border-t border-slate-100 grid grid-cols-2 gap-2 text-xs">
+                <div>
+                  <span class="text-slate-400 font-medium block">Total Price</span>
+                  <span class="font-extrabold text-slate-900 text-sm sm:text-base">${item.tcp}</span>
+                </div>
+                <div>
+                  <span class="text-slate-400 font-medium block">Monthly Amortization</span>
+                  <span class="font-bold text-emerald-600 text-xs sm:text-sm">${item.amort}</span>
+                </div>
               </div>
+
+              <!-- Dynamic Link Buttons Below Description -->
+              ${customBtns.length > 0 ? `
+                <div class="mt-4 space-y-2 pt-2 border-t border-slate-100">
+                  ${customBtns.map(btn => `
+                    <button onclick="window.open('${btn.url}', '_blank')" class="w-full py-2.5 px-3 bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-700 font-bold rounded-xl text-xs transition-all flex items-center justify-between group/btn shadow-sm">
+                      <span>${btn.label}</span>
+                      <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-70 group-hover/btn:opacity-100"></i>
+                    </button>
+                  `).join('')}
+                </div>
+              ` : ''}
             </div>
           </div>
-          <div onclick="openListingDetails('${id}')" class="px-5 py-3 bg-slate-50 border-t border-slate-100 text-center text-xs font-bold text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-200 flex items-center justify-center gap-1">
-            <span>View Details & FAQs</span> <i class="fa-solid fa-chevron-right text-[10px] transition-transform group-hover:translate-x-1"></i>
+
+          <div onclick="openListingDetails('${id}')" class="px-5 py-3.5 bg-slate-50 border-t border-slate-100 text-center text-xs font-bold text-blue-600 hover:bg-blue-600 hover:text-white cursor-pointer transition-all flex items-center justify-center gap-1.5 rounded-b-3xl">
+            <span>View Full Details & FAQs</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
           </div>
         `;
+
         container.appendChild(card);
+
+        // Setup 4-Second Automatic Sliding Timer
+        if(photos.length > 1) {
+          let currentIdx = 0;
+          listingCarousels[id] = setInterval(() => {
+            currentIdx = (currentIdx + 1) % photos.length;
+            const slides = document.querySelectorAll(`.carousel-slide-${id}`);
+            const dots = document.querySelectorAll(`.carousel-dot-${id}`);
+            
+            slides.forEach((slide, idx) => {
+              if(idx === currentIdx) {
+                slide.classList.remove('opacity-0');
+                slide.classList.add('opacity-100');
+              } else {
+                slide.classList.remove('opacity-100');
+                slide.classList.add('opacity-0');
+              }
+            });
+
+            dots.forEach((dot, idx) => {
+              if(idx === currentIdx) {
+                dot.classList.add('!bg-white', '!w-5');
+              } else {
+                dot.classList.remove('!bg-white', '!w-5');
+              }
+            });
+          }, 4000);
+        }
       });
     }
 
+    // Modal Details View
     function openListingDetails(id) {
       const item = window.allListings[id];
       if(!item) return;
@@ -650,10 +979,11 @@
       const modalContent = document.getElementById('listing-details-content');
       const photos = item.photos || [];
       const faqs = item.faqs ? Object.entries(item.faqs) : [];
+      const customBtns = item.customButtons || [];
 
       modalContent.innerHTML = `
         <div class="relative h-64 sm:h-80 md:h-96 w-full bg-slate-900">
-          <img id="detail-main-img" src="${photos[0] || 'https://via.placeholder.com/600'}" class="w-full h-full object-cover transition-opacity duration-300">
+          <img id="detail-main-img" src="${photos[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'}" class="w-full h-full object-cover transition-all duration-300">
         </div>
 
         ${photos.length > 1 ? `
@@ -662,22 +992,37 @@
           </div>
         ` : ''}
 
-        <div class="p-6 sm:p-8">
-          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-6">
+        <div class="p-6 sm:p-8 space-y-6">
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div>
               <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">${item.name}</h2>
               <p class="text-xs sm:text-sm text-slate-500 mt-1"><i class="fa-solid fa-location-dot text-red-500 mr-1.5"></i> ${item.location}</p>
             </div>
-            <div class="sm:text-right bg-blue-50/80 p-3 rounded-2xl border border-blue-100/80 inline-block self-start">
-              <span class="block text-lg sm:text-xl font-black text-blue-600">${item.tcp}</span>
+            <div class="bg-blue-50/90 p-4 rounded-2xl border border-blue-100 inline-block self-start">
+              <span class="block text-xs font-bold text-slate-400 uppercase">Total Price</span>
+              <span class="block text-xl sm:text-2xl font-black text-blue-600">${item.tcp}</span>
               <span class="text-xs text-emerald-600 font-bold">${item.amort}</span>
             </div>
           </div>
 
-          <div class="border-t border-slate-100 pt-5 mb-6">
+          <div class="border-t border-slate-100 pt-5">
             <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Description</h4>
             <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">${item.desc}</p>
           </div>
+
+          ${customBtns.length > 0 ? `
+            <div class="border-t border-slate-100 pt-5">
+              <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Links & Resources</h4>
+              <div class="flex flex-wrap gap-2">
+                ${customBtns.map(btn => `
+                  <button onclick="window.open('${btn.url}', '_blank')" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition-all shadow-sm flex items-center gap-2">
+                    <span>${btn.label}</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
 
           <div class="border-t border-slate-200 pt-6">
             <div class="flex justify-between items-center mb-4">
@@ -735,7 +1080,7 @@
       });
     }
 
-    // ---------- REELS CAROUSEL MANAGEMENT ----------
+    // ---------- REELS CAROUSEL MANAGEMENT & VIDEO COMPATIBILITY ----------
     function saveReel(e) {
       e.preventDefault();
       const title = document.getElementById('reel-title').value;
@@ -752,7 +1097,7 @@
       const container = document.getElementById('reels-container');
       container.innerHTML = '';
       
-      const entries = Object.entries(reels).slice(0, 10);
+      const entries = Object.entries(reels);
       if(entries.length === 0) {
         container.innerHTML = `<div class="swiper-slide text-center text-slate-400 text-xs py-12">No video reels added.</div>`;
         window.initSwiper();
@@ -762,26 +1107,40 @@
       entries.forEach(([id, reel]) => {
         const slide = document.createElement('div');
         slide.className = 'swiper-slide';
+        
+        const isDirectVideo = reel.url.match(/\.(mp4|webm|ogg)/i);
+
         slide.innerHTML = `
-          <div class="relative bg-slate-950 rounded-2xl overflow-hidden aspect-[9/16] shadow-xl group cursor-pointer border border-white/10">
+          <div class="relative bg-slate-950 rounded-2xl overflow-hidden aspect-[9/16] shadow-xl group border border-white/10">
             ${window.isAdmin ? `<button onclick="deleteItem('reels/${id}')" class="absolute top-2.5 right-2.5 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-full text-xs z-30 shadow-md flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-trash"></i></button>` : ''}
             
-            <video src="${reel.url}" class="reel-video w-full h-full object-cover" loop playsinline muted></video>
-            
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent flex flex-col justify-end p-4 pointer-events-none">
+            ${isDirectVideo ? `
+              <video id="reel-vid-${id}" src="${reel.url}" class="reel-video w-full h-full object-cover" loop playsinline muted></video>
+            ` : `
+              <iframe src="${reel.url}" class="w-full h-full border-0" allow="fullscreen" allowfullscreen></iframe>
+            `}
+
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent flex flex-col justify-end p-4 pointer-events-none z-10">
               <p class="font-bold text-xs sm:text-sm text-white line-clamp-2 leading-snug">${reel.title}</p>
-              <span class="text-[10px] text-slate-300 mt-1 flex items-center gap-1 opacity-80"><i class="fa-solid fa-play text-[8px]"></i> Hover/Tap to play</span>
+              <div class="flex items-center justify-between mt-2">
+                <span class="text-[10px] text-slate-300 flex items-center gap-1 opacity-80"><i class="fa-solid fa-play text-[8px]"></i> Tap to play</span>
+                <button onclick="toggleFullscreen('reel-vid-${id}')" class="pointer-events-auto text-white hover:text-blue-400 text-xs p-1">
+                  <i class="fa-solid fa-expand"></i>
+                </button>
+              </div>
             </div>
           </div>
         `;
         
-        const video = slide.querySelector('video');
-        slide.addEventListener('mouseenter', () => playSingleVideo(video));
-        slide.addEventListener('mouseleave', () => video.pause());
-        slide.addEventListener('click', () => {
-          if(video.paused) playSingleVideo(video);
-          else video.pause();
-        });
+        if(isDirectVideo) {
+          const video = slide.querySelector('video');
+          slide.addEventListener('mouseenter', () => playSingleVideo(video));
+          slide.addEventListener('mouseleave', () => video.pause());
+          slide.addEventListener('click', () => {
+            if(video.paused) playSingleVideo(video);
+            else video.pause();
+          });
+        }
 
         container.appendChild(slide);
       });
@@ -793,17 +1152,31 @@
       document.querySelectorAll('.reel-video').forEach(v => {
         if(v !== targetVideo) v.pause();
       });
-      targetVideo.play().catch(() => {});
+      if(targetVideo) targetVideo.play().catch(() => {});
     }
 
-    // ---------- BLOG POSTS FEED & PAGINATION ----------
+    function toggleFullscreen(elementId) {
+      const el = document.getElementById(elementId);
+      if(!el) return;
+      if (el.requestFullscreen) {
+        el.requestFullscreen();
+      } else if (el.webkitRequestFullscreen) {
+        el.webkitRequestFullscreen();
+      }
+    }
+
+    // ---------- LATEST NEWS, MULTI-IMAGE FEED & FULLSCREEN LIGHTBOX ----------
+    let currentViewerImages = [];
+    let currentViewerIndex = 0;
+
     function saveBlog(e) {
       e.preventDefault();
-      const img = document.getElementById('blog-img').value;
+      const imgRaw = document.getElementById('blog-img').value;
       const caption = document.getElementById('blog-caption').value;
+      const images = imgRaw.split(',').map(url => url.trim()).filter(url => url.length > 0);
 
       const newRef = window.push(window.ref(window.db, 'blogs'));
-      window.set(newRef, { img, caption, timestamp: Date.now() }).then(() => {
+      window.set(newRef, { images, caption, timestamp: Date.now() }).then(() => {
         closeModal('blog-modal');
         e.target.reset();
       });
@@ -826,36 +1199,42 @@
       const end = start + window.blogPostsPerPage;
       const paginatedPosts = window.allBlogs.slice(start, end);
 
+      const agentName = window.profileData.name || 'Jane Doe';
+      const agentAvatar = window.profileData.avatar || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80';
+
       paginatedPosts.forEach(post => {
         const postDate = new Date(post.timestamp || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-        const isLongText = post.caption.length > 200;
+        const images = post.images || (post.img ? [post.img] : []);
         
         const card = document.createElement('div');
-        card.className = "bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden p-5 sm:p-6 transition-all duration-200 hover:shadow-md relative";
+        card.className = "bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden p-5 sm:p-6 transition-all duration-200 hover:shadow-md relative";
+        
         card.innerHTML = `
-          ${window.isAdmin ? `<button onclick="deleteItem('blogs/${post.id}')" class="absolute top-4 right-4 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-full text-xs flex items-center justify-center shadow transition active:scale-95"><i class="fa-solid fa-trash"></i></button>` : ''}
+          ${window.isAdmin ? `<button onclick="deleteItem('blogs/${post.id}')" class="absolute top-4 right-4 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-full text-xs flex items-center justify-center shadow transition active:scale-95 z-10"><i class="fa-solid fa-trash"></i></button>` : ''}
           
           <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 font-bold flex items-center justify-center text-sm shadow-inner">
-              <i class="fa-solid fa-user-tie"></i>
-            </div>
+            <img src="${agentAvatar}" class="w-10 h-10 rounded-full object-cover border border-slate-200 shadow-sm">
             <div>
-              <h4 class="font-bold text-slate-800 text-xs sm:text-sm">Property Announcement</h4>
+              <h4 class="font-extrabold text-slate-800 text-xs sm:text-sm">${agentName}</h4>
               <span class="text-[11px] text-slate-400 block">${postDate}</span>
             </div>
           </div>
 
-          <div class="text-slate-700 text-xs sm:text-sm leading-relaxed mb-4">
-            <span id="blog-text-short-${post.id}">
-              ${isLongText ? post.caption.substring(0, 200) + '...' : post.caption}
-            </span>
-            ${isLongText ? `
-              <span id="blog-text-full-${post.id}" class="hidden">${post.caption}</span>
-              <button onclick="toggleBlogText('${post.id}')" id="blog-btn-${post.id}" class="text-blue-600 font-bold text-xs ml-1 hover:underline">View More</button>
-            ` : ''}
-          </div>
+          <div class="text-slate-700 text-xs sm:text-sm leading-relaxed mb-4 whitespace-pre-line">${post.caption}</div>
 
-          ${post.img ? `<div class="rounded-xl overflow-hidden max-h-96 bg-slate-100 border border-slate-100"><img src="${post.img}" class="w-full h-full object-cover"></div>` : ''}
+          <!-- Multi-Image Grid Display -->
+          ${images.length > 0 ? `
+            <div class="grid ${images.length === 1 ? 'grid-cols-1' : images.length === 2 ? 'grid-cols-2' : 'grid-cols-2 sm:grid-cols-3'} gap-2 rounded-2xl overflow-hidden">
+              ${images.map((imgUrl, iIdx) => `
+                <div onclick="openImageViewer(${JSON.stringify(images).replace(/"/g, '&quot;')}, ${iIdx})" class="relative h-48 bg-slate-100 cursor-pointer overflow-hidden group">
+                  <img src="${imgUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                  <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-lg">
+                    <i class="fa-solid fa-expand"></i>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
         `;
         container.appendChild(card);
       });
@@ -866,20 +1245,17 @@
       document.getElementById('btn-next-page').disabled = window.blogPage >= totalPages;
     }
 
-    function toggleBlogText(id) {
-      const shortEl = document.getElementById(`blog-text-short-${id}`);
-      const fullEl = document.getElementById(`blog-text-full-${id}`);
-      const btn = document.getElementById(`blog-btn-${id}`);
+    function openImageViewer(images, index) {
+      currentViewerImages = images;
+      currentViewerIndex = index;
+      document.getElementById('viewer-image').src = images[index];
+      openModal('image-viewer-modal');
+    }
 
-      if(fullEl.classList.contains('hidden')) {
-        fullEl.classList.remove('hidden');
-        shortEl.classList.add('hidden');
-        btn.innerText = "View Less";
-      } else {
-        fullEl.classList.add('hidden');
-        shortEl.classList.remove('hidden');
-        btn.innerText = "View More";
-      }
+    function navigateViewer(dir) {
+      if(currentViewerImages.length === 0) return;
+      currentViewerIndex = (currentViewerIndex + dir + currentViewerImages.length) % currentViewerImages.length;
+      document.getElementById('viewer-image').src = currentViewerImages[currentViewerIndex];
     }
 
     function changeBlogPage(direction) {
@@ -887,11 +1263,11 @@
       renderBlogFeed();
     }
 
-    // ---------- SOCIAL ACCOUNTS MANAGEMENT ----------
+    // ---------- SOCIAL MEDIA CONNECT SECTION ----------
     function saveSocial(e) {
       e.preventDefault();
       const name = document.getElementById('social-name').value;
-      const icon = document.getElementById('social-icon').value;
+      const icon = document.getElementById('social-icon').value || 'fa-solid fa-globe';
       const url = document.getElementById('social-url').value;
 
       const newRef = window.push(window.ref(window.db, 'socials'));
@@ -907,7 +1283,7 @@
       
       const entries = Object.entries(socials);
       if(entries.length === 0) {
-        container.innerHTML = `<span class="text-xs text-slate-400">No social media profiles added.</span>`;
+        container.innerHTML = `<span class="col-span-full text-xs text-slate-400">No social media links added yet.</span>`;
         return;
       }
 
@@ -915,17 +1291,45 @@
         const btn = document.createElement('div');
         btn.className = "relative group";
         btn.innerHTML = `
-          <a href="${item.url}" target="_blank" class="flex items-center gap-2 bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 px-4 py-2.5 rounded-xl font-semibold text-xs transition-all duration-200 border border-slate-200/80 shadow-sm active:scale-95">
-            <i class="${item.icon} text-base"></i>
-            <span>${item.name}</span>
+          <a href="${item.url}" target="_blank" class="flex flex-col items-center justify-center p-4 rounded-2xl bg-slate-50 hover:bg-blue-600 hover:text-white text-slate-800 transition-all duration-200 border border-slate-200/80 shadow-sm active:scale-95 h-full">
+            <i class="${item.icon} text-2xl mb-2 text-blue-600 group-hover:text-white transition-colors"></i>
+            <span class="text-xs font-bold">${item.name}</span>
           </a>
-          ${window.isAdmin ? `<button onclick="deleteItem('socials/${id}')" class="absolute -top-2 -right-2 bg-red-600 hover:bg-red-700 text-white w-5 h-5 rounded-full text-[10px] flex items-center justify-center shadow-md transition active:scale-95"><i class="fa-solid fa-x"></i></button>` : ''}
+          ${window.isAdmin ? `<button onclick="deleteItem('socials/${id}')" class="absolute -top-2 -right-2 bg-red-600 hover:bg-red-700 text-white w-6 h-6 rounded-full text-[10px] flex items-center justify-center shadow-md transition active:scale-95 z-10"><i class="fa-solid fa-x"></i></button>` : ''}
         `;
         container.appendChild(btn);
       });
     }
 
-    // ---------- FOOTER MODIFICATIONS ----------
+    // ---------- LEAD CAPTURE & FORM SUBMISSION ----------
+    function submitLeadForm(e, isPopup = false) {
+      e.preventDefault();
+      const name = document.getElementById(isPopup ? 'popup-lead-name' : 'lead-name').value;
+      const phone = document.getElementById(isPopup ? 'popup-lead-phone' : 'lead-phone').value;
+      const email = document.getElementById(isPopup ? 'popup-lead-email' : 'lead-email').value;
+      const message = isPopup ? 'Requesting contact callback' : (document.getElementById('lead-message').value || 'No additional message provided.');
+
+      const agentEmail = window.leadSettings.email || 'agent@example.com';
+      const mailtoUrl = `mailto:${agentEmail}?subject=${encodeURIComponent('New Property Lead Inquiry: ' + name)}&body=${encodeURIComponent(`Name: ${name}\nPhone: ${phone}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+
+      window.location.href = mailtoUrl;
+      alert('Thank you! Your inquiry details have been drafted. Press send on your email client to notify the agent.');
+      
+      if(isPopup) closeModal('lead-popup-modal');
+      e.target.reset();
+    }
+
+    function saveLeadSettings(e) {
+      e.preventDefault();
+      const email = document.getElementById('setting-lead-email').value;
+      const phone = document.getElementById('setting-lead-phone').value;
+
+      window.leadSettings = { email, phone };
+      alert('Lead capture settings updated!');
+      closeModal('lead-settings-modal');
+    }
+
+    // ---------- FOOTER MANAGEMENT ----------
     function editFooterDetails() {
       if(!window.isAdmin) return;
       const brand = prompt("Enter Brand / Business Name:");
