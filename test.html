@@ -75,6 +75,17 @@
 </head>
 <body class="bg-slate-50 text-slate-700 font-sans antialiased selection:bg-[#003366] selection:text-white flex flex-col min-h-screen relative overflow-x-hidden">
 
+  <!-- ================= INITIAL LOADING SCREEN ================= -->
+  <div id="loading-screen" class="fixed inset-0 bg-slate-900 z-[9999] flex flex-col items-center justify-center transition-opacity duration-500">
+    <div class="relative flex items-center justify-center">
+      <div class="w-20 h-20 border-4 border-slate-700 border-t-[#f1c40f] rounded-full animate-spin"></div>
+      <div class="absolute text-[#f1c40f] font-bold text-xl">
+        <i class="fa-solid fa-house"></i>
+      </div>
+    </div>
+    <p class="mt-4 text-white text-sm font-semibold tracking-wide animate-pulse">Loading Application Data...</p>
+  </div>
+
   <!-- Ambient Moving Background Accents -->
   <div class="fixed top-[-10%] left-[-10%] w-[45vw] h-[45vw] bg-sky-200/40 rounded-full blur-3xl pointer-events-none animate-float"></div>
   <div class="fixed bottom-[-10%] right-[-10%] w-[45vw] h-[45vw] bg-amber-100/50 rounded-full blur-3xl pointer-events-none animate-pulse-glow"></div>
@@ -118,6 +129,10 @@
             <a href="#lead-capture" onclick="toggleBurgerMenu()" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-semibold text-[#003366] hover:bg-slate-100 transition border-t border-slate-100 mt-1 pt-2">
               <i class="fa-solid fa-calendar-check text-[#f1c40f] w-4"></i> Inquiry
             </a>
+            <!-- Admin Login / Logout Menu Item -->
+            <button id="menu-auth-btn" onclick="toggleBurgerMenu(); handleAuthClick();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-bold text-amber-600 bg-amber-50 hover:bg-amber-100 transition mt-1">
+              <i class="fa-solid fa-lock w-4"></i> <span id="menu-auth-label">Admin Login</span>
+            </button>
           </div>
         </div>
       </div>
@@ -203,7 +218,7 @@
       </div>
     </section>
 
-    <!-- 3. LATEST UPDATES & NEWS SECTION (Aligned Width with Connect Section) -->
+    <!-- 3. LATEST UPDATES & NEWS SECTION -->
     <section id="updates" class="max-w-4xl mx-auto w-full">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
@@ -229,7 +244,7 @@
       </div>
     </section>
 
-    <!-- 4. CONNECT WITH ME SECTION (Aligned Width with Updates Section) -->
+    <!-- 4. CONNECT WITH ME SECTION -->
     <section id="connect" class="glass-panel rounded-xl p-6 sm:p-8 text-center max-w-4xl mx-auto w-full">
       <div class="flex items-center justify-center gap-2 mb-1">
         <h2 class="text-2xl font-bold text-[#003366] tracking-tight">Connect With Me</h2>
@@ -307,13 +322,8 @@
 
       <div class="flex flex-col justify-between">
         <div>
-          <h4 class="text-white font-semibold mb-3 text-xs uppercase tracking-wider">Portal Access</h4>
-          <p class="text-xs text-slate-400 mb-3 leading-relaxed">Site administrators can log in to modify listings, posts, and media in real time.</p>
-        </div>
-        <div>
-          <button id="auth-btn" onclick="handleAuthClick()" class="inline-flex items-center gap-2 bg-[#003366] hover:bg-[#001a33] text-slate-200 border border-white/10 px-3.5 py-2 rounded-md text-xs font-semibold transition active:scale-95 shadow-sm">
-            <i class="fa-solid fa-lock text-[#f1c40f]"></i> <span>Admin Login</span>
-          </button>
+          <h4 class="text-white font-semibold mb-3 text-xs uppercase tracking-wider">About Platform</h4>
+          <p class="text-xs text-slate-400 mb-3 leading-relaxed">Dedicated professional platform designed to showcase verified properties and real estate opportunities.</p>
         </div>
       </div>
     </div>
@@ -326,7 +336,7 @@
 
   <!-- ================= MODALS & POPUPS ================= -->
 
-  <!-- AUTO LEAD POPUP MODAL (Synchronized Admin Settings Recipient) -->
+  <!-- AUTO LEAD POPUP MODAL -->
   <div id="lead-popup-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
     <div class="glass-panel bg-white/95 rounded-xl p-6 max-w-md w-full shadow-2xl relative border border-slate-200">
       <button onclick="closeModal('lead-popup-modal')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 text-base p-1">
@@ -411,7 +421,7 @@
     </div>
   </div>
 
-  <!-- LISTING DETAILS MODAL (With Inside Card Image Carousel) -->
+  <!-- LISTING DETAILS MODAL -->
   <div id="listing-details-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl my-auto relative border border-slate-100">
       <button onclick="closeModal('listing-details-modal')" class="absolute top-3 right-3 z-30 bg-slate-900/60 hover:bg-slate-900 text-white w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md transition active:scale-95 shadow">
@@ -422,13 +432,13 @@
     </div>
   </div>
 
-  <!-- BLOG DETAILS MODAL (Full Caption & Multiple Images Lightbox) -->
+  <!-- BLOG DETAILS MODAL -->
   <div id="blog-details-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl my-auto relative border border-slate-100 p-5 sm:p-7">
       <button onclick="closeModal('blog-details-modal')" class="absolute top-3 right-3 z-30 bg-slate-100 hover:bg-slate-200 text-slate-700 w-8 h-8 rounded-full flex items-center justify-center transition active:scale-95">
         <i class="fa-solid fa-xmark text-sm"></i>
       </button>
-      <div id="blog-details-content" class="space-y-4">
+      <div id="blog-details-content" class="space-y-4 max-h-[75vh] overflow-y-auto custom-scrollbar pr-2">
       </div>
     </div>
   </div>
@@ -532,6 +542,10 @@
     <div class="bg-white rounded-xl p-6 max-w-lg w-full shadow-2xl border border-slate-100">
       <h3 class="text-base font-bold text-slate-800 mb-3">Create Post Update</h3>
       <form onsubmit="saveBlog(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Headline Title</label>
+          <input type="text" id="blog-title" placeholder="e.g. New Housing Development Unveiled" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
+        </div>
         <div>
           <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Image Source URLs (Comma-separated for multiple)</label>
           <textarea id="blog-img" rows="2" placeholder="https://..., https://..." class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none"></textarea>
@@ -656,10 +670,26 @@
 
     document.getElementById('year').innerText = new Date().getFullYear();
 
+    // Loading State Tracker
+    let loadedSections = { profile: false, listings: false, reels: false, blogs: false, socials: false, footer: false };
+
+    function checkDataLoaded(section) {
+      loadedSections[section] = true;
+      if (Object.values(loadedSections).every(Boolean)) {
+        const loader = document.getElementById('loading-screen');
+        if (loader) {
+          loader.classList.add('opacity-0');
+          setTimeout(() => {
+            loader.style.display = 'none';
+          }, 500);
+        }
+      }
+    }
+
     // Show Auto Lead Modal Popup on Load
     setTimeout(() => {
       openModal('lead-popup-modal');
-    }, 1200);
+    }, 1500);
 
     // Load Lead Settings Recipient Data
     onValue(ref(db, 'leadSettings'), (snapshot) => {
@@ -689,17 +719,20 @@
           if(!window.leadSettings.phone) window.leadSettings.phone = data.phone;
         }
       }
+      checkDataLoaded('profile');
     });
 
     onValue(ref(db, 'listings'), (snapshot) => {
       const data = snapshot.val() || {};
       window.allListings = data;
       renderListings(data);
+      checkDataLoaded('listings');
     });
 
     onValue(ref(db, 'reels'), (snapshot) => {
       const data = snapshot.val() || {};
       renderReels(data);
+      checkDataLoaded('reels');
     });
 
     onValue(ref(db, 'blogs'), (snapshot) => {
@@ -708,11 +741,13 @@
                            .sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
       window.allBlogs = sorted;
       renderBlogFeed();
+      checkDataLoaded('blogs');
     });
 
     onValue(ref(db, 'socials'), (snapshot) => {
       const data = snapshot.val() || {};
       renderSocials(data);
+      checkDataLoaded('socials');
     });
 
     onValue(ref(db, 'footer'), (snapshot) => {
@@ -723,14 +758,19 @@
         if(data.about) document.getElementById('footer-about').innerText = data.about;
         if(data.links) renderFooterLinks(data.links);
       }
+      checkDataLoaded('footer');
     });
 
-    // Swiper Reel Initialization
+    // Swiper Reel Initialization with 4-second Autoplay
     window.initSwiper = function() {
       if(swiperInstance) swiperInstance.destroy();
       swiperInstance = new Swiper('.reelsSwiper', {
         slidesPerView: 1.2,
         spaceBetween: 14,
+        autoplay: {
+          delay: 4000,
+          disableOnInteraction: false,
+        },
         pagination: { el: '.swiper-pagination', clickable: true },
         breakpoints: {
           480: { slidesPerView: 1.8, spaceBetween: 16 },
@@ -840,18 +880,14 @@
 
     function updateAdminUI() {
       const adminElements = document.querySelectorAll('.admin-only');
-      const authBtn = document.getElementById('auth-btn');
+      const menuAuthLabel = document.getElementById('menu-auth-label');
 
       if(window.isAdmin) {
         adminElements.forEach(el => el.classList.remove('hidden'));
-        authBtn.innerHTML = `<i class="fa-solid fa-right-from-bracket"></i> <span>Logout Admin</span>`;
-        authBtn.classList.replace('bg-[#003366]', 'bg-red-600');
-        authBtn.classList.replace('hover:bg-[#001a33]', 'hover:bg-red-700');
+        if (menuAuthLabel) menuAuthLabel.innerText = "Logout Admin";
       } else {
         adminElements.forEach(el => el.classList.add('hidden'));
-        authBtn.innerHTML = `<i class="fa-solid fa-lock text-[#f1c40f]"></i> <span>Admin Login</span>`;
-        authBtn.classList.replace('bg-red-600', 'bg-[#003366]');
-        authBtn.classList.replace('hover:bg-red-700', 'hover:bg-[#001a33]');
+        if (menuAuthLabel) menuAuthLabel.innerText = "Admin Login";
       }
 
       if(window.allBlogs) renderBlogFeed();
@@ -881,7 +917,49 @@
       }
     }
 
-    // ---------- LEAD FORM SUBMISSION (Uses Admin Settings Recipient) ----------
+    // ---------- FOOTER UPDATES ----------
+    function editFooterDetails() {
+      if(!window.isAdmin) return;
+      const logo = prompt("Enter Footer Logo Image URL:");
+      const brand = prompt("Enter Brand / Business Name:");
+      const about = prompt("Enter Footer About Text:");
+
+      if(logo) window.set(window.ref(window.db, 'footer/logo'), logo);
+      if(brand) window.set(window.ref(window.db, 'footer/brand'), brand);
+      if(about) window.set(window.ref(window.db, 'footer/about'), about);
+    }
+
+    function saveFooterLink(e) {
+      e.preventDefault();
+      const label = document.getElementById('footlink-label').value;
+      const url = document.getElementById('footlink-url').value;
+
+      const newRef = window.push(window.ref(window.db, 'footer/links'));
+      window.set(newRef, { label, url }).then(() => {
+        closeModal('footer-link-modal');
+        e.target.reset();
+      });
+    }
+
+    function renderFooterLinks(linksObj) {
+      const container = document.getElementById('footer-links-container');
+      if(!container) return;
+      container.innerHTML = '';
+      
+      Object.entries(linksObj).forEach(([id, link]) => {
+        const li = document.createElement('li');
+        li.className = "flex items-center justify-between";
+        li.innerHTML = `
+          <a href="${link.url}" target="_blank" class="hover:text-white transition flex items-center gap-1.5">
+            <i class="fa-solid fa-chevron-right text-[10px] text-[#f1c40f]"></i> ${link.label}
+          </a>
+          ${window.isAdmin ? `<button onclick="deleteItem('footer/links/${id}')" class="text-red-400 hover:text-red-300 ml-2"><i class="fa-solid fa-trash text-[10px]"></i></button>` : ''}
+        `;
+        container.appendChild(li);
+      });
+    }
+
+    // ---------- LEAD FORM SUBMISSION ----------
     function saveLeadSettings(e) {
       e.preventDefault();
       const email = document.getElementById('setting-lead-email').value.trim();
@@ -914,7 +992,7 @@
       });
     }
 
-    // ---------- FEATURED PROJECTS & MODAL CAROUSEL ----------
+    // ---------- FEATURED PROJECTS ----------
     function addCustomButtonInputRow(label = '', url = '') {
       const container = document.getElementById('custom-buttons-inputs');
       const row = document.createElement('div');
@@ -993,7 +1071,7 @@
                   <span class="font-bold text-[#003366] text-xs sm:text-sm">${item.tcp}</span>
                 </div>
                 <div>
-                  <span class="text-slate-400 font-medium block text-[10px]">Monthly Amortization</span>
+                  <span class="text-slate-400 font-medium block text-[10px]">Monthly starts</span>
                   <span class="font-semibold text-emerald-600 text-xs">${item.amort}</span>
                 </div>
               </div>
@@ -1020,7 +1098,7 @@
       });
     }
 
-    // Modal Details View with Embedded Image Carousel Inside Modal
+    // Modal Details View with Accordion FAQ
     function openListingDetails(id) {
       const item = window.allListings[id];
       if(!item) return;
@@ -1031,7 +1109,6 @@
       const customBtns = item.customButtons || [];
 
       modalContent.innerHTML = `
-        <!-- Inside Card Modal Image Carousel -->
         <div class="relative h-60 sm:h-80 w-full bg-slate-900 overflow-hidden">
           <div id="modal-carousel-slides-${id}" class="w-full h-full relative">
             ${photos.map((p, idx) => `
@@ -1067,7 +1144,7 @@
             <div class="bg-[#003366]/5 p-3 rounded-lg border border-[#003366]/10 inline-block">
               <span class="block text-[10px] font-semibold text-slate-400 uppercase">Total Price</span>
               <span class="block text-lg font-bold text-[#003366]">${item.tcp}</span>
-              <span class="text-xs text-emerald-600 font-medium">${item.amort}</span>
+              <span class="text-xs text-emerald-600 font-medium">Monthly starts ${item.amort}</span>
             </div>
           </div>
 
@@ -1099,10 +1176,15 @@
             ${faqs.length > 0 ? `
               <div class="space-y-2">
                 ${faqs.map(([faqId, faq]) => `
-                  <div class="p-3 bg-slate-50 rounded-md border border-slate-100 relative">
-                    ${window.isAdmin ? `<button onclick="deleteItem('listings/${id}/faqs/${faqId}')" class="absolute top-2 right-2 text-red-500 hover:text-red-700 text-xs"><i class="fa-solid fa-trash"></i></button>` : ''}
-                    <h5 class="text-xs font-semibold text-[#003366]">${faq.q}</h5>
-                    <p class="text-xs text-slate-600 mt-1">${faq.a}</p>
+                  <div class="border border-slate-200 rounded-md overflow-hidden">
+                    <button onclick="toggleFaq('${faqId}')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 font-semibold text-xs text-[#003366] flex justify-between items-center transition">
+                      <span>${faq.q}</span>
+                      <i id="faq-icon-${faqId}" class="fa-solid fa-chevron-down text-slate-400 text-[10px] transition-transform duration-300"></i>
+                    </button>
+                    <div id="faq-ans-${faqId}" class="hidden p-3 bg-white text-xs text-slate-600 border-t border-slate-100 relative">
+                      ${window.isAdmin ? `<button onclick="deleteItem('listings/${id}/faqs/${faqId}')" class="absolute top-2 right-2 text-red-500 hover:text-red-700 text-xs"><i class="fa-solid fa-trash"></i></button>` : ''}
+                      <p>${faq.a}</p>
+                    </div>
                   </div>
                 `).join('')}
               </div>
@@ -1112,6 +1194,34 @@
       `;
 
       openModal('listing-details-modal');
+    }
+
+    function toggleFaq(faqId) {
+      const ans = document.getElementById(`faq-ans-${faqId}`);
+      const icon = document.getElementById(`faq-icon-${faqId}`);
+      if(ans) {
+        ans.classList.toggle('hidden');
+        if(icon) icon.classList.toggle('rotate-180');
+      }
+    }
+
+    function openFAQModal(listingId) {
+      document.getElementById('faq-listing-id').value = listingId;
+      openModal('faq-modal');
+    }
+
+    function saveFAQ(e) {
+      e.preventDefault();
+      const listingId = document.getElementById('faq-listing-id').value;
+      const q = document.getElementById('faq-question').value;
+      const a = document.getElementById('faq-answer').value;
+
+      const newRef = window.push(window.ref(window.db, `listings/${listingId}/faqs`));
+      window.set(newRef, { q, a }).then(() => {
+        closeModal('faq-modal');
+        e.target.reset();
+        openListingDetails(listingId);
+      });
     }
 
     let activeModalSlideIndex = {};
@@ -1131,7 +1241,7 @@
       setModalCarouselSlide(id, current);
     }
 
-    // ---------- REELS VIDEO SECTION (With Native Audio Enabled) ----------
+    // ---------- REELS VIDEO SECTION ----------
     function saveReel(e) {
       e.preventDefault();
       const title = document.getElementById('reel-title').value;
@@ -1161,10 +1271,9 @@
         slide.className = 'swiper-slide';
 
         slide.innerHTML = `
-          <div class="relative bg-slate-900 rounded-lg overflow-hidden shadow-lg border border-white/10 group aspect-[9/16]">
-            ${window.isAdmin ? `<button onclick="deleteItem('reels/${id}')" class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs shadow z-20 flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-trash"></i></button>` : ''}
+          <div class="relative bg-slate-900 rounded-lg overflow-hidden shadow-lg border border-white/10 group aspect-[9/16]" onmouseenter="playReelVideo(this)" onclick="playReelVideo(this)">
+            ${window.isAdmin ? `<button onclick="event.stopPropagation(); deleteItem('reels/${id}')" class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs shadow z-20 flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-trash"></i></button>` : ''}
             
-            <!-- Video Player with Audio Controls Enabled -->
             <video src="${reel.url}" controls controlsList="nodownload" class="w-full h-full object-cover" preload="metadata"></video>
             
             <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent pointer-events-none">
@@ -1178,15 +1287,23 @@
       window.initSwiper();
     }
 
-    // ---------- LATEST NEWS & UPDATES (Truncated Caption & Modal View) ----------
+    function playReelVideo(wrapper) {
+      const vid = wrapper.querySelector('video');
+      if(vid) {
+        vid.play().catch(() => {});
+      }
+    }
+
+    // ---------- LATEST NEWS & UPDATES ----------
     function saveBlog(e) {
       e.preventDefault();
+      const title = document.getElementById('blog-title').value;
       const caption = document.getElementById('blog-caption').value;
       const imgRaw = document.getElementById('blog-img').value;
       const images = imgRaw.split(',').map(u => u.trim()).filter(u => u.length > 0);
 
       const newRef = window.push(window.ref(window.db, 'blogs'));
-      window.set(newRef, { caption, images, timestamp: Date.now() }).then(() => {
+      window.set(newRef, { title, caption, images, timestamp: Date.now() }).then(() => {
         closeModal('blog-modal');
         e.target.reset();
       });
@@ -1224,6 +1341,8 @@
             <i class="fa-solid fa-clock text-[#f1c40f]"></i>
             <span>${new Date(post.timestamp || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
           </div>
+
+          <h3 class="text-base sm:text-lg font-bold text-[#003366] mb-2 leading-snug">${post.title || 'Market Update'}</h3>
 
           ${images.length > 0 ? `
             <div class="mb-3 rounded-lg overflow-hidden bg-slate-900 max-h-72">
@@ -1266,6 +1385,8 @@
           <span>${new Date(post.timestamp || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
         </div>
 
+        <h2 class="text-xl font-bold text-[#003366] mb-3">${post.title || 'Market Update'}</h2>
+
         ${images.length > 0 ? `
           <div class="grid ${images.length > 1 ? 'grid-cols-2' : 'grid-cols-1'} gap-2 mb-4">
             ${images.map((img, idx) => `
@@ -1282,19 +1403,26 @@
 
     // Lightbox Viewer
     let viewerImages = [];
-    let currentViewerIdx = 0;
+    let viewerIndex = 0;
 
-    function openImageViewer(imgs, idx) {
-      viewerImages = imgs;
-      currentViewerIdx = idx;
-      document.getElementById('viewer-image').src = viewerImages[currentViewerIdx];
+    function openImageViewer(images, index) {
+      viewerImages = images;
+      viewerIndex = index;
+      updateViewerImage();
       openModal('image-viewer-modal');
+    }
+
+    function updateViewerImage() {
+      const img = document.getElementById('viewer-image');
+      if(img && viewerImages.length > 0) {
+        img.src = viewerImages[viewerIndex];
+      }
     }
 
     function navigateViewer(dir) {
       if(viewerImages.length === 0) return;
-      currentViewerIdx = (currentViewerIdx + dir + viewerImages.length) % viewerImages.length;
-      document.getElementById('viewer-image').src = viewerImages[currentViewerIdx];
+      viewerIndex = (viewerIndex + dir + viewerImages.length) % viewerImages.length;
+      updateViewerImage();
     }
 
     // ---------- SOCIAL MEDIA LINKS ----------
@@ -1323,65 +1451,30 @@
 
       keys.forEach(id => {
         const item = socials[id];
-        const link = document.createElement('a');
-        link.href = item.url;
-        link.target = "_blank";
-        link.className = "p-3 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 transition flex items-center justify-between group shadow-sm relative";
+        const card = document.createElement('a');
+        card.href = item.url;
+        card.target = "_blank";
+        card.className = "flex items-center gap-3 p-3 bg-white/80 border border-slate-200 rounded-lg shadow-sm hover:border-[#003366] transition group relative";
 
-        link.innerHTML = `
-          ${window.isAdmin ? `<button onclick="event.preventDefault(); deleteItem('socials/${id}')" class="absolute -top-1 -right-1 bg-red-600 text-white w-5 h-5 rounded-full text-[10px] shadow z-20 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>` : ''}
-          <div class="flex items-center gap-2.5">
-            <i class="${item.icon || 'fa-solid fa-globe'} text-base text-[#003366]"></i>
-            <span class="text-xs font-semibold text-slate-700">${item.name}</span>
+        card.innerHTML = `
+          ${window.isAdmin ? `<button onclick="event.preventDefault(); event.stopPropagation(); deleteItem('socials/${id}')" class="absolute top-1 right-1 text-red-500 hover:text-red-700 text-xs p-1"><i class="fa-solid fa-trash"></i></button>` : ''}
+          <div class="w-8 h-8 rounded-full bg-[#003366]/10 text-[#003366] flex items-center justify-center group-hover:bg-[#003366] group-hover:text-white transition">
+            <i class="${item.icon} text-sm"></i>
           </div>
-          <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-400 group-hover:text-[#003366]"></i>
+          <span class="text-xs font-semibold text-slate-700 group-hover:text-[#003366] truncate">${item.name}</span>
         `;
-
-        container.appendChild(link);
+        container.appendChild(card);
       });
     }
 
-    // ---------- FOOTER MANAGEMENT ----------
-    function editFooterDetails() {
-      if(!window.isAdmin) return;
-      const brand = prompt("Enter Brand Name:");
-      const about = prompt("Enter About Info:");
-      if(brand) window.set(window.ref(window.db, 'footer/brand'), brand);
-      if(about) window.set(window.ref(window.db, 'footer/about'), about);
-    }
-
-    function saveFooterLink(e) {
-      e.preventDefault();
-      const label = document.getElementById('footlink-label').value;
-      const url = document.getElementById('footlink-url').value;
-
-      const newRef = window.push(window.ref(window.db, 'footer/links'));
-      window.set(newRef, { label, url }).then(() => {
-        closeModal('footer-link-modal');
-        e.target.reset();
-      });
-    }
-
-    function renderFooterLinks(links) {
-      const container = document.getElementById('footer-links-container');
-      container.innerHTML = '';
-
-      Object.entries(links).forEach(([id, item]) => {
-        const li = document.createElement('li');
-        li.className = "flex items-center justify-between";
-        li.innerHTML = `
-          <a href="${item.url}" class="hover:text-[#f1c40f] transition">${item.label}</a>
-          ${window.isAdmin ? `<button onclick="deleteItem('footer/links/${id}')" class="text-red-400 hover:text-red-600 text-[10px] ml-2"><i class="fa-solid fa-trash"></i></button>` : ''}
-        `;
-        container.appendChild(li);
-      });
-    }
-
-    // ---------- GLOBAL DELETE FUNCTION ----------
+    // ---------- GLOBAL DELETE ITEM ----------
     function deleteItem(path) {
       if(!window.isAdmin) return;
       if(confirm('Are you sure you want to delete this item?')) {
-        window.remove(window.ref(window.db, path));
+        window.remove(window.ref(window.db, path)).then(() => {
+          alert('Item deleted.');
+          closeModal('listing-details-modal');
+        });
       }
     }
   </script>
