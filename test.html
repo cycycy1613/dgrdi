@@ -15,47 +15,55 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 
   <style>
-    /* Fluid Animations & Visual Styling Treatments */
-    @keyframes pulseGlow {
-      0%, 100% { opacity: 0.3; transform: scale(1); }
-      50% { opacity: 0.7; transform: scale(1.05); }
+    /* Subtle Background Animation */
+    @keyframes floatLight {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-12px) scale(1.02); }
     }
-    .animate-pulse-glow { animation: pulseGlow 5s ease-in-out infinite; }
+    .animate-float { animation: floatLight 8s ease-in-out infinite; }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.15; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(1.05); }
+    }
+    .animate-pulse-glow { animation: pulseGlow 6s ease-in-out infinite; }
     
-    .glass-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.6);
+    /* Light Theme Glassmorphism */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 8px 32px 0 rgba(0, 51, 102, 0.05);
     }
 
-    .glass-dark {
-      background: rgba(0, 51, 102, 0.95);
+    .glass-panel-dark {
+      background: rgba(0, 51, 102, 0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .hover-lift {
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
     }
     .hover-lift:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px -6px rgba(0, 51, 102, 0.08);
     }
     
     .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
-    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 9999px; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
     .swiper-pagination-bullet-active {
       background: #f1c40f !important;
       width: 20px !important;
-      border-radius: 9999px !important;
+      border-radius: 4px !important;
     }
 
-    /* Custom Color Palette Overrides */
+    /* Color Helpers */
     .bg-custom-navy { background-color: #003366; }
     .text-custom-navy { color: #003366; }
     .border-custom-navy { border-color: #003366; }
@@ -63,48 +71,51 @@
     .bg-custom-gold { background-color: #f1c40f; }
     .text-custom-gold { color: #f1c40f; }
     .border-custom-gold { border-color: #f1c40f; }
-    .hover\:bg-custom-gold-dark:hover { background-color: #d4ac0d; }
   </style>
 </head>
-<body class="bg-[#f9f8f3] text-slate-800 font-sans antialiased selection:bg-[#003366] selection:text-white flex flex-col min-h-screen">
+<body class="bg-slate-50 text-slate-700 font-sans antialiased selection:bg-[#003366] selection:text-white flex flex-col min-h-screen relative overflow-x-hidden">
+
+  <!-- Ambient Moving Background Accents -->
+  <div class="fixed top-[-10%] left-[-10%] w-[45vw] h-[45vw] bg-sky-200/40 rounded-full blur-3xl pointer-events-none animate-float"></div>
+  <div class="fixed bottom-[-10%] right-[-10%] w-[45vw] h-[45vw] bg-amber-100/50 rounded-full blur-3xl pointer-events-none animate-pulse-glow"></div>
 
   <!-- ================= HERO & PROFILE HEADER SECTION ================= -->
-  <header id="hero" class="relative bg-[#003366] shadow-lg mb-8 sm:mb-12">
-    <!-- Hero / Cover Photo -->
-    <div class="relative h-64 sm:h-80 md:h-[22rem] lg:h-[26rem] w-full bg-gradient-to-r from-[#002244] via-[#003366] to-[#001a33] overflow-hidden">
+  <header id="hero" class="relative mb-8 sm:mb-12">
+    <!-- Hero Cover Container -->
+    <div class="relative h-60 sm:h-72 md:h-80 w-full bg-slate-900 overflow-hidden">
       <img id="cover-photo" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1600&q=80" alt="Cover" class="w-full h-full object-cover transition-opacity duration-500 opacity-80">
-      <div class="absolute inset-0 bg-gradient-to-t from-[#003366] via-slate-950/20 to-black/30"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/30 to-transparent"></div>
       
       <!-- Change Cover Button (Admin Only) -->
-      <button onclick="editProfileField('cover')" class="admin-only hidden absolute top-4 left-4 bg-white/90 hover:bg-white text-[#003366] px-3.5 py-2 rounded-xl shadow-lg text-xs sm:text-sm font-semibold transition-all duration-200 backdrop-blur-md flex items-center gap-2 transform active:scale-95 z-20">
-        <i class="fa-solid fa-camera text-[#f1c40f]"></i> Change Cover Hero
+      <button onclick="editProfileField('cover')" class="admin-only hidden absolute top-4 left-4 bg-white/90 hover:bg-white text-[#003366] px-3 py-1.5 rounded-md shadow text-xs font-semibold transition backdrop-blur-md flex items-center gap-1.5 active:scale-95 z-20">
+        <i class="fa-solid fa-camera text-[#f1c40f]"></i> Change Cover
       </button>
 
-      <!-- Burger Menu Drawer Dropdown Navigation -->
+      <!-- Navigation Drawer Menu -->
       <div class="absolute top-4 right-4 z-30">
         <div class="relative">
-          <button id="burger-menu-btn" onclick="toggleBurgerMenu()" class="bg-[#003366]/90 hover:bg-[#003366] text-white border border-white/20 px-4 py-2.5 rounded-2xl shadow-xl flex items-center gap-2.5 text-sm font-bold backdrop-blur-md transition-all active:scale-95">
-            <i class="fa-solid fa-bars text-lg text-[#f1c40f]"></i> Menu
+          <button id="burger-menu-btn" onclick="toggleBurgerMenu()" class="bg-white/90 hover:bg-white text-[#003366] border border-white/50 px-3.5 py-2 rounded-md shadow-md flex items-center gap-2 text-xs font-semibold backdrop-blur-md transition active:scale-95">
+            <i class="fa-solid fa-bars text-[#003366]"></i> Menu
           </button>
 
           <!-- Dropdown Navigation Links -->
-          <div id="burger-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-[#003366] border border-white/20 rounded-2xl shadow-2xl p-2 z-50 text-white backdrop-blur-xl">
-            <a href="#hero" onclick="toggleBurgerMenu()" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold hover:bg-white/10 transition">
-              <i class="fa-solid fa-house text-[#f1c40f] w-4"></i> Home
+          <div id="burger-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white/95 border border-slate-200 rounded-lg shadow-xl p-1.5 z-50 text-slate-700 backdrop-blur-xl">
+            <a href="#hero" onclick="toggleBurgerMenu()" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium hover:bg-slate-100 transition">
+              <i class="fa-solid fa-house text-[#003366] w-4"></i> Home
             </a>
-            <a href="#projects" onclick="toggleBurgerMenu()" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold hover:bg-white/10 transition">
-              <i class="fa-solid fa-building text-[#f1c40f] w-4"></i> Projects
+            <a href="#projects" onclick="toggleBurgerMenu()" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium hover:bg-slate-100 transition">
+              <i class="fa-solid fa-building text-[#003366] w-4"></i> Projects
             </a>
-            <a href="#reels" onclick="toggleBurgerMenu()" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold hover:bg-white/10 transition">
-              <i class="fa-solid fa-clapperboard text-[#f1c40f] w-4"></i> Reels
+            <a href="#reels" onclick="toggleBurgerMenu()" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium hover:bg-slate-100 transition">
+              <i class="fa-solid fa-clapperboard text-[#003366] w-4"></i> Reels
             </a>
-            <a href="#updates" onclick="toggleBurgerMenu()" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold hover:bg-white/10 transition">
-              <i class="fa-solid fa-newspaper text-[#f1c40f] w-4"></i> Updates
+            <a href="#updates" onclick="toggleBurgerMenu()" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium hover:bg-slate-100 transition">
+              <i class="fa-solid fa-newspaper text-[#003366] w-4"></i> Updates
             </a>
-            <a href="#connect" onclick="toggleBurgerMenu()" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold hover:bg-white/10 transition">
-              <i class="fa-solid fa-paper-plane text-[#f1c40f] w-4"></i> Connect
+            <a href="#connect" onclick="toggleBurgerMenu()" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium hover:bg-slate-100 transition">
+              <i class="fa-solid fa-paper-plane text-[#003366] w-4"></i> Connect
             </a>
-            <a href="#lead-capture" onclick="toggleBurgerMenu()" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-[#f1c40f] hover:bg-white/10 transition border-t border-white/10 mt-1 pt-2">
+            <a href="#lead-capture" onclick="toggleBurgerMenu()" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-semibold text-[#003366] hover:bg-slate-100 transition border-t border-slate-100 mt-1 pt-2">
               <i class="fa-solid fa-calendar-check text-[#f1c40f] w-4"></i> Inquiry
             </a>
           </div>
@@ -112,39 +123,40 @@
       </div>
     </div>
 
-    <!-- Profile & Bio Overlay Card -->
+    <!-- Align Header Profile Info & Layout -->
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="relative -mt-16 sm:-mt-20 md:-mt-24 pb-8 flex flex-col md:flex-row items-center md:items-end justify-between gap-6 z-10">
+      <div class="glass-panel rounded-xl p-5 sm:p-6 -mt-16 sm:-mt-20 relative z-10 shadow-lg flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
         
-        <div class="flex flex-col md:flex-row items-center md:items-center gap-5 text-center md:text-left w-full md:w-auto">
+        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left w-full md:w-auto">
+          <!-- Reduced Corner Radius Avatar -->
           <div class="relative group flex-shrink-0">
-            <img id="profile-photo" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" alt="Profile" class="w-36 h-36 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-3xl border-4 border-white shadow-2xl object-cover bg-white transition-transform duration-300 group-hover:scale-[1.02] ring-4 ring-[#003366]/20">
-            <button onclick="editProfileField('avatar')" class="admin-only hidden absolute bottom-2 right-2 bg-[#003366] hover:bg-[#002244] text-[#f1c40f] p-3 rounded-2xl shadow-xl transition-all duration-200 transform hover:scale-110 active:scale-95">
-              <i class="fa-solid fa-camera text-sm"></i>
+            <img id="profile-photo" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" alt="Profile" class="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-lg border-2 border-white shadow-md object-cover bg-white">
+            <button onclick="editProfileField('avatar')" class="admin-only hidden absolute bottom-1 right-1 bg-[#003366] hover:bg-[#002244] text-[#f1c40f] p-2 rounded-md shadow transition active:scale-95">
+              <i class="fa-solid fa-camera text-xs"></i>
             </button>
           </div>
           
-          <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xl w-full md:w-auto flex-grow max-w-2xl">
-            <div class="flex items-center justify-center md:justify-start gap-2.5">
-              <h1 id="profile-name" class="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-[#003366]">Jane Doe</h1>
-              <button onclick="editProfileField('name')" class="admin-only hidden text-slate-400 hover:text-[#003366] text-base sm:text-lg transition-colors p-1" title="Edit Name">
+          <div class="space-y-1.5 max-w-xl">
+            <div class="flex items-center justify-center sm:justify-start gap-2">
+              <h1 id="profile-name" class="text-2xl sm:text-3xl font-bold tracking-tight text-[#003366]">Jane Doe</h1>
+              <button onclick="editProfileField('name')" class="admin-only hidden text-slate-400 hover:text-[#003366] text-sm transition p-1" title="Edit Name">
                 <i class="fa-solid fa-pen"></i>
               </button>
             </div>
-            <p id="profile-bio" class="text-slate-600 font-medium text-xs sm:text-sm md:text-base max-w-xl mt-2 leading-relaxed">Licensed Real Estate Broker | Helping you find your dream home & high-yield real estate investments</p>
-            <button onclick="editProfileField('bio')" class="admin-only hidden text-xs font-semibold text-[#003366] hover:underline mt-2 inline-block">Edit Bio</button>
+            <p id="profile-bio" class="text-slate-600 text-xs sm:text-sm leading-relaxed">Licensed Real Estate Broker | Helping you find your dream home & high-yield real estate investments</p>
+            <button onclick="editProfileField('bio')" class="admin-only hidden text-[11px] font-medium text-[#003366] hover:underline inline-block">Edit Bio</button>
           </div>
         </div>
 
-        <!-- Quick Contact Actions -->
-        <div class="flex items-center gap-3 bg-white p-3 rounded-2xl border border-slate-200 shadow-xl self-center md:self-end">
-          <a id="contact-email" href="mailto:agent@example.com" title="Send Email" class="px-5 py-3 rounded-xl bg-[#003366] text-white hover:bg-[#002244] font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md transition-all duration-200 transform hover:-translate-y-0.5 active:scale-95">
-            <i class="fa-solid fa-envelope text-[#f1c40f]"></i> <span class="hidden sm:inline">Email</span>
+        <!-- Header Quick Contact Buttons -->
+        <div class="flex items-center gap-2.5 w-full md:w-auto justify-center sm:justify-start pt-2 md:pt-0 border-t md:border-t-0 border-slate-200/60">
+          <a id="contact-email" href="mailto:agent@example.com" title="Send Email" class="px-4 py-2 rounded-md bg-[#003366] text-white hover:bg-[#002244] text-xs font-semibold flex items-center gap-2 shadow-sm transition active:scale-95">
+            <i class="fa-solid fa-envelope text-[#f1c40f]"></i> <span>Email</span>
           </a>
-          <a id="contact-phone" href="tel:+1234567890" title="Call Now" class="px-5 py-3 rounded-xl bg-[#f1c40f] text-[#003366] hover:bg-[#d4ac0d] font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md transition-all duration-200 transform hover:-translate-y-0.5 active:scale-95">
-            <i class="fa-solid fa-phone"></i> <span class="hidden sm:inline">Call</span>
+          <a id="contact-phone" href="tel:+1234567890" title="Call Now" class="px-4 py-2 rounded-md bg-[#f1c40f] text-[#003366] hover:bg-[#d4ac0d] text-xs font-semibold flex items-center gap-2 shadow-sm transition active:scale-95">
+            <i class="fa-solid fa-phone"></i> <span>Call</span>
           </a>
-          <button onclick="editProfileField('contact')" class="admin-only hidden w-11 h-11 rounded-xl bg-slate-100 text-[#003366] hover:bg-slate-200 flex items-center justify-center text-sm transition-colors shadow-sm active:scale-95" title="Edit Contact Info">
+          <button onclick="editProfileField('contact')" class="admin-only hidden p-2 rounded-md bg-slate-100 text-[#003366] hover:bg-slate-200 text-xs transition shadow-sm active:scale-95" title="Edit Contact Info">
             <i class="fa-solid fa-gear"></i>
           </button>
         </div>
@@ -154,16 +166,16 @@
   </header>
 
   <!-- ================= MAIN BODY CONTENT ================= -->
-  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16 pb-16 flex-grow w-full">
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16 pb-16 flex-grow w-full relative z-10">
 
     <!-- 1. FEATURED PROJECT LISTINGS -->
     <section id="projects">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-[#003366] tracking-tight">Featured Projects</h2>
-          <p class="text-slate-500 text-xs sm:text-sm mt-1">Explore available affordable homes and condominiums</p>
+          <h2 class="text-2xl font-bold text-[#003366] tracking-tight">Featured Projects</h2>
+          <p class="text-slate-500 text-xs mt-0.5">Explore available affordable homes and condominiums</p>
         </div>
-        <button onclick="openModal('listing-modal')" class="admin-only hidden bg-[#003366] hover:bg-[#002244] text-white px-4 py-2.5 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 text-xs sm:text-sm active:scale-95 self-start sm:self-auto">
+        <button onclick="openModal('listing-modal')" class="admin-only hidden bg-[#003366] hover:bg-[#002244] text-white px-3.5 py-2 rounded-md font-medium shadow transition text-xs active:scale-95 self-start sm:self-auto flex items-center gap-1.5">
           <i class="fa-solid fa-plus text-[#f1c40f]"></i> Add Project Listing
         </button>
       </div>
@@ -172,101 +184,99 @@
       </div>
     </section>
 
-    <!-- 2. REELS & VIRTUAL TOURS -->
-    <section id="reels" class="bg-[#003366] text-white rounded-3xl p-5 sm:p-8 shadow-2xl relative overflow-hidden">
-      <div class="absolute -top-24 -right-24 w-96 h-96 bg-[#f1c40f]/10 rounded-full blur-3xl pointer-events-none animate-pulse-glow"></div>
-      
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 relative z-10">
+    <!-- 2. REELS & VIRTUAL TOURS SECTION -->
+    <section id="reels" class="glass-panel-dark text-white rounded-xl p-5 sm:p-7 shadow-xl relative overflow-hidden">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 relative z-10">
         <div>
-          <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Property Reels & Virtual Tours</h2>
-          <p class="text-slate-200 text-xs sm:text-sm mt-1">Short video walkthroughs and property highlights</p>
+          <h2 class="text-2xl font-bold tracking-tight">Property Reels & Virtual Tours</h2>
+          <p class="text-slate-300 text-xs mt-0.5">Short video walkthroughs with native audio support</p>
         </div>
-        <button onclick="openModal('reel-modal')" class="admin-only hidden bg-white/10 hover:bg-white/20 border border-white/20 text-white px-4 py-2.5 rounded-xl font-medium text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 backdrop-blur-md active:scale-95 self-start sm:self-auto">
+        <button onclick="openModal('reel-modal')" class="admin-only hidden bg-white/10 hover:bg-white/20 border border-white/20 text-white px-3.5 py-2 rounded-md font-medium text-xs transition flex items-center justify-center gap-1.5 backdrop-blur-md active:scale-95 self-start sm:self-auto">
           <i class="fa-solid fa-video text-[#f1c40f]"></i> Add Video Reel
         </button>
       </div>
 
-      <div class="swiper reelsSwiper relative z-10 py-2">
+      <div class="swiper reelsSwiper relative z-10 py-1">
         <div class="swiper-wrapper" id="reels-container">
         </div>
         <div class="swiper-pagination !-bottom-1"></div>
       </div>
     </section>
 
-    <!-- 3. LATEST UPDATES & NEWS -->
-    <section id="updates" class="max-w-3xl mx-auto w-full">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
+    <!-- 3. LATEST UPDATES & NEWS SECTION (Aligned Width with Connect Section) -->
+    <section id="updates" class="max-w-4xl mx-auto w-full">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-[#003366] tracking-tight">Latest Updates & News</h2>
-          <p class="text-slate-500 text-xs sm:text-sm mt-1">Real estate market updates, advisories, and property announcements</p>
+          <h2 class="text-2xl font-bold text-[#003366] tracking-tight">Latest Updates & News</h2>
+          <p class="text-slate-500 text-xs mt-0.5">Real estate market updates, advisories, and announcements</p>
         </div>
-        <button onclick="openModal('blog-modal')" class="admin-only hidden bg-[#003366] hover:bg-[#002244] text-white px-4 py-2.5 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 text-xs sm:text-sm active:scale-95 self-start sm:self-auto">
+        <button onclick="openModal('blog-modal')" class="admin-only hidden bg-[#003366] hover:bg-[#002244] text-white px-3.5 py-2 rounded-md font-medium shadow transition text-xs active:scale-95 self-start sm:self-auto flex items-center gap-1.5">
           <i class="fa-solid fa-pen-to-square text-[#f1c40f]"></i> Create Post
         </button>
       </div>
 
-      <div id="blog-container" class="space-y-6">
+      <div id="blog-container" class="space-y-5">
       </div>
 
-      <div id="blog-pagination" class="flex justify-between items-center mt-8 pt-4 border-t border-slate-200">
-        <button id="btn-prev-page" onclick="changeBlogPage(-1)" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed font-semibold text-xs sm:text-sm transition active:scale-95">
-          <i class="fa-solid fa-arrow-left mr-1.5"></i> Previous
+      <div id="blog-pagination" class="flex justify-between items-center mt-6 pt-4 border-t border-slate-200">
+        <button id="btn-prev-page" onclick="changeBlogPage(-1)" class="px-3 py-1.5 rounded-md border border-slate-300 text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed font-medium text-xs transition active:scale-95">
+          <i class="fa-solid fa-arrow-left mr-1"></i> Previous
         </button>
-        <span id="blog-page-info" class="text-xs sm:text-sm font-bold text-slate-500">Page 1</span>
-        <button id="btn-next-page" onclick="changeBlogPage(1)" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed font-semibold text-xs sm:text-sm transition active:scale-95">
-          Next <i class="fa-solid fa-arrow-right ml-1.5"></i>
+        <span id="blog-page-info" class="text-xs text-slate-500 font-medium">Page 1</span>
+        <button id="btn-next-page" onclick="changeBlogPage(1)" class="px-3 py-1.5 rounded-md border border-slate-300 text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed font-medium text-xs transition active:scale-95">
+          Next <i class="fa-solid fa-arrow-right ml-1"></i>
         </button>
       </div>
     </section>
 
-    <!-- 4. CONNECT WITH ME SECTION -->
-    <section id="connect" class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-sm text-center max-w-4xl mx-auto">
-      <div class="flex items-center justify-center gap-3 mb-2">
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#003366] tracking-tight">Connect With Me</h2>
-        <button onclick="openModal('social-modal')" class="admin-only hidden text-[#003366] hover:text-[#002244] text-xs sm:text-sm font-semibold transition-colors">
+    <!-- 4. CONNECT WITH ME SECTION (Aligned Width with Updates Section) -->
+    <section id="connect" class="glass-panel rounded-xl p-6 sm:p-8 text-center max-w-4xl mx-auto w-full">
+      <div class="flex items-center justify-center gap-2 mb-1">
+        <h2 class="text-2xl font-bold text-[#003366] tracking-tight">Connect With Me</h2>
+        <button onclick="openModal('social-modal')" class="admin-only hidden text-[#003366] hover:text-[#002244] text-xs font-semibold transition">
           <i class="fa-solid fa-plus-circle mr-1"></i> Add Link
         </button>
       </div>
-      <p class="text-slate-500 text-xs sm:text-sm mb-8">Follow my official social media profiles and channels</p>
+      <p class="text-slate-500 text-xs mb-6">Follow my official social media profiles and channels</p>
       
-      <div id="socials-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
+      <div id="socials-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
       </div>
     </section>
 
-    <!-- 5. LEAD CAPTURE SECTION (PRE-FOOTER) -->
-    <section id="lead-capture" class="bg-[#003366] text-white rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+    <!-- 5. LEAD CAPTURE SECTION -->
+    <section id="lead-capture" class="glass-panel-dark text-white rounded-xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
       <div class="max-w-3xl mx-auto relative z-10">
-        <div class="flex justify-between items-start gap-4 mb-6">
+        <div class="flex justify-between items-start gap-4 mb-5">
           <div>
-            <span class="bg-[#f1c40f]/20 text-[#f1c40f] border border-[#f1c40f]/30 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">Fast Response</span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold mt-2 tracking-tight">Request Property Information</h2>
-            <p class="text-slate-200 text-xs sm:text-sm mt-1">Leave your contact details and our agent will connect with you shortly.</p>
+            <span class="bg-[#f1c40f]/20 text-[#f1c40f] border border-[#f1c40f]/30 px-2.5 py-0.5 rounded text-[10px] font-semibold tracking-wider">Fast Response</span>
+            <h2 class="text-2xl font-bold mt-1 tracking-tight">Request Property Information</h2>
+            <p class="text-slate-300 text-xs mt-0.5">Leave your contact details and our agent will connect with you shortly.</p>
           </div>
-          <button onclick="openModal('lead-settings-modal')" class="admin-only hidden bg-white/10 hover:bg-white/20 text-white p-2.5 rounded-xl border border-white/20 text-xs" title="Lead Capture Settings">
+          <button onclick="openModal('lead-settings-modal')" class="admin-only hidden bg-white/10 hover:bg-white/20 text-white p-2 rounded-md border border-white/20 text-xs" title="Lead Capture Settings">
             <i class="fa-solid fa-sliders"></i>
           </button>
         </div>
 
-        <form onsubmit="submitLeadForm(event)" class="space-y-4">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <form onsubmit="submitLeadForm(event)" class="space-y-3.5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div>
-              <label class="block text-xs font-bold text-slate-200 mb-1 uppercase tracking-wider">Your Full Name</label>
-              <input type="text" id="lead-name" required placeholder="e.g. John Smith" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-[#f1c40f] text-sm">
+              <label class="block text-[11px] font-medium text-slate-300 mb-1 tracking-wider uppercase">Your Full Name</label>
+              <input type="text" id="lead-name" required placeholder="e.g. John Smith" class="w-full px-3.5 py-2.5 bg-white/10 border border-white/20 rounded-md text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#f1c40f] text-xs">
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-200 mb-1 uppercase tracking-wider">Contact Number</label>
-              <input type="tel" id="lead-phone" required placeholder="e.g. +63 912 345 6789" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-[#f1c40f] text-sm">
+              <label class="block text-[11px] font-medium text-slate-300 mb-1 tracking-wider uppercase">Contact Number</label>
+              <input type="tel" id="lead-phone" required placeholder="e.g. +63 912 345 6789" class="w-full px-3.5 py-2.5 bg-white/10 border border-white/20 rounded-md text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#f1c40f] text-xs">
             </div>
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-200 mb-1 uppercase tracking-wider">Email Address</label>
-            <input type="email" id="lead-email" required placeholder="e.g. john@example.com" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-[#f1c40f] text-sm">
+            <label class="block text-[11px] font-medium text-slate-300 mb-1 tracking-wider uppercase">Email Address</label>
+            <input type="email" id="lead-email" required placeholder="e.g. john@example.com" class="w-full px-3.5 py-2.5 bg-white/10 border border-white/20 rounded-md text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#f1c40f] text-xs">
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-200 mb-1 uppercase tracking-wider">Message or Preferred Property (Optional)</label>
-            <textarea id="lead-message" rows="2" placeholder="I am interested in learning more about..." class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-[#f1c40f] text-sm"></textarea>
+            <label class="block text-[11px] font-medium text-slate-300 mb-1 tracking-wider uppercase">Message or Preferred Property (Optional)</label>
+            <textarea id="lead-message" rows="2" placeholder="I am interested in learning more about..." class="w-full px-3.5 py-2.5 bg-white/10 border border-white/20 rounded-md text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#f1c40f] text-xs"></textarea>
           </div>
-          <button type="submit" class="w-full py-3.5 bg-[#f1c40f] hover:bg-[#d4ac0d] text-[#003366] font-extrabold rounded-xl shadow-lg transition-all duration-200 text-sm sm:text-base flex items-center justify-center gap-2 active:scale-[0.99]">
+          <button type="submit" class="w-full py-3 bg-[#f1c40f] hover:bg-[#d4ac0d] text-[#003366] font-bold rounded-md shadow transition text-xs sm:text-sm flex items-center justify-center gap-2 active:scale-[0.99]">
             <i class="fa-solid fa-paper-plane"></i> Send Request To Agent
           </button>
         </form>
@@ -276,39 +286,39 @@
   </main>
 
   <!-- ================= FOOTER SECTION ================= -->
-  <footer id="footer-section" class="bg-[#002244] text-slate-300 pt-12 pb-8 border-t border-[#001a33] mt-auto">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 mb-8">
+  <footer id="footer-section" class="bg-[#001f3f] text-slate-300 pt-10 pb-6 border-t border-[#001a33] mt-auto relative z-10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
       
       <div>
-        <div class="flex items-center gap-3 mb-4">
-          <img id="footer-logo" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=100&q=80" alt="Logo" class="w-10 h-10 rounded-xl object-cover bg-white ring-2 ring-[#f1c40f]">
-          <span id="footer-brand-name" class="text-lg sm:text-xl font-bold text-white tracking-wide">Jane Doe Realty</span>
+        <div class="flex items-center gap-2.5 mb-3">
+          <img id="footer-logo" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=100&q=80" alt="Logo" class="w-9 h-9 rounded-md object-cover bg-white ring-1 ring-[#f1c40f]">
+          <span id="footer-brand-name" class="text-lg font-bold text-white tracking-wide">Jane Doe Realty</span>
         </div>
-        <p id="footer-about" class="text-xs sm:text-sm text-slate-300 leading-relaxed">Providing top-tier real estate services with integrity, transparency, and professional expertise.</p>
-        <button onclick="editFooterDetails()" class="admin-only hidden mt-3 text-xs font-semibold text-[#f1c40f] hover:underline">Edit Footer Info</button>
+        <p id="footer-about" class="text-xs text-slate-400 leading-relaxed">Providing top-tier real estate services with integrity, transparency, and professional expertise.</p>
+        <button onclick="editFooterDetails()" class="admin-only hidden mt-2 text-[11px] font-medium text-[#f1c40f] hover:underline">Edit Footer Info</button>
       </div>
 
       <div>
-        <h4 class="text-white font-bold mb-4 text-xs sm:text-sm uppercase tracking-wider">Quick Navigation</h4>
-        <ul id="footer-links-container" class="space-y-2.5 text-xs sm:text-sm">
+        <h4 class="text-white font-semibold mb-3 text-xs uppercase tracking-wider">Quick Navigation</h4>
+        <ul id="footer-links-container" class="space-y-2 text-xs">
         </ul>
-        <button onclick="openModal('footer-link-modal')" class="admin-only hidden mt-3 text-xs font-semibold text-[#f1c40f] hover:underline">+ Add Footer Link</button>
+        <button onclick="openModal('footer-link-modal')" class="admin-only hidden mt-2 text-[11px] font-medium text-[#f1c40f] hover:underline">+ Add Footer Link</button>
       </div>
 
       <div class="flex flex-col justify-between">
         <div>
-          <h4 class="text-white font-bold mb-4 text-xs sm:text-sm uppercase tracking-wider">Portal Access</h4>
-          <p class="text-xs text-slate-300 mb-4 leading-relaxed">Site administrators can log in to modify listings, posts, and media in real time.</p>
+          <h4 class="text-white font-semibold mb-3 text-xs uppercase tracking-wider">Portal Access</h4>
+          <p class="text-xs text-slate-400 mb-3 leading-relaxed">Site administrators can log in to modify listings, posts, and media in real time.</p>
         </div>
         <div>
-          <button id="auth-btn" onclick="handleAuthClick()" class="inline-flex items-center gap-2 bg-[#003366] hover:bg-[#001a33] text-slate-200 border border-white/10 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 active:scale-95 shadow-sm">
+          <button id="auth-btn" onclick="handleAuthClick()" class="inline-flex items-center gap-2 bg-[#003366] hover:bg-[#001a33] text-slate-200 border border-white/10 px-3.5 py-2 rounded-md text-xs font-semibold transition active:scale-95 shadow-sm">
             <i class="fa-solid fa-lock text-[#f1c40f]"></i> <span>Admin Login</span>
           </button>
         </div>
       </div>
     </div>
 
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-white/10 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-400 gap-3">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-white/10 pt-5 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-400 gap-2">
       <p>&copy; <span id="year"></span> All Rights Reserved.</p>
       <p class="flex items-center gap-1">Powered by Real Estate Business Platform</p>
     </div>
@@ -316,280 +326,289 @@
 
   <!-- ================= MODALS & POPUPS ================= -->
 
-  <!-- AUTO LEAD POPUP MODAL -->
-  <div id="lead-popup-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative border border-slate-100">
-      <button onclick="closeModal('lead-popup-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg p-2">
+  <!-- AUTO LEAD POPUP MODAL (Synchronized Admin Settings Recipient) -->
+  <div id="lead-popup-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="glass-panel bg-white/95 rounded-xl p-6 max-w-md w-full shadow-2xl relative border border-slate-200">
+      <button onclick="closeModal('lead-popup-modal')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 text-base p-1">
         <i class="fa-solid fa-xmark"></i>
       </button>
 
-      <div class="text-center mb-6">
-        <div class="w-14 h-14 bg-blue-50 text-[#003366] rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl shadow-inner">
+      <div class="text-center mb-5">
+        <div class="w-12 h-12 bg-sky-50 text-[#003366] rounded-md flex items-center justify-center mx-auto mb-2 text-xl shadow-inner">
           <i class="fa-solid fa-house-user"></i>
         </div>
-        <h3 class="text-xl font-extrabold text-slate-900">Request Call or Message</h3>
-        <p class="text-xs text-slate-500 mt-1">Leave your details to receive personalized property consultations.</p>
+        <h3 class="text-lg font-bold text-slate-800">Request Call or Message</h3>
+        <p class="text-xs text-slate-500 mt-0.5">Leave your details to receive personalized property consultations.</p>
       </div>
 
-      <form onsubmit="submitLeadForm(event, true)" class="space-y-3.5">
+      <form onsubmit="submitLeadForm(event, true)" class="space-y-3">
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Full Name</label>
-          <input type="text" id="popup-lead-name" required placeholder="e.g. John Doe" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none">
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Full Name</label>
+          <input type="text" id="popup-lead-name" required placeholder="e.g. John Doe" class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Contact Number</label>
-          <input type="tel" id="popup-lead-phone" required placeholder="e.g. +63 912 345 6789" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none">
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Contact Number</label>
+          <input type="tel" id="popup-lead-phone" required placeholder="e.g. +63 912 345 6789" class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Email Address</label>
-          <input type="email" id="popup-lead-email" required placeholder="e.g. john@example.com" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none">
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Email Address</label>
+          <input type="email" id="popup-lead-email" required placeholder="e.g. john@example.com" class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
-        <div class="flex gap-3 pt-2">
-          <button type="button" onclick="closeModal('lead-popup-modal')" class="w-1/2 py-2.5 rounded-xl border border-slate-300 text-slate-600 text-xs sm:text-sm font-semibold hover:bg-slate-50">Skip to Browse</button>
-          <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-[#003366] hover:bg-[#002244] text-white text-xs sm:text-sm font-semibold shadow-md transition active:scale-95">Send Request</button>
+        <div class="flex gap-2.5 pt-1">
+          <button type="button" onclick="closeModal('lead-popup-modal')" class="w-1/2 py-2 rounded-md border border-slate-300 text-slate-600 text-xs font-medium hover:bg-slate-50">Skip to Browse</button>
+          <button type="submit" class="w-1/2 py-2 rounded-md bg-[#003366] hover:bg-[#002244] text-white text-xs font-semibold shadow transition active:scale-95">Send Request</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- LEAD CAPTURE SETTINGS MODAL (ADMIN ONLY) -->
-  <div id="lead-settings-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl">
-      <h3 class="text-lg font-extrabold text-slate-900 mb-4">Lead Capture Settings</h3>
-      <form onsubmit="saveLeadSettings(event)" class="space-y-4">
+  <div id="lead-settings-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl border border-slate-200">
+      <h3 class="text-base font-bold text-slate-800 mb-3">Lead Capture Settings</h3>
+      <form onsubmit="saveLeadSettings(event)" class="space-y-3.5">
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Notification Email</label>
-          <input type="email" id="setting-lead-email" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none">
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Notification Email</label>
+          <input type="email" id="setting-lead-email" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Notification Phone/WhatsApp Number</label>
-          <input type="text" id="setting-lead-phone" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none">
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Notification Phone/WhatsApp Number</label>
+          <input type="text" id="setting-lead-phone" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
-        <div class="flex gap-3 pt-2">
-          <button type="button" onclick="closeModal('lead-settings-modal')" class="w-1/2 py-2.5 rounded-xl border border-slate-300 text-slate-600 text-xs sm:text-sm font-semibold">Cancel</button>
-          <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-[#003366] hover:bg-[#002244] text-white text-xs sm:text-sm font-semibold shadow-md active:scale-95 transition">Save Settings</button>
+        <div class="flex gap-2.5 pt-1">
+          <button type="button" onclick="closeModal('lead-settings-modal')" class="w-1/2 py-2 rounded-md border border-slate-300 text-slate-600 text-xs font-medium">Cancel</button>
+          <button type="submit" class="w-1/2 py-2 rounded-md bg-[#003366] hover:bg-[#002244] text-white text-xs font-semibold shadow active:scale-95 transition">Save Settings</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- ADMIN LOGIN MODAL -->
-  <div id="login-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border border-slate-100">
-      <div class="text-center mb-6">
-        <div class="w-14 h-14 bg-blue-50 text-[#003366] rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl shadow-inner">
+  <div id="login-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl p-6 max-w-sm w-full shadow-2xl border border-slate-100">
+      <div class="text-center mb-5">
+        <div class="w-12 h-12 bg-sky-50 text-[#003366] rounded-md flex items-center justify-center mx-auto mb-2 text-xl shadow-inner">
           <i class="fa-solid fa-user-shield"></i>
         </div>
-        <h3 class="text-xl font-extrabold text-slate-900">Admin Login</h3>
-        <p class="text-xs text-slate-500 mt-1">Enter credentials to modify site contents</p>
+        <h3 class="text-lg font-bold text-slate-800">Admin Login</h3>
+        <p class="text-xs text-slate-500 mt-0.5">Enter credentials to modify site contents</p>
       </div>
-      <form onsubmit="submitLogin(event)" class="space-y-4">
+      <form onsubmit="submitLogin(event)" class="space-y-3.5">
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Username</label>
-          <input type="text" id="login-user" required class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003366] focus:outline-none text-sm transition">
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Username</label>
+          <input type="text" id="login-user" required class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-1 focus:ring-[#003366] focus:outline-none text-xs">
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Password</label>
-          <input type="password" id="login-pass" required class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003366] focus:outline-none text-sm transition">
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Password</label>
+          <input type="password" id="login-pass" required class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-1 focus:ring-[#003366] focus:outline-none text-xs">
         </div>
-        <p id="login-error" class="text-xs text-red-500 hidden text-center font-bold"></p>
-        <div class="flex gap-3 pt-2">
-          <button type="button" onclick="closeModal('login-modal')" class="w-1/2 py-2.5 rounded-xl border border-slate-300 text-slate-600 text-xs sm:text-sm font-semibold hover:bg-slate-50 transition">Cancel</button>
-          <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-[#003366] hover:bg-[#002244] text-white text-xs sm:text-sm font-semibold shadow-md transition active:scale-95">Sign In</button>
+        <p id="login-error" class="text-xs text-red-500 hidden text-center font-medium"></p>
+        <div class="flex gap-2.5 pt-1">
+          <button type="button" onclick="closeModal('login-modal')" class="w-1/2 py-2 rounded-md border border-slate-300 text-slate-600 text-xs font-medium hover:bg-slate-50">Cancel</button>
+          <button type="submit" class="w-1/2 py-2 rounded-md bg-[#003366] hover:bg-[#002244] text-white text-xs font-semibold shadow active:scale-95 transition">Sign In</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- LISTING DETAILS MODAL -->
-  <div id="listing-details-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-    <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl my-auto relative border border-slate-100">
-      <button onclick="closeModal('listing-details-modal')" class="absolute top-4 right-4 z-20 bg-slate-900/60 hover:bg-slate-900 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md transition-all active:scale-95 shadow-lg">
-        <i class="fa-solid fa-xmark text-lg"></i>
+  <!-- LISTING DETAILS MODAL (With Inside Card Image Carousel) -->
+  <div id="listing-details-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl my-auto relative border border-slate-100">
+      <button onclick="closeModal('listing-details-modal')" class="absolute top-3 right-3 z-30 bg-slate-900/60 hover:bg-slate-900 text-white w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md transition active:scale-95 shadow">
+        <i class="fa-solid fa-xmark text-sm"></i>
       </button>
       <div id="listing-details-content">
       </div>
     </div>
   </div>
 
+  <!-- BLOG DETAILS MODAL (Full Caption & Multiple Images Lightbox) -->
+  <div id="blog-details-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl my-auto relative border border-slate-100 p-5 sm:p-7">
+      <button onclick="closeModal('blog-details-modal')" class="absolute top-3 right-3 z-30 bg-slate-100 hover:bg-slate-200 text-slate-700 w-8 h-8 rounded-full flex items-center justify-center transition active:scale-95">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+      <div id="blog-details-content" class="space-y-4">
+      </div>
+    </div>
+  </div>
+
   <!-- ADD / EDIT LISTING MODAL -->
-  <div id="listing-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md hidden z-50 flex items-center justify-center p-4 overflow-y-auto">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl my-auto">
-      <h3 class="text-xl font-extrabold text-slate-900 mb-4">Add Project Listing</h3>
-      <form onsubmit="saveListing(event)" class="space-y-4">
+  <div id="listing-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-xl p-6 max-w-xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl my-auto border border-slate-100">
+      <h3 class="text-lg font-bold text-slate-800 mb-3">Add Project Listing</h3>
+      <form onsubmit="saveListing(event)" class="space-y-3.5">
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Project Name</label>
-          <input type="text" id="list-name" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none">
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Project Name</label>
+          <input type="text" id="list-name" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Location</label>
-            <input type="text" id="list-location" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none">
+            <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Location</label>
+            <input type="text" id="list-location" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Total Price (₱ Peso)</label>
-            <input type="text" id="list-tcp" placeholder="e.g. ₱3,500,000" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none">
+            <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Total Price (₱ Peso)</label>
+            <input type="text" id="list-tcp" placeholder="e.g. ₱3,500,000" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
           </div>
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Monthly Amortization</label>
-          <input type="text" id="list-amort" placeholder="e.g. ₱15,000 / month" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none">
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Monthly Amortization</label>
+          <input type="text" id="list-amort" placeholder="e.g. ₱15,000 / month" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Description</label>
-          <textarea id="list-desc" rows="3" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none"></textarea>
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Description</label>
+          <textarea id="list-desc" rows="3" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none"></textarea>
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Photo URLs (Comma-separated)</label>
-          <textarea id="list-photos" rows="3" placeholder="https://..., https://..." required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none"></textarea>
-          <span class="text-[10px] text-slate-400 mt-1 block">Photos automatically slide in card preview every 4 seconds.</span>
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Photo URLs (Comma-separated)</label>
+          <textarea id="list-photos" rows="2" placeholder="https://..., https://..." required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none"></textarea>
+          <span class="text-[10px] text-slate-400 mt-1 block">Photos will be displayed inside the project card modal view.</span>
         </div>
         
         <!-- Dynamic Link Buttons Section -->
-        <div class="border-t border-slate-200 pt-4">
-          <label class="block text-xs font-bold text-slate-700 mb-2 uppercase tracking-wider">Custom Link Buttons</label>
+        <div class="border-t border-slate-200 pt-3">
+          <label class="block text-[11px] font-medium text-slate-600 mb-2 uppercase tracking-wider">Custom Link Buttons</label>
           <div id="custom-buttons-inputs" class="space-y-2">
-            <!-- Dynamic button input rows appended here -->
           </div>
-          <button type="button" onclick="addCustomButtonInputRow()" class="mt-2 text-xs font-bold text-[#003366] hover:underline flex items-center gap-1">
+          <button type="button" onclick="addCustomButtonInputRow()" class="mt-2 text-xs font-semibold text-[#003366] hover:underline flex items-center gap-1">
             <i class="fa-solid fa-plus-circle"></i> Add Button Link
           </button>
         </div>
 
-        <div class="flex gap-3 pt-2">
-          <button type="button" onclick="closeModal('listing-modal')" class="w-1/2 py-2.5 rounded-xl border border-slate-300 text-slate-600 text-xs sm:text-sm font-semibold hover:bg-slate-50">Cancel</button>
-          <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-[#003366] hover:bg-[#002244] text-white text-xs sm:text-sm font-semibold shadow-md active:scale-95 transition">Save Listing</button>
+        <div class="flex gap-2.5 pt-1">
+          <button type="button" onclick="closeModal('listing-modal')" class="w-1/2 py-2 rounded-md border border-slate-300 text-slate-600 text-xs font-medium hover:bg-slate-50">Cancel</button>
+          <button type="submit" class="w-1/2 py-2 rounded-md bg-[#003366] hover:bg-[#002244] text-white text-xs font-semibold shadow active:scale-95 transition">Save Listing</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- FAQ MODAL -->
-  <div id="faq-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl">
-      <h3 class="text-lg font-extrabold text-slate-900 mb-4">Add FAQ to Project</h3>
+  <div id="faq-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl border border-slate-100">
+      <h3 class="text-base font-bold text-slate-800 mb-3">Add FAQ to Project</h3>
       <input type="hidden" id="faq-listing-id">
-      <form onsubmit="saveFAQ(event)" class="space-y-4">
+      <form onsubmit="saveFAQ(event)" class="space-y-3.5">
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Question</label>
-          <input type="text" id="faq-question" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none">
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Question</label>
+          <input type="text" id="faq-question" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Answer</label>
-          <textarea id="faq-answer" rows="3" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none"></textarea>
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Answer</label>
+          <textarea id="faq-answer" rows="3" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none"></textarea>
         </div>
-        <div class="flex gap-3">
-          <button type="button" onclick="closeModal('faq-modal')" class="w-1/2 py-2.5 rounded-xl border border-slate-300 text-slate-600 text-xs sm:text-sm font-semibold">Cancel</button>
-          <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-[#003366] hover:bg-[#002244] text-white text-xs sm:text-sm font-semibold shadow-md active:scale-95 transition">Submit FAQ</button>
+        <div class="flex gap-2.5">
+          <button type="button" onclick="closeModal('faq-modal')" class="w-1/2 py-2 rounded-md border border-slate-300 text-slate-600 text-xs font-medium">Cancel</button>
+          <button type="submit" class="w-1/2 py-2 rounded-md bg-[#003366] hover:bg-[#002244] text-white text-xs font-semibold shadow active:scale-95 transition">Submit FAQ</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- REEL MODAL -->
-  <div id="reel-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl">
-      <h3 class="text-lg font-extrabold text-slate-900 mb-4">Add Video Reel</h3>
-      <form onsubmit="saveReel(event)" class="space-y-4">
+  <div id="reel-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl border border-slate-100">
+      <h3 class="text-base font-bold text-slate-800 mb-3">Add Video Reel</h3>
+      <form onsubmit="saveReel(event)" class="space-y-3.5">
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Reel Title</label>
-          <input type="text" id="reel-title" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none">
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Reel Title</label>
+          <input type="text" id="reel-title" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Video Source URL (MP4, Web, or Social Link)</label>
-          <input type="url" id="reel-url" placeholder="https://example.com/video.mp4" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none">
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Video Source URL (MP4 Format Recommended)</label>
+          <input type="url" id="reel-url" placeholder="https://example.com/video.mp4" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
-        <div class="flex gap-3 pt-1">
-          <button type="button" onclick="closeModal('reel-modal')" class="w-1/2 py-2.5 rounded-xl border border-slate-300 text-slate-600 text-xs sm:text-sm font-semibold">Cancel</button>
-          <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-[#003366] hover:bg-[#002244] text-white text-xs sm:text-sm font-semibold shadow-md active:scale-95 transition">Save Reel</button>
+        <div class="flex gap-2.5 pt-1">
+          <button type="button" onclick="closeModal('reel-modal')" class="w-1/2 py-2 rounded-md border border-slate-300 text-slate-600 text-xs font-medium">Cancel</button>
+          <button type="submit" class="w-1/2 py-2 rounded-md bg-[#003366] hover:bg-[#002244] text-white text-xs font-semibold shadow active:scale-95 transition">Save Reel</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- BLOG / NEWS POST MODAL -->
-  <div id="blog-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 max-w-lg w-full shadow-2xl">
-      <h3 class="text-lg font-extrabold text-slate-900 mb-4">Create Post Update</h3>
-      <form onsubmit="saveBlog(event)" class="space-y-4">
+  <div id="blog-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl p-6 max-w-lg w-full shadow-2xl border border-slate-100">
+      <h3 class="text-base font-bold text-slate-800 mb-3">Create Post Update</h3>
+      <form onsubmit="saveBlog(event)" class="space-y-3.5">
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Image Source URLs (Comma-separated for multiple)</label>
-          <textarea id="blog-img" rows="2" placeholder="https://..., https://..." class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none"></textarea>
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Image Source URLs (Comma-separated for multiple)</label>
+          <textarea id="blog-img" rows="2" placeholder="https://..., https://..." class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none"></textarea>
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Post Caption / Announcement</label>
-          <textarea id="blog-caption" rows="4" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none"></textarea>
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Post Caption / Announcement</label>
+          <textarea id="blog-caption" rows="4" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none"></textarea>
         </div>
-        <div class="flex gap-3 pt-1">
-          <button type="button" onclick="closeModal('blog-modal')" class="w-1/2 py-2.5 rounded-xl border border-slate-300 text-slate-600 text-xs sm:text-sm font-semibold">Cancel</button>
-          <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-[#003366] hover:bg-[#002244] text-white text-xs sm:text-sm font-semibold shadow-md active:scale-95 transition">Publish Post</button>
+        <div class="flex gap-2.5 pt-1">
+          <button type="button" onclick="closeModal('blog-modal')" class="w-1/2 py-2 rounded-md border border-slate-300 text-slate-600 text-xs font-medium">Cancel</button>
+          <button type="submit" class="w-1/2 py-2 rounded-md bg-[#003366] hover:bg-[#002244] text-white text-xs font-semibold shadow active:scale-95 transition">Publish Post</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- FULLSCREEN IMAGE VIEWER LIGHTBOX MODAL -->
-  <div id="image-viewer-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-lg hidden z-50 flex items-center justify-center p-4">
-    <button onclick="closeModal('image-viewer-modal')" class="absolute top-5 right-5 text-white/80 hover:text-white text-2xl p-2 z-20">
+  <!-- FULLSCREEN LIGHTBOX MODAL -->
+  <div id="image-viewer-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+    <button onclick="closeModal('image-viewer-modal')" class="absolute top-4 right-4 text-white/80 hover:text-white text-xl p-2 z-20">
       <i class="fa-solid fa-xmark"></i>
     </button>
-    <button id="viewer-prev" onclick="navigateViewer(-1)" class="absolute left-4 text-white/80 hover:text-white text-3xl p-3 z-20 bg-slate-900/50 hover:bg-slate-900 rounded-full flex items-center justify-center">
+    <button id="viewer-prev" onclick="navigateViewer(-1)" class="absolute left-4 text-white/80 hover:text-white text-2xl p-2.5 z-20 bg-slate-900/50 hover:bg-slate-900 rounded-full flex items-center justify-center">
       <i class="fa-solid fa-chevron-left"></i>
     </button>
-    <button id="viewer-next" onclick="navigateViewer(1)" class="absolute right-4 text-white/80 hover:text-white text-3xl p-3 z-20 bg-slate-900/50 hover:bg-slate-900 rounded-full flex items-center justify-center">
+    <button id="viewer-next" onclick="navigateViewer(1)" class="absolute right-4 text-white/80 hover:text-white text-2xl p-2.5 z-20 bg-slate-900/50 hover:bg-slate-900 rounded-full flex items-center justify-center">
       <i class="fa-solid fa-chevron-right"></i>
     </button>
     <div class="max-w-5xl max-h-[85vh] overflow-hidden flex items-center justify-center">
-      <img id="viewer-image" src="" alt="Fullscreen preview" class="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl">
+      <img id="viewer-image" src="" alt="Preview" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl">
     </div>
   </div>
 
   <!-- SOCIAL ACCOUNT MODAL WITH ICON PICKER -->
-  <div id="social-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl">
-      <h3 class="text-lg font-extrabold text-slate-900 mb-4">Add Social Media Profile</h3>
-      <form onsubmit="saveSocial(event)" class="space-y-4">
+  <div id="social-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl border border-slate-100">
+      <h3 class="text-base font-bold text-slate-800 mb-3">Add Social Media Profile</h3>
+      <form onsubmit="saveSocial(event)" class="space-y-3.5">
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Platform Name</label>
-          <input type="text" id="social-name" placeholder="e.g. Facebook, Instagram" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none">
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Platform Name</label>
+          <input type="text" id="social-name" placeholder="e.g. Facebook, Instagram" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
         
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Select Social Icon</label>
-          <div id="icon-picker-container" class="grid grid-cols-6 gap-2 p-3 border border-slate-200 rounded-2xl bg-slate-50 max-h-36 overflow-y-auto">
-            <!-- Icons populated dynamically -->
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Select Social Icon</label>
+          <div id="icon-picker-container" class="grid grid-cols-6 gap-2 p-2.5 border border-slate-200 rounded-md bg-slate-50 max-h-36 overflow-y-auto">
           </div>
           <input type="hidden" id="social-icon" required>
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Profile / Account URL</label>
-          <input type="url" id="social-url" placeholder="https://..." required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none">
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Profile / Account URL</label>
+          <input type="url" id="social-url" placeholder="https://..." required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
-        <div class="flex gap-3 pt-1">
-          <button type="button" onclick="closeModal('social-modal')" class="w-1/2 py-2.5 rounded-xl border border-slate-300 text-slate-600 text-xs sm:text-sm font-semibold">Cancel</button>
-          <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-[#003366] hover:bg-[#002244] text-white text-xs sm:text-sm font-semibold shadow-md active:scale-95 transition">Save Profile</button>
+        <div class="flex gap-2.5 pt-1">
+          <button type="button" onclick="closeModal('social-modal')" class="w-1/2 py-2 rounded-md border border-slate-300 text-slate-600 text-xs font-medium">Cancel</button>
+          <button type="submit" class="w-1/2 py-2 rounded-md bg-[#003366] hover:bg-[#002244] text-white text-xs font-semibold shadow active:scale-95 transition">Save Profile</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- FOOTER LINK MODAL -->
-  <div id="footer-link-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl">
-      <h3 class="text-lg font-extrabold text-slate-900 mb-4">Add Footer Link</h3>
-      <form onsubmit="saveFooterLink(event)" class="space-y-4">
+  <div id="footer-link-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl border border-slate-100">
+      <h3 class="text-base font-bold text-slate-800 mb-3">Add Footer Link</h3>
+      <form onsubmit="saveFooterLink(event)" class="space-y-3.5">
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">Link Label</label>
-          <input type="text" id="footlink-label" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none">
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Link Label</label>
+          <input type="text" id="footlink-label" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1 uppercase tracking-wider">URL</label>
-          <input type="text" id="footlink-url" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-[#003366] focus:outline-none">
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">URL</label>
+          <input type="text" id="footlink-url" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
-        <div class="flex gap-3 pt-1">
-          <button type="button" onclick="closeModal('footer-link-modal')" class="w-1/2 py-2.5 rounded-xl border border-slate-300 text-slate-600 text-xs sm:text-sm font-semibold">Cancel</button>
-          <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-[#003366] hover:bg-[#002244] text-white text-xs sm:text-sm font-semibold shadow-md active:scale-95 transition">Add Link</button>
+        <div class="flex gap-2.5 pt-1">
+          <button type="button" onclick="closeModal('footer-link-modal')" class="w-1/2 py-2 rounded-md border border-slate-300 text-slate-600 text-xs font-medium">Cancel</button>
+          <button type="submit" class="w-1/2 py-2 rounded-md bg-[#003366] hover:bg-[#002244] text-white text-xs font-semibold shadow active:scale-95 transition">Add Link</button>
         </div>
       </form>
     </div>
@@ -642,9 +661,17 @@
       openModal('lead-popup-modal');
     }, 1200);
 
-    // ================= REALTIME DB LISTENERS & AUTO SYNC =================
+    // Load Lead Settings Recipient Data
+    onValue(ref(db, 'leadSettings'), (snapshot) => {
+      const data = snapshot.val();
+      if(data) {
+        window.leadSettings = data;
+        document.getElementById('setting-lead-email').value = data.email || '';
+        document.getElementById('setting-lead-phone').value = data.phone || '';
+      }
+    });
 
-    // 1. Profile Listener
+    // Realtime Database Listeners
     onValue(ref(db, 'profile'), (snapshot) => {
       const data = snapshot.val();
       if(data) {
@@ -655,29 +682,26 @@
         if(data.bio) document.getElementById('profile-bio').innerText = data.bio;
         if(data.email) {
           document.getElementById('contact-email').href = `mailto:${data.email}`;
-          window.leadSettings.email = data.email;
+          if(!window.leadSettings.email) window.leadSettings.email = data.email;
         }
         if(data.phone) {
           document.getElementById('contact-phone').href = `tel:${data.phone}`;
-          window.leadSettings.phone = data.phone;
+          if(!window.leadSettings.phone) window.leadSettings.phone = data.phone;
         }
       }
     });
 
-    // 2. Project Listings Listener
     onValue(ref(db, 'listings'), (snapshot) => {
       const data = snapshot.val() || {};
       window.allListings = data;
       renderListings(data);
     });
 
-    // 3. Reels Video Carousel Listener
     onValue(ref(db, 'reels'), (snapshot) => {
       const data = snapshot.val() || {};
       renderReels(data);
     });
 
-    // 4. Blog Posts Feed Listener
     onValue(ref(db, 'blogs'), (snapshot) => {
       const data = snapshot.val() || {};
       const sorted = Object.entries(data).map(([key, val]) => ({ id: key, ...val }))
@@ -686,13 +710,11 @@
       renderBlogFeed();
     });
 
-    // 5. Social Accounts Listener
     onValue(ref(db, 'socials'), (snapshot) => {
       const data = snapshot.val() || {};
       renderSocials(data);
     });
 
-    // 6. Footer Details Listener
     onValue(ref(db, 'footer'), (snapshot) => {
       const data = snapshot.val();
       if(data) {
@@ -703,17 +725,17 @@
       }
     });
 
-    // Swiper Carousel Initialization
+    // Swiper Reel Initialization
     window.initSwiper = function() {
       if(swiperInstance) swiperInstance.destroy();
       swiperInstance = new Swiper('.reelsSwiper', {
         slidesPerView: 1.2,
-        spaceBetween: 16,
+        spaceBetween: 14,
         pagination: { el: '.swiper-pagination', clickable: true },
         breakpoints: {
           480: { slidesPerView: 1.8, spaceBetween: 16 },
-          640: { slidesPerView: 2.4, spaceBetween: 20 },
-          1024: { slidesPerView: 3.5, spaceBetween: 24 }
+          640: { slidesPerView: 2.4, spaceBetween: 18 },
+          1024: { slidesPerView: 3.5, spaceBetween: 20 }
         }
       });
     };
@@ -742,8 +764,8 @@
       icons.forEach((icon, idx) => {
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = `p-2.5 rounded-xl border flex items-center justify-center text-slate-700 hover:bg-[#003366] hover:text-white transition ${idx === 0 ? 'border-[#003366] bg-[#003366]/10 text-[#003366]' : 'border-slate-200'}`;
-        btn.innerHTML = `<i class="${icon.class} text-base"></i>`;
+        btn.className = `p-2 rounded-md border flex items-center justify-center text-slate-700 hover:bg-[#003366] hover:text-white transition ${idx === 0 ? 'border-[#003366] bg-[#003366]/10 text-[#003366]' : 'border-slate-200'}`;
+        btn.innerHTML = `<i class="${icon.class} text-xs"></i>`;
         btn.onclick = () => {
           document.querySelectorAll('#icon-picker-container button').forEach(b => {
             b.classList.remove('border-[#003366]', 'bg-[#003366]/10', 'text-[#003366]');
@@ -764,12 +786,9 @@
     // ---------- BURGER MENU TOGGLE ----------
     function toggleBurgerMenu() {
       const dropdown = document.getElementById('burger-dropdown');
-      if (dropdown) {
-        dropdown.classList.toggle('hidden');
-      }
+      if (dropdown) dropdown.classList.toggle('hidden');
     }
 
-    // Close menu when clicking outside
     document.addEventListener('click', function(event) {
       const burgerBtn = document.getElementById('burger-menu-btn');
       const dropdown = document.getElementById('burger-dropdown');
@@ -778,7 +797,18 @@
       }
     });
 
-    // ---------- AUTHENTICATION SYSTEM ----------
+    // ---------- MODAL CONTROLLERS ----------
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      if(modal) modal.classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if(modal) modal.classList.add('hidden');
+    }
+
+    // ---------- AUTHENTICATION ----------
     function handleAuthClick() {
       if(window.isAdmin) {
         window.isAdmin = false;
@@ -851,17 +881,48 @@
       }
     }
 
-    // ---------- PROJECT LISTINGS MANAGEMENT & CAROUSEL ----------
-    let listingCarousels = {};
+    // ---------- LEAD FORM SUBMISSION (Uses Admin Settings Recipient) ----------
+    function saveLeadSettings(e) {
+      e.preventDefault();
+      const email = document.getElementById('setting-lead-email').value.trim();
+      const phone = document.getElementById('setting-lead-phone').value.trim();
 
+      window.set(window.ref(window.db, 'leadSettings'), { email, phone }).then(() => {
+        window.leadSettings = { email, phone };
+        alert('Lead recipient settings updated!');
+        closeModal('lead-settings-modal');
+      });
+    }
+
+    function submitLeadForm(e, isPopup = false) {
+      e.preventDefault();
+      const name = isPopup ? document.getElementById('popup-lead-name').value : document.getElementById('lead-name').value;
+      const phone = isPopup ? document.getElementById('popup-lead-phone').value : document.getElementById('lead-phone').value;
+      const email = isPopup ? document.getElementById('popup-lead-email').value : document.getElementById('lead-email').value;
+      const msg = isPopup ? 'Inquiry from Popup Form' : document.getElementById('lead-message').value;
+
+      const recipientEmail = window.leadSettings.email || 'agent@example.com';
+      const mailtoUrl = `mailto:${recipientEmail}?subject=New Property Lead Request from ${encodeURIComponent(name)}&body=Name: ${encodeURIComponent(name)}%0D%0APhone: ${encodeURIComponent(phone)}%0D%0AEmail: ${encodeURIComponent(email)}%0D%0AMessage: ${encodeURIComponent(msg)}`;
+
+      // Save to Firebase
+      const newRef = window.push(window.ref(window.db, 'leads'));
+      window.set(newRef, { name, phone, email, message: msg, recipient: recipientEmail, timestamp: Date.now() }).then(() => {
+        alert(`Thank you! Your request has been sent to the agent (${recipientEmail}).`);
+        if(isPopup) closeModal('lead-popup-modal');
+        e.target.reset();
+        window.location.href = mailtoUrl;
+      });
+    }
+
+    // ---------- FEATURED PROJECTS & MODAL CAROUSEL ----------
     function addCustomButtonInputRow(label = '', url = '') {
       const container = document.getElementById('custom-buttons-inputs');
       const row = document.createElement('div');
       row.className = 'flex gap-2 items-center custom-btn-row';
       row.innerHTML = `
-        <input type="text" placeholder="Button Name (e.g. Check Inventory)" value="${label}" class="w-1/2 px-3 py-2 border border-slate-300 rounded-xl text-xs btn-label">
-        <input type="url" placeholder="URL (e.g. https://...)" value="${url}" class="w-1/2 px-3 py-2 border border-slate-300 rounded-xl text-xs btn-url">
-        <button type="button" onclick="this.parentElement.remove()" class="text-red-500 hover:text-red-700 p-2 text-xs"><i class="fa-solid fa-trash"></i></button>
+        <input type="text" placeholder="Button Name" value="${label}" class="w-1/2 px-2.5 py-1.5 border border-slate-300 rounded-md text-xs btn-label">
+        <input type="url" placeholder="URL" value="${url}" class="w-1/2 px-2.5 py-1.5 border border-slate-300 rounded-md text-xs btn-url">
+        <button type="button" onclick="this.parentElement.remove()" class="text-red-500 hover:text-red-700 p-1.5 text-xs"><i class="fa-solid fa-trash"></i></button>
       `;
       container.appendChild(row);
     }
@@ -876,7 +937,6 @@
       const photosRaw = document.getElementById('list-photos').value;
       const photos = photosRaw.split(',').map(url => url.trim()).filter(url => url.length > 0);
 
-      // Collect dynamic buttons
       const customButtons = [];
       document.querySelectorAll('.custom-btn-row').forEach(row => {
         const bLabel = row.querySelector('.btn-label').value.trim();
@@ -896,13 +956,9 @@
       const container = document.getElementById('listings-container');
       container.innerHTML = '';
 
-      // Clear existing intervals
-      Object.keys(listingCarousels).forEach(key => clearInterval(listingCarousels[key]));
-      listingCarousels = {};
-
       const keys = Object.keys(listings);
       if(keys.length === 0) {
-        container.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400 text-sm border-2 border-dashed border-slate-200 rounded-2xl">No project listings added yet.</div>`;
+        container.innerHTML = `<div class="col-span-full text-center py-10 text-slate-400 text-xs border border-dashed border-slate-300 rounded-lg">No project listings added yet.</div>`;
         return;
       }
 
@@ -912,55 +968,42 @@
         const customBtns = item.customButtons || [];
 
         const card = document.createElement('div');
-        card.className = "bg-white rounded-3xl border border-slate-200/90 overflow-hidden shadow-sm hover-lift flex flex-col justify-between relative group";
+        card.className = "glass-panel bg-white/90 rounded-xl border border-slate-200/90 overflow-hidden shadow-sm hover-lift flex flex-col justify-between relative group";
 
         card.innerHTML = `
-          ${window.isAdmin ? `<button onclick="deleteItem('listings/${id}')" class="absolute top-3 right-3 bg-red-600 hover:bg-red-700 text-white w-8 h-8 rounded-full text-xs shadow-lg z-20 flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-trash"></i></button>` : ''}
+          ${window.isAdmin ? `<button onclick="deleteItem('listings/${id}')" class="absolute top-2.5 right-2.5 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs shadow z-20 flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-trash"></i></button>` : ''}
           
           <div>
-            <!-- Image Carousel Container -->
-            <div class="relative h-56 sm:h-60 overflow-hidden bg-[#001a33] group">
-              <div id="carousel-slides-${id}" class="w-full h-full relative">
-                ${photos.map((p, idx) => `
-                  <img src="${p}" alt="${item.name}" class="carousel-slide-${id} absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${idx === 0 ? 'opacity-100' : 'opacity-0'}">
-                `).join('')}
-              </div>
-
-              <!-- Location Tag -->
-              <div class="absolute top-3 left-3 bg-[#003366]/80 text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full backdrop-blur-md border border-white/10 z-10">
+            <!-- Single Featured Cover Image on Card Display -->
+            <div class="relative h-48 sm:h-52 overflow-hidden bg-slate-900 cursor-pointer" onclick="openListingDetails('${id}')">
+              <img src="${photos[0]}" alt="${item.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+              
+              <div class="absolute top-2.5 left-2.5 bg-[#003366]/80 text-white text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded backdrop-blur-md border border-white/10 z-10">
                 <i class="fa-solid fa-location-dot text-[#f1c40f] mr-1"></i> ${item.location}
               </div>
-
-              <!-- Carousel Indicators -->
-              ${photos.length > 1 ? `
-                <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
-                  ${photos.map((_, idx) => `<span class="carousel-dot-${id} w-2 h-2 rounded-full bg-white/50 transition-all ${idx === 0 ? '!bg-[#f1c40f] !w-5' : ''}"></span>`).join('')}
-                </div>
-              ` : ''}
             </div>
 
-            <div class="p-5 sm:p-6">
-              <h3 onclick="openListingDetails('${id}')" class="text-lg sm:text-xl font-extrabold text-[#003366] hover:text-[#002244] cursor-pointer transition-colors line-clamp-1">${item.name}</h3>
-              <p class="text-xs text-slate-500 mt-2 line-clamp-2 leading-relaxed">${item.desc}</p>
+            <div class="p-4 sm:p-5">
+              <h3 onclick="openListingDetails('${id}')" class="text-base sm:text-lg font-bold text-[#003366] hover:text-[#002244] cursor-pointer transition-colors line-clamp-1">${item.name}</h3>
+              <p class="text-xs text-slate-500 mt-1.5 line-clamp-2 leading-relaxed">${item.desc}</p>
               
-              <div class="mt-4 pt-4 border-t border-slate-100 grid grid-cols-2 gap-2 text-xs">
+              <div class="mt-3.5 pt-3 border-t border-slate-100 grid grid-cols-2 gap-2 text-xs">
                 <div>
-                  <span class="text-slate-400 font-medium block">Total Price</span>
-                  <span class="font-extrabold text-[#003366] text-sm sm:text-base">${item.tcp}</span>
+                  <span class="text-slate-400 font-medium block text-[10px]">Total Price</span>
+                  <span class="font-bold text-[#003366] text-xs sm:text-sm">${item.tcp}</span>
                 </div>
                 <div>
-                  <span class="text-slate-400 font-medium block">Monthly Amortization</span>
-                  <span class="font-bold text-emerald-600 text-xs sm:text-sm">${item.amort}</span>
+                  <span class="text-slate-400 font-medium block text-[10px]">Monthly Amortization</span>
+                  <span class="font-semibold text-emerald-600 text-xs">${item.amort}</span>
                 </div>
               </div>
 
-              <!-- Dynamic Link Buttons Below Description -->
               ${customBtns.length > 0 ? `
-                <div class="mt-4 space-y-2 pt-2 border-t border-slate-100">
+                <div class="mt-3 space-y-1.5 pt-2 border-t border-slate-100">
                   ${customBtns.map(btn => `
-                    <button onclick="window.open('${btn.url}', '_blank')" class="w-full py-2.5 px-3 bg-[#003366]/10 hover:bg-[#003366] hover:text-white text-[#003366] font-bold rounded-xl text-xs transition-all flex items-center justify-between group/btn shadow-sm">
+                    <button onclick="window.open('${btn.url}', '_blank')" class="w-full py-1.5 px-2.5 bg-[#003366]/10 hover:bg-[#003366] hover:text-white text-[#003366] font-semibold rounded text-xs transition flex items-center justify-between shadow-sm">
                       <span>${btn.label}</span>
-                      <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-70 group-hover/btn:opacity-100"></i>
+                      <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                     </button>
                   `).join('')}
                 </div>
@@ -968,44 +1011,16 @@
             </div>
           </div>
 
-          <div onclick="openListingDetails('${id}')" class="px-5 py-3.5 bg-slate-50 border-t border-slate-100 text-center text-xs font-bold text-[#003366] hover:bg-[#003366] hover:text-white cursor-pointer transition-all flex items-center justify-center gap-1.5 rounded-b-3xl">
-            <span>View Full Details & FAQs</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
+          <div onclick="openListingDetails('${id}')" class="px-4 py-2.5 bg-slate-50 border-t border-slate-100 text-center text-xs font-semibold text-[#003366] hover:bg-[#003366] hover:text-white cursor-pointer transition flex items-center justify-center gap-1">
+            <span>View Photos Carousel & Details</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
           </div>
         `;
 
         container.appendChild(card);
-
-        // Setup 4-Second Automatic Sliding Timer
-        if(photos.length > 1) {
-          let currentIdx = 0;
-          listingCarousels[id] = setInterval(() => {
-            currentIdx = (currentIdx + 1) % photos.length;
-            const slides = document.querySelectorAll(`.carousel-slide-${id}`);
-            const dots = document.querySelectorAll(`.carousel-dot-${id}`);
-            
-            slides.forEach((slide, idx) => {
-              if(idx === currentIdx) {
-                slide.classList.remove('opacity-0');
-                slide.classList.add('opacity-100');
-              } else {
-                slide.classList.remove('opacity-100');
-                slide.classList.add('opacity-0');
-              }
-            });
-
-            dots.forEach((dot, idx) => {
-              if(idx === currentIdx) {
-                dot.classList.add('!bg-[#f1c40f]', '!w-5');
-              } else {
-                dot.classList.remove('!bg-[#f1c40f]', '!w-5');
-              }
-            });
-          }, 4000);
-        }
       });
     }
 
-    // Modal Details View
+    // Modal Details View with Embedded Image Carousel Inside Modal
     function openListingDetails(id) {
       const item = window.allListings[id];
       if(!item) return;
@@ -1016,69 +1031,82 @@
       const customBtns = item.customButtons || [];
 
       modalContent.innerHTML = `
-        <div class="relative h-64 sm:h-80 md:h-96 w-full bg-[#001a33]">
-          <img id="detail-main-img" src="${photos[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'}" class="w-full h-full object-cover transition-all duration-300">
+        <!-- Inside Card Modal Image Carousel -->
+        <div class="relative h-60 sm:h-80 w-full bg-slate-900 overflow-hidden">
+          <div id="modal-carousel-slides-${id}" class="w-full h-full relative">
+            ${photos.map((p, idx) => `
+              <img src="${p}" alt="${item.name}" class="modal-slide-${id} absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out ${idx === 0 ? 'opacity-100' : 'opacity-0'}">
+            `).join('')}
+          </div>
+
+          ${photos.length > 1 ? `
+            <button onclick="navigateModalCarousel('${id}', -1, ${photos.length})" class="absolute left-3 top-1/2 -translate-y-1/2 bg-slate-900/60 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-900 transition z-10">
+              <i class="fa-solid fa-chevron-left text-xs"></i>
+            </button>
+            <button onclick="navigateModalCarousel('${id}', 1, ${photos.length})" class="absolute right-3 top-1/2 -translate-y-1/2 bg-slate-900/60 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-900 transition z-10">
+              <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
+            <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
+              ${photos.map((_, idx) => `<span class="modal-dot-${id} w-2 h-2 rounded-full bg-white/60 transition-all ${idx === 0 ? '!bg-[#f1c40f] !w-4' : ''}"></span>`).join('')}
+            </div>
+          ` : ''}
         </div>
 
         ${photos.length > 1 ? `
-          <div class="flex gap-2.5 p-3.5 overflow-x-auto bg-slate-100 border-b custom-scrollbar">
-            ${photos.map(p => `<img src="${p}" onclick="document.getElementById('detail-main-img').src='${p}'" class="w-16 h-12 object-cover rounded-xl cursor-pointer border-2 border-transparent hover:border-[#003366] transition-all duration-200 flex-shrink-0">`).join('')}
+          <div class="flex gap-2 p-3 overflow-x-auto bg-slate-50 border-b custom-scrollbar">
+            ${photos.map((p, idx) => `<img src="${p}" onclick="setModalCarouselSlide('${id}', ${idx})" class="w-14 h-10 object-cover rounded cursor-pointer border border-transparent hover:border-[#003366] transition flex-shrink-0">`).join('')}
           </div>
         ` : ''}
 
-        <div class="p-6 sm:p-8 space-y-6">
-          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+        <div class="p-5 sm:p-7 space-y-5">
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
             <div>
-              <h2 class="text-2xl sm:text-3xl font-extrabold text-[#003366] tracking-tight">${item.name}</h2>
-              <p class="text-xs sm:text-sm text-slate-500 mt-1"><i class="fa-solid fa-location-dot text-[#f1c40f] mr-1.5"></i> ${item.location}</p>
+              <h2 class="text-xl sm:text-2xl font-bold text-[#003366] tracking-tight">${item.name}</h2>
+              <p class="text-xs text-slate-500 mt-0.5"><i class="fa-solid fa-location-dot text-[#f1c40f] mr-1"></i> ${item.location}</p>
             </div>
-            <div class="bg-[#003366]/5 p-4 rounded-2xl border border-[#003366]/10 inline-block self-start">
-              <span class="block text-xs font-bold text-slate-400 uppercase">Total Price</span>
-              <span class="block text-xl sm:text-2xl font-black text-[#003366]">${item.tcp}</span>
-              <span class="text-xs text-emerald-600 font-bold">${item.amort}</span>
+            <div class="bg-[#003366]/5 p-3 rounded-lg border border-[#003366]/10 inline-block">
+              <span class="block text-[10px] font-semibold text-slate-400 uppercase">Total Price</span>
+              <span class="block text-lg font-bold text-[#003366]">${item.tcp}</span>
+              <span class="text-xs text-emerald-600 font-medium">${item.amort}</span>
             </div>
           </div>
 
-          <div class="border-t border-slate-100 pt-5">
-            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Description</h4>
+          <div class="border-t border-slate-100 pt-4">
+            <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Description</h4>
             <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">${item.desc}</p>
           </div>
 
           ${customBtns.length > 0 ? `
-            <div class="border-t border-slate-100 pt-5">
-              <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Links & Resources</h4>
+            <div class="border-t border-slate-100 pt-4">
+              <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Links & Resources</h4>
               <div class="flex flex-wrap gap-2">
                 ${customBtns.map(btn => `
-                  <button onclick="window.open('${btn.url}', '_blank')" class="px-4 py-2.5 bg-[#003366] hover:bg-[#002244] text-white font-bold rounded-xl text-xs transition-all shadow-sm flex items-center gap-2">
+                  <button onclick="window.open('${btn.url}', '_blank')" class="px-3.5 py-2 bg-[#003366] hover:bg-[#002244] text-white font-medium rounded-md text-xs transition shadow-sm flex items-center gap-1.5">
                     <span>${btn.label}</span>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-[#f1c40f]"></i>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                   </button>
                 `).join('')}
               </div>
             </div>
           ` : ''}
 
-          <div class="border-t border-slate-200 pt-6">
-            <div class="flex justify-between items-center mb-4">
-              <h3 class="text-base sm:text-lg font-bold text-slate-800">Frequently Asked Questions</h3>
-              ${window.isAdmin ? `<button onclick="openAddFAQ('${id}')" class="text-xs bg-[#003366]/10 text-[#003366] px-3 py-1.5 rounded-xl font-semibold hover:bg-[#003366]/20 transition"><i class="fa-solid fa-plus mr-1"></i> Add FAQ</button>` : ''}
+          <div class="border-t border-slate-100 pt-4">
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Frequently Asked Questions</h4>
+              ${window.isAdmin ? `<button onclick="openFAQModal('${id}')" class="text-xs text-[#003366] hover:underline font-semibold">+ Add FAQ</button>` : ''}
             </div>
 
-            <div class="space-y-3" id="faq-list">
-              ${faqs.length === 0 ? `<p class="text-xs text-slate-400 italic">No FAQs added for this property yet.</p>` : ''}
-              ${faqs.map(([fKey, faq]) => `
-                <div class="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50/50 transition">
-                  <button onclick="toggleFAQ('${fKey}')" class="w-full text-left p-4 font-semibold text-xs sm:text-sm text-slate-800 flex justify-between items-center hover:bg-slate-100/80 transition">
-                    <span class="pr-2">${faq.question}</span>
-                    <i class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-200 flex-shrink-0" id="faq-icon-${fKey}"></i>
-                  </button>
-                  <div id="faq-ans-${fKey}" class="hidden p-4 pt-0 text-xs text-slate-600 border-t border-slate-100 bg-white leading-relaxed">
-                    ${faq.answer}
-                    ${window.isAdmin ? `<div class="mt-3 pt-2 border-t border-slate-50 text-right"><button onclick="deleteItem('listings/${id}/faqs/${fKey}'); closeModal('listing-details-modal');" class="text-red-500 hover:text-red-700 font-semibold text-[11px] hover:underline">Delete FAQ</button></div>` : ''}
+            ${faqs.length > 0 ? `
+              <div class="space-y-2">
+                ${faqs.map(([faqId, faq]) => `
+                  <div class="p-3 bg-slate-50 rounded-md border border-slate-100 relative">
+                    ${window.isAdmin ? `<button onclick="deleteItem('listings/${id}/faqs/${faqId}')" class="absolute top-2 right-2 text-red-500 hover:text-red-700 text-xs"><i class="fa-solid fa-trash"></i></button>` : ''}
+                    <h5 class="text-xs font-semibold text-[#003366]">${faq.q}</h5>
+                    <p class="text-xs text-slate-600 mt-1">${faq.a}</p>
                   </div>
-                </div>
-              `).join('')}
-            </div>
+                `).join('')}
+              </div>
+            ` : `<p class="text-xs text-slate-400 italic">No FAQs added for this project yet.</p>`}
           </div>
         </div>
       `;
@@ -1086,35 +1114,24 @@
       openModal('listing-details-modal');
     }
 
-    function toggleFAQ(fKey) {
-      const ans = document.getElementById(`faq-ans-${fKey}`);
-      const icon = document.getElementById(`faq-icon-${fKey}`);
-      if(ans) {
-        ans.classList.toggle('hidden');
-        icon.classList.toggle('rotate-180');
-      }
+    let activeModalSlideIndex = {};
+    function setModalCarouselSlide(id, idx) {
+      activeModalSlideIndex[id] = idx;
+      const slides = document.querySelectorAll(`.modal-slide-${id}`);
+      const dots = document.querySelectorAll(`.modal-dot-${id}`);
+      slides.forEach((s, i) => s.classList.toggle('opacity-100', i === idx));
+      slides.forEach((s, i) => s.classList.toggle('opacity-0', i !== idx));
+      dots.forEach((d, i) => d.classList.toggle('!bg-[#f1c40f]', i === idx));
+      dots.forEach((d, i) => d.classList.toggle('!w-4', i === idx));
     }
 
-    function openAddFAQ(listingId) {
-      document.getElementById('faq-listing-id').value = listingId;
-      openModal('faq-modal');
+    function navigateModalCarousel(id, direction, max) {
+      let current = activeModalSlideIndex[id] || 0;
+      current = (current + direction + max) % max;
+      setModalCarouselSlide(id, current);
     }
 
-    function saveFAQ(e) {
-      e.preventDefault();
-      const listingId = document.getElementById('faq-listing-id').value;
-      const question = document.getElementById('faq-question').value;
-      const answer = document.getElementById('faq-answer').value;
-
-      const newRef = window.push(window.ref(window.db, `listings/${listingId}/faqs`));
-      window.set(newRef, { question, answer }).then(() => {
-        closeModal('faq-modal');
-        closeModal('listing-details-modal');
-        e.target.reset();
-      });
-    }
-
-    // ---------- REELS CAROUSEL MANAGEMENT & VIDEO COMPATIBILITY ----------
+    // ---------- REELS VIDEO SECTION (With Native Audio Enabled) ----------
     function saveReel(e) {
       e.preventDefault();
       const title = document.getElementById('reel-title').value;
@@ -1130,87 +1147,46 @@
     function renderReels(reels) {
       const container = document.getElementById('reels-container');
       container.innerHTML = '';
-      
-      const entries = Object.entries(reels);
-      if(entries.length === 0) {
-        container.innerHTML = `<div class="swiper-slide text-center text-slate-400 text-xs py-12">No video reels added.</div>`;
+
+      const keys = Object.keys(reels);
+      if(keys.length === 0) {
+        container.innerHTML = `<div class="swiper-slide text-center py-10 text-slate-300 text-xs">No video reels added yet.</div>`;
         window.initSwiper();
         return;
       }
 
-      entries.forEach(([id, reel]) => {
+      keys.forEach(id => {
+        const reel = reels[id];
         const slide = document.createElement('div');
         slide.className = 'swiper-slide';
-        
-        const isDirectVideo = reel.url.match(/\.(mp4|webm|ogg)/i);
 
         slide.innerHTML = `
-          <div class="relative bg-[#001a33] rounded-2xl overflow-hidden aspect-[9/16] shadow-xl group border border-white/10">
-            ${window.isAdmin ? `<button onclick="deleteItem('reels/${id}')" class="absolute top-2.5 right-2.5 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-full text-xs z-30 shadow-md flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-trash"></i></button>` : ''}
+          <div class="relative bg-slate-900 rounded-lg overflow-hidden shadow-lg border border-white/10 group aspect-[9/16]">
+            ${window.isAdmin ? `<button onclick="deleteItem('reels/${id}')" class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs shadow z-20 flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-trash"></i></button>` : ''}
             
-            ${isDirectVideo ? `
-              <video id="reel-vid-${id}" src="${reel.url}" class="reel-video w-full h-full object-cover" loop playsinline muted></video>
-            ` : `
-              <iframe src="${reel.url}" class="w-full h-full border-0" allow="fullscreen" allowfullscreen></iframe>
-            `}
-
-            <div class="absolute inset-0 bg-gradient-to-t from-[#001a33]/90 via-transparent to-transparent flex flex-col justify-end p-4 pointer-events-none z-10">
-              <p class="font-bold text-xs sm:text-sm text-white line-clamp-2 leading-snug">${reel.title}</p>
-              <div class="flex items-center justify-between mt-2">
-                <span class="text-[10px] text-slate-300 flex items-center gap-1 opacity-80"><i class="fa-solid fa-play text-[8px] text-[#f1c40f]"></i> Tap to play</span>
-                <button onclick="toggleFullscreen('reel-vid-${id}')" class="pointer-events-auto text-white hover:text-[#f1c40f] text-xs p-1">
-                  <i class="fa-solid fa-expand"></i>
-                </button>
-              </div>
+            <!-- Video Player with Audio Controls Enabled -->
+            <video src="${reel.url}" controls controlsList="nodownload" class="w-full h-full object-cover" preload="metadata"></video>
+            
+            <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent pointer-events-none">
+              <h4 class="text-xs font-semibold text-white line-clamp-1">${reel.title}</h4>
             </div>
           </div>
         `;
-        
-        if(isDirectVideo) {
-          const video = slide.querySelector('video');
-          slide.addEventListener('mouseenter', () => playSingleVideo(video));
-          slide.addEventListener('mouseleave', () => video.pause());
-          slide.addEventListener('click', () => {
-            if(video.paused) playSingleVideo(video);
-            else video.pause();
-          });
-        }
-
         container.appendChild(slide);
       });
 
       window.initSwiper();
     }
 
-    function playSingleVideo(targetVideo) {
-      document.querySelectorAll('.reel-video').forEach(v => {
-        if(v !== targetVideo) v.pause();
-      });
-      if(targetVideo) targetVideo.play().catch(() => {});
-    }
-
-    function toggleFullscreen(elementId) {
-      const el = document.getElementById(elementId);
-      if(!el) return;
-      if (el.requestFullscreen) {
-        el.requestFullscreen();
-      } else if (el.webkitRequestFullscreen) {
-        el.webkitRequestFullscreen();
-      }
-    }
-
-    // ---------- LATEST NEWS, MULTI-IMAGE FEED & FULLSCREEN LIGHTBOX ----------
-    let currentViewerImages = [];
-    let currentViewerIndex = 0;
-
+    // ---------- LATEST NEWS & UPDATES (Truncated Caption & Modal View) ----------
     function saveBlog(e) {
       e.preventDefault();
-      const imgRaw = document.getElementById('blog-img').value;
       const caption = document.getElementById('blog-caption').value;
-      const images = imgRaw.split(',').map(url => url.trim()).filter(url => url.length > 0);
+      const imgRaw = document.getElementById('blog-img').value;
+      const images = imgRaw.split(',').map(u => u.trim()).filter(u => u.length > 0);
 
       const newRef = window.push(window.ref(window.db, 'blogs'));
-      window.set(newRef, { images, caption, timestamp: Date.now() }).then(() => {
+      window.set(newRef, { caption, images, timestamp: Date.now() }).then(() => {
         closeModal('blog-modal');
         e.target.reset();
       });
@@ -1220,76 +1196,56 @@
       const container = document.getElementById('blog-container');
       container.innerHTML = '';
 
-      const total = window.allBlogs.length;
-      if(total === 0) {
-        container.innerHTML = `<div class="text-center text-slate-400 py-12 text-sm border-2 border-dashed border-slate-200 rounded-2xl">No news updates available.</div>`;
+      if(window.allBlogs.length === 0) {
+        container.innerHTML = `<div class="text-center py-10 text-slate-400 text-xs border border-dashed border-slate-300 rounded-lg">No post updates created yet.</div>`;
         document.getElementById('blog-pagination').classList.add('hidden');
         return;
       }
 
       document.getElementById('blog-pagination').classList.remove('hidden');
-      
+
       const start = (window.blogPage - 1) * window.blogPostsPerPage;
       const end = start + window.blogPostsPerPage;
-      const paginatedPosts = window.allBlogs.slice(start, end);
+      const pageItems = window.allBlogs.slice(start, end);
 
-      const agentName = window.profileData.name || 'Jane Doe';
-      const agentAvatar = window.profileData.avatar || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80';
+      pageItems.forEach(post => {
+        const images = post.images || [];
+        const isLong = post.caption.length > 140;
+        const displayCaption = isLong ? post.caption.substring(0, 140) + '...' : post.caption;
 
-      paginatedPosts.forEach(post => {
-        const postDate = new Date(post.timestamp || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-        const images = post.images || (post.img ? [post.img] : []);
-        
         const card = document.createElement('div');
-        card.className = "bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden p-5 sm:p-6 transition-all duration-200 hover:shadow-md relative";
-        
+        card.className = "glass-panel bg-white/90 rounded-xl border border-slate-200/90 overflow-hidden shadow-sm hover-lift p-4 sm:p-5 cursor-pointer relative";
+        card.onclick = () => openBlogDetails(post.id);
+
         card.innerHTML = `
-          ${window.isAdmin ? `<button onclick="deleteItem('blogs/${post.id}')" class="absolute top-4 right-4 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-full text-xs flex items-center justify-center shadow transition active:scale-95 z-10"><i class="fa-solid fa-trash"></i></button>` : ''}
+          ${window.isAdmin ? `<button onclick="event.stopPropagation(); deleteItem('blogs/${post.id}')" class="absolute top-3 right-3 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs shadow z-20 flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-trash"></i></button>` : ''}
           
-          <div class="flex items-center gap-3 mb-4">
-            <img src="${agentAvatar}" class="w-10 h-10 rounded-full object-cover border border-slate-200 shadow-sm">
-            <div>
-              <h4 class="font-extrabold text-[#003366] text-xs sm:text-sm">${agentName}</h4>
-              <span class="text-[11px] text-slate-400 block">${postDate}</span>
-            </div>
+          <div class="flex items-center gap-2 text-[10px] text-slate-400 mb-2">
+            <i class="fa-solid fa-clock text-[#f1c40f]"></i>
+            <span>${new Date(post.timestamp || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
           </div>
 
-          <div class="text-slate-700 text-xs sm:text-sm leading-relaxed mb-4 whitespace-pre-line">${post.caption}</div>
-
-          <!-- Multi-Image Grid Display -->
           ${images.length > 0 ? `
-            <div class="grid ${images.length === 1 ? 'grid-cols-1' : images.length === 2 ? 'grid-cols-2' : 'grid-cols-2 sm:grid-cols-3'} gap-2 rounded-2xl overflow-hidden">
-              ${images.map((imgUrl, iIdx) => `
-                <div onclick="openImageViewer(${JSON.stringify(images).replace(/"/g, '&quot;')}, ${iIdx})" class="relative h-48 bg-slate-100 cursor-pointer overflow-hidden group">
-                  <img src="${imgUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                  <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-lg">
-                    <i class="fa-solid fa-expand"></i>
-                  </div>
-                </div>
-              `).join('')}
+            <div class="mb-3 rounded-lg overflow-hidden bg-slate-900 max-h-72">
+              <img src="${images[0]}" alt="Post attachment" class="w-full h-full object-cover">
+            </div>
+          ` : ''}
+
+          <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">${displayCaption}</p>
+
+          ${isLong || images.length > 1 ? `
+            <div class="mt-2 text-xs font-semibold text-[#003366] hover:underline flex items-center gap-1">
+              <span>Tap to view more</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
             </div>
           ` : ''}
         `;
+
         container.appendChild(card);
       });
 
-      const totalPages = Math.ceil(total / window.blogPostsPerPage) || 1;
-      document.getElementById('blog-page-info').innerText = `Page ${window.blogPage} of ${totalPages}`;
+      document.getElementById('blog-page-info').innerText = `Page ${window.blogPage} of ${Math.ceil(window.allBlogs.length / window.blogPostsPerPage)}`;
       document.getElementById('btn-prev-page').disabled = window.blogPage === 1;
-      document.getElementById('btn-next-page').disabled = window.blogPage >= totalPages;
-    }
-
-    function openImageViewer(images, index) {
-      currentViewerImages = images;
-      currentViewerIndex = index;
-      document.getElementById('viewer-image').src = images[index];
-      openModal('image-viewer-modal');
-    }
-
-    function navigateViewer(dir) {
-      if(currentViewerImages.length === 0) return;
-      currentViewerIndex = (currentViewerIndex + dir + currentViewerImages.length) % currentViewerImages.length;
-      document.getElementById('viewer-image').src = currentViewerImages[currentViewerIndex];
+      document.getElementById('btn-next-page').disabled = end >= window.allBlogs.length;
     }
 
     function changeBlogPage(direction) {
@@ -1297,11 +1253,55 @@
       renderBlogFeed();
     }
 
-    // ---------- SOCIAL MEDIA CONNECT SECTION ----------
+    function openBlogDetails(id) {
+      const post = window.allBlogs.find(b => b.id === id);
+      if(!post) return;
+
+      const container = document.getElementById('blog-details-content');
+      const images = post.images || [];
+
+      container.innerHTML = `
+        <div class="flex items-center gap-2 text-xs text-slate-400 mb-2">
+          <i class="fa-solid fa-clock text-[#f1c40f]"></i>
+          <span>${new Date(post.timestamp || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+        </div>
+
+        ${images.length > 0 ? `
+          <div class="grid ${images.length > 1 ? 'grid-cols-2' : 'grid-cols-1'} gap-2 mb-4">
+            ${images.map((img, idx) => `
+              <img src="${img}" onclick="openImageViewer(${JSON.stringify(images).replace(/"/g, '&quot;')}, ${idx})" class="w-full h-48 sm:h-56 object-cover rounded-lg cursor-pointer hover:opacity-90 transition">
+            `).join('')}
+          </div>
+        ` : ''}
+
+        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-line">${post.caption}</p>
+      `;
+
+      openModal('blog-details-modal');
+    }
+
+    // Lightbox Viewer
+    let viewerImages = [];
+    let currentViewerIdx = 0;
+
+    function openImageViewer(imgs, idx) {
+      viewerImages = imgs;
+      currentViewerIdx = idx;
+      document.getElementById('viewer-image').src = viewerImages[currentViewerIdx];
+      openModal('image-viewer-modal');
+    }
+
+    function navigateViewer(dir) {
+      if(viewerImages.length === 0) return;
+      currentViewerIdx = (currentViewerIdx + dir + viewerImages.length) % viewerImages.length;
+      document.getElementById('viewer-image').src = viewerImages[currentViewerIdx];
+    }
+
+    // ---------- SOCIAL MEDIA LINKS ----------
     function saveSocial(e) {
       e.preventDefault();
       const name = document.getElementById('social-name').value;
-      const icon = document.getElementById('social-icon').value || 'fa-solid fa-globe';
+      const icon = document.getElementById('social-icon').value;
       const url = document.getElementById('social-url').value;
 
       const newRef = window.push(window.ref(window.db, 'socials'));
@@ -1314,65 +1314,40 @@
     function renderSocials(socials) {
       const container = document.getElementById('socials-container');
       container.innerHTML = '';
-      
-      const entries = Object.entries(socials);
-      if(entries.length === 0) {
-        container.innerHTML = `<span class="col-span-full text-xs text-slate-400">No social media links added yet.</span>`;
+
+      const keys = Object.keys(socials);
+      if(keys.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-center py-6 text-slate-400 text-xs">No social links added yet.</div>`;
         return;
       }
 
-      entries.forEach(([id, item]) => {
-        const btn = document.createElement('div');
-        btn.className = "relative group";
-        btn.innerHTML = `
-          <a href="${item.url}" target="_blank" class="flex flex-col items-center justify-center p-4 rounded-2xl bg-slate-50 hover:bg-[#003366] hover:text-white text-slate-800 transition-all duration-200 border border-slate-200/80 shadow-sm active:scale-95 h-full">
-            <i class="${item.icon} text-2xl mb-2 text-[#003366] group-hover:text-[#f1c40f] transition-colors"></i>
-            <span class="text-xs font-bold">${item.name}</span>
-          </a>
-          ${window.isAdmin ? `<button onclick="deleteItem('socials/${id}')" class="absolute -top-2 -right-2 bg-red-600 hover:bg-red-700 text-white w-6 h-6 rounded-full text-[10px] flex items-center justify-center shadow-md transition active:scale-95 z-10"><i class="fa-solid fa-x"></i></button>` : ''}
+      keys.forEach(id => {
+        const item = socials[id];
+        const link = document.createElement('a');
+        link.href = item.url;
+        link.target = "_blank";
+        link.className = "p-3 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 transition flex items-center justify-between group shadow-sm relative";
+
+        link.innerHTML = `
+          ${window.isAdmin ? `<button onclick="event.preventDefault(); deleteItem('socials/${id}')" class="absolute -top-1 -right-1 bg-red-600 text-white w-5 h-5 rounded-full text-[10px] shadow z-20 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>` : ''}
+          <div class="flex items-center gap-2.5">
+            <i class="${item.icon || 'fa-solid fa-globe'} text-base text-[#003366]"></i>
+            <span class="text-xs font-semibold text-slate-700">${item.name}</span>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-400 group-hover:text-[#003366]"></i>
         `;
-        container.appendChild(btn);
+
+        container.appendChild(link);
       });
-    }
-
-    // ---------- LEAD CAPTURE & FORM SUBMISSION ----------
-    function submitLeadForm(e, isPopup = false) {
-      e.preventDefault();
-      const name = document.getElementById(isPopup ? 'popup-lead-name' : 'lead-name').value;
-      const phone = document.getElementById(isPopup ? 'popup-lead-phone' : 'lead-phone').value;
-      const email = document.getElementById(isPopup ? 'popup-lead-email' : 'lead-email').value;
-      const message = isPopup ? 'Requesting contact callback' : (document.getElementById('lead-message').value || 'No additional message provided.');
-
-      const agentEmail = window.leadSettings.email || 'agent@example.com';
-      const mailtoUrl = `mailto:${agentEmail}?subject=${encodeURIComponent('New Property Lead Inquiry: ' + name)}&body=${encodeURIComponent(`Name: ${name}\nPhone: ${phone}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
-
-      window.location.href = mailtoUrl;
-      alert('Thank you! Your inquiry details have been drafted. Press send on your email client to notify the agent.');
-      
-      if(isPopup) closeModal('lead-popup-modal');
-      e.target.reset();
-    }
-
-    function saveLeadSettings(e) {
-      e.preventDefault();
-      const email = document.getElementById('setting-lead-email').value;
-      const phone = document.getElementById('setting-lead-phone').value;
-
-      window.leadSettings = { email, phone };
-      alert('Lead capture settings updated!');
-      closeModal('lead-settings-modal');
     }
 
     // ---------- FOOTER MANAGEMENT ----------
     function editFooterDetails() {
       if(!window.isAdmin) return;
-      const brand = prompt("Enter Brand / Business Name:");
-      const about = prompt("Enter Short Footer Info:");
-      const logo = prompt("Enter Logo Image URL:");
-
+      const brand = prompt("Enter Brand Name:");
+      const about = prompt("Enter About Info:");
       if(brand) window.set(window.ref(window.db, 'footer/brand'), brand);
       if(about) window.set(window.ref(window.db, 'footer/about'), about);
-      if(logo) window.set(window.ref(window.db, 'footer/logo'), logo);
     }
 
     function saveFooterLink(e) {
@@ -1395,26 +1370,19 @@
         const li = document.createElement('li');
         li.className = "flex items-center justify-between";
         li.innerHTML = `
-          <a href="${item.url}" class="hover:text-[#f1c40f] transition-colors">${item.label}</a>
-          ${window.isAdmin ? `<button onclick="deleteItem('footer/links/${id}')" class="text-red-400 hover:text-red-600 text-xs ml-2 transition-colors"><i class="fa-solid fa-trash"></i></button>` : ''}
+          <a href="${item.url}" class="hover:text-[#f1c40f] transition">${item.label}</a>
+          ${window.isAdmin ? `<button onclick="deleteItem('footer/links/${id}')" class="text-red-400 hover:text-red-600 text-[10px] ml-2"><i class="fa-solid fa-trash"></i></button>` : ''}
         `;
         container.appendChild(li);
       });
     }
 
-    // ---------- GENERIC FIREBASE UTILITIES ----------
+    // ---------- GLOBAL DELETE FUNCTION ----------
     function deleteItem(path) {
+      if(!window.isAdmin) return;
       if(confirm('Are you sure you want to delete this item?')) {
         window.remove(window.ref(window.db, path));
       }
-    }
-
-    function openModal(id) {
-      document.getElementById(id).classList.remove('hidden');
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).classList.add('hidden');
     }
   </script>
 </body>
