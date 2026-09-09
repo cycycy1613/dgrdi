@@ -5,17 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <!-- Dynamic Meta Tags (Open Graph & Twitter Share Thumbnail/Title/Tagline) -->
-  <title id="meta-doc-title">Agentech | Portfolio</title>
-  <meta name="description" id="meta-doc-desc" content="Licensed Real Estate Broker | Helping you find your dream home & high-yield real estate investments">
+  <title id="meta-doc-title">Agentech | Real Estate Agent</title>
+  <meta name="description" id="meta-doc-desc" content="Licensed Real Estate Salesperson | Helping you find your dream home & high-yield real estate investments">
   
   <meta property="og:type" content="website">
-  <meta property="og:title" id="og-title" content="Agentech">
-  <meta property="og:description" id="og-desc" content="Licensed Real Estate Broker | Helping you find your dream home & high-yield real estate investments">
+  <meta property="og:title" id="og-title" content="Agentech | Real Estate Agent">
+  <meta property="og:description" id="og-desc" content="Licensed Real Estate Salesperson | Helping you find your dream home & high-yield real estate investments">
   <meta property="og:image" id="og-image" content="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1600&q=80">
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" id="tw-title" content="Agentech">
-  <meta name="twitter:description" id="tw-desc" content="Licensed Real Estate Broker | Helping you find your dream home & high-yield real estate investments">
+  <meta name="twitter:title" id="tw-title" content="Agentech | Real Estate Agent">
+  <meta name="twitter:description" id="tw-desc" content="Licensed Real Estate Salesperson | Helping you find your dream home & high-yield real estate investments">
   <meta name="twitter:image" id="tw-image" content="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1600&q=80">
 
   <!-- Tailwind CSS -->
@@ -136,6 +136,37 @@
       color: #475569;
       margin: 0.5rem 0;
     }
+
+    /* Requested interaction enhancements */
+    .modal-animated {
+      opacity: 0;
+      transform: translateY(18px) scale(.96);
+      transition: opacity .28s ease, transform .32s cubic-bezier(.16,1,.3,1);
+    }
+    .modal-animated.modal-enter {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .popup-backdrop {
+      opacity: 0;
+      transition: opacity .25s ease;
+    }
+    .popup-backdrop.modal-enter { opacity: 1; }
+    .reels-nav-btn {
+      width: 38px; height: 38px;
+      display:flex; align-items:center; justify-content:center;
+      border-radius:9999px;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.2);
+      color:#fff;
+      backdrop-filter:blur(8px);
+      transition:.2s ease;
+    }
+    .reels-nav-btn:hover { background:rgba(255,255,255,.22); transform:scale(1.04); }
+    .admin-edit-row { display:flex; gap:.4rem; align-items:center; }
+    @media (max-width: 639px) {
+      .reels-nav-btn { width:34px; height:34px; }
+    }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-700 font-sans antialiased selection:bg-[#003366] selection:text-white flex flex-col min-h-screen relative overflow-x-hidden">
@@ -253,7 +284,7 @@
           <h2 class="text-2xl font-bold text-[#003366] tracking-tight">Featured Projects</h2>
           <p class="text-slate-500 text-xs mt-0.5">Quality Homes, Convenient Locations, and Amenities Designed for Your Lifestyle</p>
         </div>
-        <button onclick="openModal('listing-modal')" class="admin-only hidden bg-[#003366] hover:bg-[#002244] text-white px-3.5 py-2 rounded-md font-medium shadow transition text-xs active:scale-95 self-start sm:self-auto flex items-center gap-1.5">
+        <button onclick="openListingEditor()" class="admin-only hidden bg-[#003366] hover:bg-[#002244] text-white px-3.5 py-2 rounded-md font-medium shadow transition text-xs active:scale-95 self-start sm:self-auto flex items-center gap-1.5">
           <i class="fa-solid fa-plus text-[#f1c40f]"></i> Add Project Listing
         </button>
       </div>
@@ -274,10 +305,18 @@
         </button>
       </div>
 
-      <div class="swiper reelsSwiper relative z-10 py-1">
-        <div class="swiper-wrapper" id="reels-container">
+      <div class="relative z-10">
+        <button id="reels-prev" type="button" aria-label="Previous reel" class="reels-nav-btn absolute left-1 top-1/2 -translate-y-1/2 z-30">
+          <i class="fa-solid fa-chevron-left text-xs"></i>
+        </button>
+        <button id="reels-next" type="button" aria-label="Next reel" class="reels-nav-btn absolute right-1 top-1/2 -translate-y-1/2 z-30">
+          <i class="fa-solid fa-chevron-right text-xs"></i>
+        </button>
+        <div class="swiper reelsSwiper relative py-1 px-10">
+          <div class="swiper-wrapper" id="reels-container">
+          </div>
+          <div class="swiper-pagination !-bottom-1"></div>
         </div>
-        <div class="swiper-pagination !-bottom-1"></div>
       </div>
     </section>
 
@@ -288,7 +327,7 @@
           <h2 class="text-2xl font-bold text-[#003366] tracking-tight">Latest Updates & News</h2>
           <p class="text-slate-500 text-xs mt-0.5">Real estate market updates, advisories, and announcements</p>
         </div>
-        <button onclick="openModal('blog-modal')" class="admin-only hidden bg-[#003366] hover:bg-[#002244] text-white px-3.5 py-2 rounded-md font-medium shadow transition text-xs active:scale-95 self-start sm:self-auto flex items-center gap-1.5">
+        <button onclick="openBlogEditor()" class="admin-only hidden bg-[#003366] hover:bg-[#002244] text-white px-3.5 py-2 rounded-md font-medium shadow transition text-xs active:scale-95 self-start sm:self-auto flex items-center gap-1.5">
           <i class="fa-solid fa-pen-to-square text-[#f1c40f]"></i> Create Post
         </button>
       </div>
@@ -400,8 +439,8 @@
   <!-- ================= MODALS & POPUPS ================= -->
 
   <!-- POPUP LEAD CAPTURE MODAL -->
-  <div id="lead-popup-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-    <div class="glass-panel bg-white/95 rounded-xl p-6 max-w-md w-full shadow-2xl relative border border-slate-200">
+  <div id="lead-popup-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4 popup-backdrop">
+    <div class="glass-panel bg-white/95 rounded-xl p-6 max-w-md w-full shadow-2xl relative border border-slate-200 modal-animated">
       <button onclick="closeModal('lead-popup-modal')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 text-base p-1">
         <i class="fa-solid fa-xmark"></i>
       </button>
@@ -531,7 +570,8 @@
   <!-- ADD LISTING MODAL -->
   <div id="listing-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white rounded-xl p-6 max-w-xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl my-auto border border-slate-100">
-      <h3 class="text-lg font-bold text-slate-800 mb-3">Add Project Listing</h3>
+      <h3 id="listing-modal-title" class="text-lg font-bold text-slate-800 mb-3">Add Project Listing</h3>
+      <input type="hidden" id="listing-edit-id">
       <form onsubmit="saveListing(event)" class="space-y-3.5">
         <div>
           <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Project Name</label>
@@ -582,6 +622,7 @@
     <div class="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl border border-slate-100">
       <h3 class="text-base font-bold text-slate-800 mb-3">Add FAQ to Project</h3>
       <input type="hidden" id="faq-listing-id">
+      <input type="hidden" id="faq-edit-id">
       <form onsubmit="saveFAQ(event)" class="space-y-3.5">
         <div>
           <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Question</label>
@@ -625,7 +666,8 @@
   <!-- BLOG / NEWS POST MODAL -->
   <div id="blog-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-xl p-6 max-w-lg w-full shadow-2xl border border-slate-100">
-      <h3 class="text-base font-bold text-slate-800 mb-3">Create Post Update</h3>
+      <h3 id="blog-modal-title" class="text-base font-bold text-slate-800 mb-3">Create Post Update</h3>
+      <input type="hidden" id="blog-edit-id">
       <form onsubmit="saveBlog(event)" class="space-y-3.5">
         <div>
           <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Headline Title</label>
@@ -772,7 +814,7 @@
       }
     }
 
-    setTimeout(() => { openModal('lead-popup-modal'); }, 1500);
+    setTimeout(() => { openModal('lead-popup-modal'); }, 2000);
 
     // Sync Lead Settings
     onValue(ref(db, 'leadSettings'), (snapshot) => {
@@ -871,21 +913,25 @@
 
     // Swiper Carousel Initialization (enhanced for smoothness)
     window.initSwiper = function() {
-      if(swiperInstance) swiperInstance.destroy();
+      if(swiperInstance) swiperInstance.destroy(true, true);
       swiperInstance = new Swiper('.reelsSwiper', {
         slidesPerView: 1.2,
         spaceBetween: 14,
         pagination: { el: '.swiper-pagination', clickable: true },
-        speed: 400, // faster transition for smoother feel
+        navigation: { nextEl: '#reels-next', prevEl: '#reels-prev' },
+        speed: 400,
+        grabCursor: true,
         breakpoints: {
           480: { slidesPerView: 1.8, spaceBetween: 16 },
           640: { slidesPerView: 2.4, spaceBetween: 18 },
           1024: { slidesPerView: 3.5, spaceBetween: 20 }
         },
-        // improve touch handling
         touchRatio: 1.2,
         resistance: true,
         resistanceRatio: 0.85,
+        on: {
+          slideChange: () => stopAllReels(true)
+        }
       });
     };
 
@@ -931,6 +977,13 @@
   </script>
 
   <script>
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+    }
+    function escapeJs(value) {
+      return String(value ?? '').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    }
+
     // Helper to format Peso Currency Symbol
     function formatPeso(val) {
       if(!val) return '₱0';
@@ -957,12 +1010,22 @@
     // Modal Visibility Logic
     function openModal(id) {
       const modal = document.getElementById(id);
-      if(modal) modal.classList.remove('hidden');
+      if(!modal) return;
+      modal.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        modal.classList.add('modal-enter');
+        const panel = modal.querySelector('.modal-animated');
+        if(panel) panel.classList.add('modal-enter');
+      });
     }
 
     function closeModal(id) {
       const modal = document.getElementById(id);
-      if(modal) modal.classList.add('hidden');
+      if(!modal) return;
+      modal.classList.remove('modal-enter');
+      const panel = modal.querySelector('.modal-animated');
+      if(panel) panel.classList.remove('modal-enter');
+      setTimeout(() => modal.classList.add('hidden'), 220);
     }
 
     // Auth & Navigation Color Logic
@@ -1048,25 +1111,47 @@
     function addCustomButtonInputRow(label = '', url = '') {
       const container = document.getElementById('custom-buttons-inputs');
       const row = document.createElement('div');
-      row.className = 'flex gap-2 items-center custom-btn-row';
+      row.className = 'flex gap-2 items-center custom-btn-row draggable-item';
+      row.draggable = window.isAdmin;
       row.innerHTML = `
-        <input type="text" placeholder="Button Label" value="${label}" class="w-1/2 px-2.5 py-1.5 border border-slate-300 rounded-md text-xs btn-label">
-        <input type="url" placeholder="URL" value="${url}" class="w-1/2 px-2.5 py-1.5 border border-slate-300 rounded-md text-xs btn-url">
+        <span class="text-slate-400 cursor-grab px-1"><i class="fa-solid fa-grip-vertical"></i></span>
+        <input type="text" placeholder="Button Label" value="${escapeHtml(label)}" class="flex-1 min-w-0 px-2.5 py-1.5 border border-slate-300 rounded-md text-xs btn-label">
+        <input type="url" placeholder="URL" value="${escapeHtml(url)}" class="flex-1 min-w-0 px-2.5 py-1.5 border border-slate-300 rounded-md text-xs btn-url">
         <button type="button" onclick="this.parentElement.remove()" class="text-red-500 hover:text-red-700 p-1.5 text-xs"><i class="fa-solid fa-trash"></i></button>
       `;
       container.appendChild(row);
+      setupCustomButtonDragDrop();
+    }
+
+    function openListingEditor(id = null) {
+      if(!window.isAdmin) return;
+      const modal = document.getElementById('listing-modal');
+      const item = id ? window.allListings[id] : null;
+      document.getElementById('listing-edit-id').value = id || '';
+      document.getElementById('listing-modal-title').innerText = id ? 'Edit Project Listing' : 'Add Project Listing';
+      document.getElementById('list-name').value = item?.name || '';
+      document.getElementById('list-location').value = item?.location || '';
+      document.getElementById('list-tcp').value = item?.tcp || '';
+      document.getElementById('list-amort').value = item?.amort || '';
+      document.getElementById('list-desc').value = item?.desc || '';
+      document.getElementById('list-photos').value = (item?.photos || []).join(', ');
+      const buttons = document.getElementById('custom-buttons-inputs');
+      buttons.innerHTML = '';
+      (item?.customButtons || []).forEach(b => addCustomButtonInputRow(b.label, b.url));
+      setupCustomButtonDragDrop();
+      openModal('listing-modal');
     }
 
     function saveListing(e) {
       e.preventDefault();
-      const name = document.getElementById('list-name').value;
-      const location = document.getElementById('list-location').value;
+      if(!window.isAdmin) return;
+      const editId = document.getElementById('listing-edit-id').value.trim();
+      const name = document.getElementById('list-name').value.trim();
+      const location = document.getElementById('list-location').value.trim();
       const tcp = formatPeso(document.getElementById('list-tcp').value);
       const amort = document.getElementById('list-amort').value.includes('₱') ? document.getElementById('list-amort').value : formatPeso(document.getElementById('list-amort').value);
       const desc = document.getElementById('list-desc').value;
-      const photosRaw = document.getElementById('list-photos').value;
-      const photos = photosRaw.split(',').map(url => url.trim()).filter(url => url.length > 0);
-
+      const photos = document.getElementById('list-photos').value.split(',').map(url => url.trim()).filter(Boolean);
       const customButtons = [];
       document.querySelectorAll('.custom-btn-row').forEach(row => {
         const bLabel = row.querySelector('.btn-label').value.trim();
@@ -1074,11 +1159,39 @@
         if(bLabel && bUrl) customButtons.push({ label: bLabel, url: bUrl });
       });
 
-      const newRef = window.push(window.ref(window.db, 'listings'));
-      window.set(newRef, { name, location, tcp, amort, desc, photos, customButtons }).then(() => {
+      const data = { name, location, tcp, amort, desc, photos, customButtons };
+      const targetRef = editId
+        ? window.ref(window.db, `listings/${editId}`)
+        : window.push(window.ref(window.db, 'listings'));
+
+      window.set(targetRef, editId ? data : data).then(() => {
         closeModal('listing-modal');
         e.target.reset();
+        document.getElementById('listing-edit-id').value = '';
         document.getElementById('custom-buttons-inputs').innerHTML = '';
+      });
+    }
+
+    function setupCustomButtonDragDrop() {
+      const container = document.getElementById('custom-buttons-inputs');
+      if(!container || !window.isAdmin) return;
+      let dragIdx = null;
+      container.querySelectorAll('.custom-btn-row').forEach((item, idx) => {
+        item.dataset.index = idx;
+        item.draggable = true;
+        item.ondragstart = e => { dragIdx = Number(e.currentTarget.dataset.index); e.currentTarget.classList.add('dragging'); };
+        item.ondragend = e => e.currentTarget.classList.remove('dragging');
+        item.ondragover = e => e.preventDefault();
+        item.ondrop = e => {
+          e.preventDefault();
+          const targetIdx = Number(e.currentTarget.dataset.index);
+          const rows = [...container.querySelectorAll('.custom-btn-row')];
+          if(dragIdx === null || dragIdx === targetIdx) return;
+          const moved = rows[dragIdx];
+          if(dragIdx < targetIdx) container.insertBefore(moved, rows[targetIdx].nextSibling);
+          else container.insertBefore(moved, rows[targetIdx]);
+          setupCustomButtonDragDrop();
+        };
       });
     }
 
@@ -1100,7 +1213,9 @@
         card.className = "glass-panel bg-white/90 rounded-xl border border-slate-200/90 overflow-hidden shadow-sm hover-lift flex flex-col justify-between relative group";
 
         card.innerHTML = `
-          ${window.isAdmin ? `<button onclick="deleteItem('listings/${id}')" class="absolute top-2.5 right-2.5 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs shadow z-20 flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-trash"></i></button>` : ''}
+          ${window.isAdmin ? `<div class="absolute top-2.5 right-2.5 flex gap-1 z-20">
+            <button onclick="event.stopPropagation(); openListingEditor('${id}')" class="bg-blue-600 hover:bg-blue-700 text-white w-7 h-7 rounded-md text-xs shadow flex items-center justify-center transition active:scale-95" title="Edit Project"><i class="fa-solid fa-pen"></i></button>
+            <button onclick="event.stopPropagation(); deleteItem('listings/${id}')" class="absolute top-2.5 right-2.5 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs shadow z-20 flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-trash"></i></button>` : ''}
           
           <div>
             <div class="relative h-48 sm:h-52 overflow-hidden bg-slate-900 cursor-pointer" onclick="openListingDetails('${id}')">
@@ -1117,7 +1232,7 @@
               <div class="mt-3.5 pt-3 border-t border-slate-100 grid grid-cols-2 gap-2 text-xs">
                 <div>
                   <span class="text-slate-400 font-medium block text-[10px]">Total Price</span>
-                  <span class="font-bold text-[#003366] text-xs sm:text-sm">${item.tcp.startsWith('₱') ? item.tcp : '₱'+item.tcp}</span>
+                  <span class="font-bold text-[#003366] text-xs sm:text-sm">${String(item.tcp || '').startsWith('₱') ? item.tcp : '₱'+(item.tcp || '0')}</span>
                 </div>
                 <div>
                   <span class="text-slate-400 font-medium block text-[10px]">Monthly starts</span>
@@ -1186,14 +1301,17 @@
         <div class="p-5 sm:p-7 space-y-5">
           ${customBtns.length > 0 ? `
             <div class="flex flex-wrap gap-2 pb-2 border-b border-slate-100">
-              ${customBtns.map(btn => `
-                <button onclick="window.open('${btn.url}', '_blank')" class="px-4 py-2 bg-[#003366] hover:bg-[#002244] text-white font-semibold rounded-md text-xs transition shadow flex items-center gap-1.5">
-                  <span>${btn.label}</span>
-                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                </button>
+              ${customBtns.map((btn, idx) => `
+                <div class="flex items-center gap-1">
+                  <button onclick="window.open('${escapeJs(btn.url)}', '_blank')" class="px-4 py-2 bg-[#003366] hover:bg-[#002244] text-white font-semibold rounded-md text-xs transition shadow flex items-center gap-1.5">
+                    <span>${escapeHtml(btn.label)}</span><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                  </button>
+                  ${window.isAdmin ? `<button onclick="editListingButton('${id}', ${idx})" class="w-7 h-7 rounded bg-slate-100 text-[#003366] hover:bg-slate-200 text-xs" title="Edit Button"><i class="fa-solid fa-pen"></i></button>` : ''}
+                </div>
               `).join('')}
             </div>
           ` : ''}
+          ${window.isAdmin ? `<div class="flex justify-end -mt-2"><button onclick="openListingEditor('${id}')" class="text-xs text-[#003366] hover:underline font-semibold"><i class="fa-solid fa-pen mr-1"></i>Edit Project Details</button></div>` : ''}
 
           <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
             <div>
@@ -1202,7 +1320,7 @@
             </div>
             <div class="bg-[#003366]/5 p-3 rounded-lg border border-[#003366]/10 inline-block">
               <span class="block text-[10px] font-semibold text-slate-400 uppercase">Total Price</span>
-              <span class="block text-lg font-bold text-[#003366]">${item.tcp.startsWith('₱') ? item.tcp : '₱'+item.tcp}</span>
+              <span class="block text-lg font-bold text-[#003366]">${String(item.tcp || '').startsWith('₱') ? item.tcp : '₱'+(item.tcp || '0')}</span>
               <span class="text-xs text-emerald-600 font-medium">Monthly starts ${item.amort}</span>
             </div>
           </div>
@@ -1220,15 +1338,15 @@
 
             ${faqs.length > 0 ? `
               <div class="space-y-2">
-                ${faqs.map(([faqId, faq]) => `
-                  <div class="border border-slate-200 rounded-md overflow-hidden">
+                ${faqs.map(([faqId, faq], faqIndex) => `
+                  <div class="border border-slate-200 rounded-md overflow-hidden faq-draggable" data-faq-id="${faqId}" draggable="${window.isAdmin}">
                     <button onclick="toggleFaq('${faqId}')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 font-semibold text-xs text-[#003366] flex justify-between items-center transition">
-                      <span>${faq.q}</span>
+                      <span>${window.isAdmin ? `<i class="fa-solid fa-grip-vertical text-slate-400 mr-2 cursor-grab"></i>` : ''}${escapeHtml(faq.q)}</span>
                       <i id="faq-icon-${faqId}" class="fa-solid fa-chevron-down text-slate-400 text-[10px] transition-transform duration-300"></i>
                     </button>
                     <div id="faq-ans-${faqId}" class="hidden p-3 bg-white text-xs text-slate-600 border-t border-slate-100 relative">
-                      ${window.isAdmin ? `<button onclick="deleteItem('listings/${id}/faqs/${faqId}')" class="absolute top-2 right-2 text-red-500 hover:text-red-700 text-xs"><i class="fa-solid fa-trash"></i></button>` : ''}
-                      <p>${faq.a}</p>
+                      ${window.isAdmin ? `<div class="absolute top-2 right-2 flex gap-2"><button onclick="editFAQ('${id}','${faqId}')" class="text-blue-500 hover:text-blue-700 text-xs"><i class="fa-solid fa-pen"></i></button><button onclick="deleteItem('listings/${id}/faqs/${faqId}')" class="text-red-500 hover:text-red-700 text-xs"><i class="fa-solid fa-trash"></i></button></div>` : ''}
+                      <p class="pr-12">${escapeHtml(faq.a)}</p>
                     </div>
                   </div>
                 `).join('')}
@@ -1239,6 +1357,7 @@
       `;
 
       openModal('listing-details-modal');
+      if(window.isAdmin) setupFaqDragDrop(id);
     }
 
     function addListingPhoto(id) {
@@ -1271,23 +1390,74 @@
       }
     }
 
-    function openFAQModal(listingId) {
+    function openFAQModal(listingId, faqId = null) {
+      const item = window.allListings[listingId];
+      const faq = faqId && item?.faqs?.[faqId];
       document.getElementById('faq-listing-id').value = listingId;
+      document.getElementById('faq-edit-id').value = faqId || '';
+      document.getElementById('faq-question').value = faq?.q || '';
+      document.getElementById('faq-answer').value = faq?.a || '';
+      document.querySelector('#faq-modal h3').innerText = faqId ? 'Edit FAQ' : 'Add FAQ to Project';
       openModal('faq-modal');
+    }
+
+    function editFAQ(listingId, faqId) {
+      openFAQModal(listingId, faqId);
     }
 
     function saveFAQ(e) {
       e.preventDefault();
+      if(!window.isAdmin) return;
       const listingId = document.getElementById('faq-listing-id').value;
-      const q = document.getElementById('faq-question').value;
-      const a = document.getElementById('faq-answer').value;
-
-      const newRef = window.push(window.ref(window.db, `listings/${listingId}/faqs`));
-      window.set(newRef, { q, a }).then(() => {
+      const faqId = document.getElementById('faq-edit-id').value;
+      const q = document.getElementById('faq-question').value.trim();
+      const a = document.getElementById('faq-answer').value.trim();
+      const path = faqId ? `listings/${listingId}/faqs/${faqId}` : `listings/${listingId}/faqs`;
+      const target = faqId ? window.ref(window.db, path) : window.push(window.ref(window.db, path));
+      window.set(target, { q, a }).then(() => {
         closeModal('faq-modal');
         e.target.reset();
+        document.getElementById('faq-edit-id').value = '';
         openListingDetails(listingId);
       });
+    }
+
+    function setupFaqDragDrop(listingId) {
+      const wrap = document.querySelector('#listing-details-content .space-y-2');
+      if(!wrap || !window.isAdmin) return;
+      let dragId = null;
+      wrap.querySelectorAll('.faq-draggable').forEach(el => {
+        el.addEventListener('dragstart', () => { dragId = el.dataset.faqId; el.classList.add('dragging'); });
+        el.addEventListener('dragend', () => el.classList.remove('dragging'));
+        el.addEventListener('dragover', e => e.preventDefault());
+        el.addEventListener('drop', async e => {
+          e.preventDefault();
+          const targetId = el.dataset.faqId;
+          if(!dragId || dragId === targetId) return;
+          const entries = Object.entries(window.allListings[listingId]?.faqs || {});
+          const from = entries.findIndex(([k]) => k === dragId);
+          const to = entries.findIndex(([k]) => k === targetId);
+          if(from < 0 || to < 0) return;
+          const moved = entries.splice(from,1)[0];
+          entries.splice(to,0,moved);
+          const reordered = {};
+          entries.forEach(([k,v], idx) => { reordered[k] = { ...v, order: idx }; });
+          await window.set(window.ref(window.db, `listings/${listingId}/faqs`), reordered);
+          openListingDetails(listingId);
+        });
+      });
+    }
+
+    function editListingButton(id, idx) {
+      const buttons = window.allListings[id]?.customButtons || [];
+      const btn = buttons[idx];
+      if(!btn) return;
+      const label = prompt('Button Label:', btn.label);
+      if(label === null) return;
+      const url = prompt('Button URL:', btn.url);
+      if(url === null) return;
+      buttons[idx] = { label: label.trim(), url: url.trim() };
+      window.set(window.ref(window.db, `listings/${id}/customButtons`), buttons).then(() => openListingDetails(id));
     }
 
     let activeModalSlideIndex = {};
@@ -1372,7 +1542,7 @@
       if (youtubeId) {
         return {
           type: 'youtube',
-          src: `https://www.youtube.com/embed/${encodeURIComponent(youtubeId)}?rel=0&playsinline=1`
+          src: `https://www.youtube.com/embed/${encodeURIComponent(youtubeId)}?rel=0&playsinline=1&enablejsapi=1&mute=1`
         };
       }
 
@@ -1390,6 +1560,7 @@
 
     function renderReels(reels) {
       const container = document.getElementById('reels-container');
+      stopAllReels(true);
       container.innerHTML = '';
 
       if(!reels || reels.length === 0) {
@@ -1409,29 +1580,30 @@
         const safeUrl = escapeReelHtml(reel.url || '');
         const safeId = escapeReelHtml(reel.id || '');
 
-        // Keep the existing card design. Only the media element changes based on URL type.
         const mediaHtml = source.type === 'youtube'
-          ? `<iframe src="${source.src}" title="${safeTitle}" class="w-full h-full object-cover reel-embed-el" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`
+          ? `<iframe src="${source.src}" title="${safeTitle}" class="w-full h-full object-cover reel-embed-el" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowfullscreen></iframe>`
           : `<video src="${safeUrl}" controls controlsList="nodownload" class="w-full h-full object-cover reel-video-el" preload="metadata" playsinline></video>`;
 
         slide.innerHTML = `
-          <div class="relative bg-slate-900 rounded-lg overflow-hidden shadow-lg border border-white/10 group aspect-[9/16]"
-               onmouseenter="hoverPlayReel(this)" onmouseleave="hoverStopReel(this)">
-
+          <div class="relative bg-slate-900 rounded-lg overflow-hidden shadow-lg border border-white/10 group aspect-[9/16] reel-wrapper">
             ${window.isAdmin ? `
               <div class="absolute top-2 right-2 flex gap-1 z-20">
                 <button onclick="event.stopPropagation(); openReelModal('${safeId.replace(/'/g, "\\'")}', '${safeTitle.replace(/'/g, "\\'")}', '${safeUrl.replace(/'/g, "\\'")}')" class="bg-blue-600 hover:bg-blue-700 text-white w-7 h-7 rounded-md text-xs shadow flex items-center justify-center transition active:scale-95" title="Edit Reel"><i class="fa-solid fa-pen"></i></button>
                 <button onclick="event.stopPropagation(); deleteReel('${safeId.replace(/'/g, "\\'")}')" class="bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs shadow flex items-center justify-center transition active:scale-95" title="Delete Reel"><i class="fa-solid fa-trash"></i></button>
               </div>
             ` : ''}
-
             ${mediaHtml}
-
+            <button type="button" onclick="event.stopPropagation(); fullscreenReel(this.closest('.reel-wrapper'))" aria-label="Full screen" class="absolute top-2 left-2 z-20 w-8 h-8 rounded-full bg-black/55 hover:bg-black/75 text-white flex items-center justify-center backdrop-blur-sm transition" title="Full screen">
+              <i class="fa-solid fa-expand text-xs"></i>
+            </button>
             <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent pointer-events-none">
               <h4 class="text-xs font-semibold text-white line-clamp-1">${safeTitle}</h4>
             </div>
           </div>
         `;
+        const wrapper = slide.querySelector('.reel-wrapper');
+        wrapper.addEventListener('mouseenter', () => playReel(wrapper));
+        wrapper.addEventListener('mouseleave', () => stopReel(wrapper, true));
         container.appendChild(slide);
       });
 
@@ -1440,43 +1612,85 @@
       setupReelObserver();
     }
 
-    function hoverPlayReel(wrapper) {
-      // Direct videos retain the original hover behavior.
-      // YouTube iframes intentionally do not receive forced playback,
-      // preventing browser autoplay/security restrictions from breaking the embed.
-      const allVid = document.querySelectorAll('.reel-video-el');
-      allVid.forEach(v => {
-        if(!v.paused) v.pause();
-      });
-
-      const vid = wrapper.querySelector('video');
-      if(vid) {
-        vid.play().catch(() => {});
+    async function fullscreenReel(wrapper) {
+      if(!wrapper) return;
+      const target = wrapper.querySelector('video') || wrapper.querySelector('iframe');
+      try {
+        if(target?.requestFullscreen) await target.requestFullscreen();
+        else if(wrapper.requestFullscreen) await wrapper.requestFullscreen();
+      } catch(e) {
+        console.log('Fullscreen request was blocked by browser:', e);
       }
     }
 
-    function hoverStopReel(wrapper) {
+    function stopAllReels(reset = true) {
+      document.querySelectorAll('.reel-video-el').forEach(v => {
+        v.pause();
+        if(reset) { try { v.currentTime = 0; } catch(e) {} }
+      });
+      document.querySelectorAll('.reel-embed-el').forEach(frame => {
+        try {
+          frame.contentWindow.postMessage(JSON.stringify({event:'command',func:'pauseVideo',args:[]}), '*');
+          if(reset) frame.contentWindow.postMessage(JSON.stringify({event:'command',func:'seekTo',args:[0,true]}), '*');
+        } catch(e) {}
+      });
+    }
+
+    function playReel(wrapper) {
+      stopAllReels(true);
+      const vid = wrapper.querySelector('video');
+      if(vid) {
+        vid.muted = true;
+        vid.play().catch(() => {});
+        return;
+      }
+      const frame = wrapper.querySelector('iframe');
+      if(frame) {
+        try {
+          frame.contentWindow.postMessage(JSON.stringify({event:'command',func:'mute',args:[]}), '*');
+          frame.contentWindow.postMessage(JSON.stringify({event:'command',func:'playVideo',args:[]}), '*');
+        } catch(e) {}
+      }
+    }
+
+    function stopReel(wrapper, reset = true) {
       const vid = wrapper.querySelector('video');
       if(vid) {
         vid.pause();
-        vid.currentTime = 0;
+        if(reset) { try { vid.currentTime = 0; } catch(e) {} }
+      }
+      const frame = wrapper.querySelector('iframe');
+      if(frame) {
+        try {
+          frame.contentWindow.postMessage(JSON.stringify({event:'command',func:'pauseVideo',args:[]}), '*');
+          if(reset) frame.contentWindow.postMessage(JSON.stringify({event:'command',func:'seekTo',args:[0,true]}), '*');
+        } catch(e) {}
       }
     }
 
-    function setupReelObserver() {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (!entry.isIntersecting) {
-            const vid = entry.target.querySelector('video');
-            if (vid && !vid.paused) {
-              vid.pause();
-              vid.currentTime = 0;
-            }
-          }
-        });
-      }, { threshold: 0.3 });
+    function hoverPlayReel(wrapper) { playReel(wrapper); }
+    function hoverStopReel(wrapper) { stopReel(wrapper, true); }
 
-      document.querySelectorAll('#reels-container .swiper-slide').forEach(slide => observer.observe(slide));
+    function setupReelObserver() {
+      if(window._reelObserver) window._reelObserver.disconnect();
+      window._reelObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(!entry.isIntersecting) stopReel(entry.target.querySelector('.reel-wrapper'), true);
+        });
+      }, { threshold: 0.25 });
+      document.querySelectorAll('#reels-container .swiper-slide').forEach(slide => window._reelObserver.observe(slide));
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if(document.hidden) stopAllReels(true);
+    });
+
+    const reelsSection = document.getElementById('reels');
+    if(reelsSection) {
+      const sectionObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => { if(!entry.isIntersecting) stopAllReels(true); });
+      }, { threshold: 0.05 });
+      sectionObserver.observe(reelsSection);
     }
 
     function deleteReel(id) {
@@ -1518,17 +1732,31 @@
     }
 
     // D. Latest Updates & News Section (Rich text, carousel for multiple images)
+    // D. Latest Updates & News Section
+    function openBlogEditor(id = null) {
+      if(!window.isAdmin) return;
+      const post = id ? window.allBlogs.find(b => b.id === id) : null;
+      document.getElementById('blog-edit-id').value = id || '';
+      document.getElementById('blog-modal-title').innerText = id ? 'Edit Post Update' : 'Create Post Update';
+      document.getElementById('blog-title').value = post?.title || '';
+      document.getElementById('blog-img').value = (post?.images || []).join(', ');
+      document.getElementById('blog-caption').value = post?.caption || '';
+      openModal('blog-modal');
+    }
+
     function saveBlog(e) {
       e.preventDefault();
-      const title = document.getElementById('blog-title').value;
+      if(!window.isAdmin) return;
+      const editId = document.getElementById('blog-edit-id').value.trim();
+      const title = document.getElementById('blog-title').value.trim();
       const caption = document.getElementById('blog-caption').value;
-      const imgRaw = document.getElementById('blog-img').value;
-      const images = imgRaw.split(',').map(u => u.trim()).filter(u => u.length > 0);
-
-      const newRef = window.push(window.ref(window.db, 'blogs'));
-      window.set(newRef, { title, caption, images, timestamp: Date.now() }).then(() => {
+      const images = document.getElementById('blog-img').value.split(',').map(u => u.trim()).filter(Boolean);
+      const payload = { title, caption, images, timestamp: editId ? (window.allBlogs.find(b => b.id === editId)?.timestamp || Date.now()) : Date.now() };
+      const target = editId ? window.ref(window.db, `blogs/${editId}`) : window.push(window.ref(window.db, 'blogs'));
+      window.set(target, payload).then(() => {
         closeModal('blog-modal');
         e.target.reset();
+        document.getElementById('blog-edit-id').value = '';
       });
     }
 
@@ -1565,7 +1793,10 @@
         card.onclick = () => openBlogDetails(post.id);
 
         card.innerHTML = `
-          ${window.isAdmin ? `<button onclick="event.stopPropagation(); deleteItem('blogs/${post.id}')" class="absolute top-3 right-3 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs shadow z-20 flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-trash"></i></button>` : ''}
+          ${window.isAdmin ? `<div class="absolute top-3 right-3 flex gap-1 z-20">
+              <button onclick="event.stopPropagation(); openBlogEditor('${post.id}')" class="bg-blue-600 hover:bg-blue-700 text-white w-7 h-7 rounded-md text-xs shadow flex items-center justify-center transition active:scale-95" title="Edit Post"><i class="fa-solid fa-pen"></i></button>
+              <button onclick="event.stopPropagation(); deleteItem('blogs/${post.id}')" class="bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs shadow flex items-center justify-center transition active:scale-95" title="Delete Post"><i class="fa-solid fa-trash"></i></button>
+            </div>` : ''}
           
           <div class="flex items-center gap-2.5 mb-3 border-b border-slate-100 pb-2.5">
             <img src="${agentPhoto}" alt="${agentName}" class="w-8 h-8 rounded-full object-cover ring-1 ring-[#003366]">
