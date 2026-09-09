@@ -5,17 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <!-- Dynamic Meta Tags (Open Graph & Twitter Share Thumbnail/Title/Tagline) -->
-  <title id="meta-doc-title">Agentech | Real Estate Agent</title>
-  <meta name="description" id="meta-doc-desc" content="Licensed Real Estate Salesperson | Helping you find your dream home & high-yield real estate investments">
+  <title id="meta-doc-title">Agentech | Portfolio</title>
+  <meta name="description" id="meta-doc-desc" content="Licensed Real Estate Broker | Helping you find your dream home & high-yield real estate investments">
   
   <meta property="og:type" content="website">
-  <meta property="og:title" id="og-title" content="Agentech | Real Estate Agent">
-  <meta property="og:description" id="og-desc" content="Licensed Real Estate Salesperson | Helping you find your dream home & high-yield real estate investments">
+  <meta property="og:title" id="og-title" content="Agentech">
+  <meta property="og:description" id="og-desc" content="Licensed Real Estate Broker | Helping you find your dream home & high-yield real estate investments">
   <meta property="og:image" id="og-image" content="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1600&q=80">
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" id="tw-title" content="Agentech | Real Estate Agent">
-  <meta name="twitter:description" id="tw-desc" content="Licensed Real Estate Salesperson | Helping you find your dream home & high-yield real estate investments">
+  <meta name="twitter:title" id="tw-title" content="Agentech">
+  <meta name="twitter:description" id="tw-desc" content="Licensed Real Estate Broker | Helping you find your dream home & high-yield real estate investments">
   <meta name="twitter:image" id="tw-image" content="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1600&q=80">
 
   <!-- Tailwind CSS -->
@@ -137,35 +137,141 @@
       margin: 0.5rem 0;
     }
 
-    /* Requested interaction enhancements */
-    .modal-animated {
-      opacity: 0;
-      transform: translateY(18px) scale(.96);
-      transition: opacity .28s ease, transform .32s cubic-bezier(.16,1,.3,1);
+    /* Global profile search */
+    .profile-search-wrap {
+      width: min(360px, calc(100vw - 92px));
     }
-    .modal-animated.modal-enter {
-      opacity: 1;
-      transform: translateY(0) scale(1);
+    .profile-search {
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.14);
     }
-    .popup-backdrop {
-      opacity: 0;
-      transition: opacity .25s ease;
+    .profile-search::placeholder { color: rgba(255,255,255,.82); }
+
+    /* Quick keyword links shown by the profile search */
+    .profile-search-results {
+      margin-top: 8px;
+      overflow: hidden;
+      border-radius: 10px;
+      background: rgba(255,255,255,.96);
+      border: 1px solid rgba(255,255,255,.65);
+      box-shadow: 0 12px 28px rgba(15,23,42,.18);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
-    .popup-backdrop.modal-enter { opacity: 1; }
-    .reels-nav-btn {
-      width: 38px; height: 38px;
-      display:flex; align-items:center; justify-content:center;
-      border-radius:9999px;
-      background:rgba(255,255,255,.12);
-      border:1px solid rgba(255,255,255,.2);
-      color:#fff;
-      backdrop-filter:blur(8px);
-      transition:.2s ease;
+    .profile-search-result {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 11px;
+      text-align: left;
+      color: #003366;
+      background: transparent;
+      transition: background .15s ease;
     }
-    .reels-nav-btn:hover { background:rgba(255,255,255,.22); transform:scale(1.04); }
-    .admin-edit-row { display:flex; gap:.4rem; align-items:center; }
-    @media (max-width: 639px) {
-      .reels-nav-btn { width:34px; height:34px; }
+    .profile-search-result:hover { background: #f1f5f9; }
+    .profile-search-result .keyword-badge {
+      min-width: 30px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      background: rgba(0,51,102,.08);
+      color: #003366;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .04em;
+    }
+
+    .blog-card-excerpt {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      overflow-wrap: anywhere;
+    }
+    .blog-content {
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+    }
+    .blog-content p,
+    .blog-content div {
+      margin: .35rem 0;
+    }
+    .blog-content ul,
+    .blog-content ol {
+      white-space: normal;
+    }
+    .blog-content a {
+      overflow-wrap: anywhere;
+    }
+
+    .rich-editor {
+      min-height: 150px;
+      max-height: 280px;
+      overflow-y: auto;
+      outline: none;
+      white-space: pre-wrap;
+    }
+    .rich-editor:empty::before {
+      content: attr(data-placeholder);
+      color: #94a3b8;
+      pointer-events: none;
+    }
+    .rich-toolbar button {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #334155;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      transition: .15s ease;
+    }
+    .rich-toolbar button:hover {
+      background: #e2e8f0;
+      color: #003366;
+    }
+    .blog-card-image {
+      width: 100%;
+      height: auto;
+      max-height: 520px;
+      object-fit: contain;
+      object-position: center;
+      background: #f8fafc;
+      display: block;
+    }
+    .blog-detail-image {
+      width: 100%;
+      height: auto;
+      max-height: 75vh;
+      object-fit: contain;
+      object-position: center;
+      background: #f8fafc;
+      display: block;
+    }
+
+    /* Pop-up Modal Animations */
+    @keyframes popupScaleIn {
+      0% { opacity: 0; transform: scale(0.85) translateY(20px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes popupScaleOut {
+      0% { opacity: 1; transform: scale(1) translateY(0); }
+      100% { opacity: 0; transform: scale(0.85) translateY(20px); }
+    }
+
+    .popup-animate-in {
+      animation: popupScaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .popup-animate-out {
+      animation: popupScaleOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
   </style>
 </head>
@@ -197,6 +303,26 @@
       <button onclick="editProfileField('cover')" class="admin-only hidden absolute top-4 left-4 bg-white/90 hover:bg-white text-[#003366] px-3 py-1.5 rounded-md shadow text-xs font-semibold transition backdrop-blur-md flex items-center gap-1.5 active:scale-95 z-20">
         <i class="fa-solid fa-camera text-[#f1c40f]"></i> Change Cover
       </button>
+
+      <!-- Global Keyword Search -->
+      <div class="absolute top-4 left-4 z-30 profile-search-wrap">
+        <div class="profile-search rounded-full px-3 py-2 flex items-center gap-2 text-white">
+          <i class="fa-solid fa-magnifying-glass text-white/90 text-xs"></i>
+          <input
+            id="global-search"
+            type="search"
+            placeholder="keyword"
+            aria-label="Search"
+            autocomplete="off"
+            oninput="handleGlobalSearch(this.value)"
+            class="w-full bg-transparent border-0 outline-none text-xs text-white placeholder-white/80"
+          >
+          <button type="button" onclick="clearGlobalSearch()" class="text-white/70 hover:text-white hidden" id="global-search-clear" title="Clear search">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+          <div id="global-search-results" class="profile-search-results hidden" role="listbox" aria-label="Keyword shortcuts"></div>
+        </div>
+      </div>
 
       <!-- Navigation Menu Drawer -->
       <div class="absolute top-4 right-4 z-30">
@@ -284,7 +410,7 @@
           <h2 class="text-2xl font-bold text-[#003366] tracking-tight">Featured Projects</h2>
           <p class="text-slate-500 text-xs mt-0.5">Quality Homes, Convenient Locations, and Amenities Designed for Your Lifestyle</p>
         </div>
-        <button onclick="openListingEditor()" class="admin-only hidden bg-[#003366] hover:bg-[#002244] text-white px-3.5 py-2 rounded-md font-medium shadow transition text-xs active:scale-95 self-start sm:self-auto flex items-center gap-1.5">
+        <button onclick="openModal('listing-modal')" class="admin-only hidden bg-[#003366] hover:bg-[#002244] text-white px-3.5 py-2 rounded-md font-medium shadow transition text-xs active:scale-95 self-start sm:self-auto flex items-center gap-1.5">
           <i class="fa-solid fa-plus text-[#f1c40f]"></i> Add Project Listing
         </button>
       </div>
@@ -305,18 +431,18 @@
         </button>
       </div>
 
-      <div class="relative z-10">
-        <button id="reels-prev" type="button" aria-label="Previous reel" class="reels-nav-btn absolute left-1 top-1/2 -translate-y-1/2 z-30">
+      <div class="swiper reelsSwiper relative z-10 py-1">
+        <div class="swiper-wrapper" id="reels-container">
+        </div>
+        <div class="swiper-pagination !-bottom-1"></div>
+
+        <!-- Navigation Buttons for User-Friendly Swiping -->
+        <button id="reels-prev-btn" class="absolute left-2 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-slate-900/70 hover:bg-slate-900 border border-white/20 text-white flex items-center justify-center backdrop-blur-md transition active:scale-95 shadow">
           <i class="fa-solid fa-chevron-left text-xs"></i>
         </button>
-        <button id="reels-next" type="button" aria-label="Next reel" class="reels-nav-btn absolute right-1 top-1/2 -translate-y-1/2 z-30">
+        <button id="reels-next-btn" class="absolute right-2 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-slate-900/70 hover:bg-slate-900 border border-white/20 text-white flex items-center justify-center backdrop-blur-md transition active:scale-95 shadow">
           <i class="fa-solid fa-chevron-right text-xs"></i>
         </button>
-        <div class="swiper reelsSwiper relative py-1 px-10">
-          <div class="swiper-wrapper" id="reels-container">
-          </div>
-          <div class="swiper-pagination !-bottom-1"></div>
-        </div>
       </div>
     </section>
 
@@ -327,7 +453,7 @@
           <h2 class="text-2xl font-bold text-[#003366] tracking-tight">Latest Updates & News</h2>
           <p class="text-slate-500 text-xs mt-0.5">Real estate market updates, advisories, and announcements</p>
         </div>
-        <button onclick="openBlogEditor()" class="admin-only hidden bg-[#003366] hover:bg-[#002244] text-white px-3.5 py-2 rounded-md font-medium shadow transition text-xs active:scale-95 self-start sm:self-auto flex items-center gap-1.5">
+        <button onclick="openModal('blog-modal')" class="admin-only hidden bg-[#003366] hover:bg-[#002244] text-white px-3.5 py-2 rounded-md font-medium shadow transition text-xs active:scale-95 self-start sm:self-auto flex items-center gap-1.5">
           <i class="fa-solid fa-pen-to-square text-[#f1c40f]"></i> Create Post
         </button>
       </div>
@@ -439,9 +565,9 @@
   <!-- ================= MODALS & POPUPS ================= -->
 
   <!-- POPUP LEAD CAPTURE MODAL -->
-  <div id="lead-popup-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4 popup-backdrop">
-    <div class="glass-panel bg-white/95 rounded-xl p-6 max-w-md w-full shadow-2xl relative border border-slate-200 modal-animated">
-      <button onclick="closeModal('lead-popup-modal')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 text-base p-1">
+  <div id="lead-popup-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4 transition-opacity duration-300">
+    <div id="lead-popup-card" class="glass-panel bg-white/95 rounded-xl p-6 max-w-md w-full shadow-2xl relative border border-slate-200">
+      <button onclick="closePopupModalAnimated('lead-popup-modal')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 text-base p-1">
         <i class="fa-solid fa-xmark"></i>
       </button>
 
@@ -467,7 +593,7 @@
           <input type="email" id="popup-lead-email" required placeholder="e.g. john@example.com" class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
         </div>
         <div class="flex gap-2.5 pt-1">
-          <button type="button" onclick="closeModal('lead-popup-modal')" class="w-1/2 py-2 rounded-md border border-slate-300 text-slate-600 text-xs font-medium hover:bg-slate-50">Skip to Browse</button>
+          <button type="button" onclick="closePopupModalAnimated('lead-popup-modal')" class="w-1/2 py-2 rounded-md border border-slate-300 text-slate-600 text-xs font-medium hover:bg-slate-50">Skip to Browse</button>
           <button type="submit" class="w-1/2 py-2 rounded-md bg-[#003366] hover:bg-[#002244] text-white text-xs font-semibold shadow transition active:scale-95">Send Request</button>
         </div>
       </form>
@@ -567,11 +693,50 @@
     </div>
   </div>
 
+  <!-- EDIT POST MODAL (FOR ADMIN POST EDITING) -->
+  <div id="edit-blog-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl p-6 max-w-lg w-full shadow-2xl border border-slate-100">
+      <h3 class="text-base font-bold text-slate-800 mb-3">Edit Post Update</h3>
+      <input type="hidden" id="edit-blog-id">
+      <form onsubmit="saveEditedBlog(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Headline Title</label>
+          <input type="text" id="edit-blog-title" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Thumbnail & Image URLs (Comma-separated)</label>
+          <textarea id="edit-blog-img" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none"></textarea>
+        </div>
+        <div>
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Post Caption / Announcement</label>
+          <div class="rich-toolbar flex flex-wrap gap-1.5 p-2 border border-slate-200 border-b-0 rounded-t-md bg-slate-50">
+            <button type="button" onclick="formatBlogText('bold', 'edit-blog-caption-editor')" title="Bold"><i class="fa-solid fa-bold text-xs"></i></button>
+            <button type="button" onclick="formatBlogText('italic', 'edit-blog-caption-editor')" title="Italic"><i class="fa-solid fa-italic text-xs"></i></button>
+            <button type="button" onclick="formatBlogText('underline', 'edit-blog-caption-editor')" title="Underline"><i class="fa-solid fa-underline text-xs"></i></button>
+            <button type="button" onclick="formatBlogText('insertUnorderedList', 'edit-blog-caption-editor')" title="Bullet list"><i class="fa-solid fa-list-ul text-xs"></i></button>
+            <button type="button" onclick="formatBlogText('insertOrderedList', 'edit-blog-caption-editor')" title="Numbered list"><i class="fa-solid fa-list-ol text-xs"></i></button>
+            <button type="button" onclick="insertBlogLink('edit-blog-caption-editor')" title="Hyperlink"><i class="fa-solid fa-link text-xs"></i></button>
+            <button type="button" onclick="formatBlogText('justifyLeft', 'edit-blog-caption-editor')" title="Align left"><i class="fa-solid fa-align-left text-xs"></i></button>
+            <button type="button" onclick="formatBlogText('justifyCenter', 'edit-blog-caption-editor')" title="Align center"><i class="fa-solid fa-align-center text-xs"></i></button>
+            <button type="button" onclick="formatBlogText('justifyRight', 'edit-blog-caption-editor')" title="Align right"><i class="fa-solid fa-align-right text-xs"></i></button>
+            <button type="button" onclick="formatBlogText('removeFormat', 'edit-blog-caption-editor')" title="Clear formatting"><i class="fa-solid fa-eraser text-xs"></i></button>
+          </div>
+          <div id="edit-blog-caption-editor" class="rich-editor w-full px-3 py-2 border border-slate-300 rounded-b-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none" contenteditable="true" data-placeholder="Edit your update here..."></div>
+          <textarea id="edit-blog-caption" class="hidden"></textarea>
+        </div>
+        <div class="flex gap-2.5 pt-1">
+          <button type="button" onclick="closeModal('edit-blog-modal')" class="w-1/2 py-2 rounded-md border border-slate-300 text-slate-600 text-xs font-medium">Cancel</button>
+          <button type="submit" class="w-1/2 py-2 rounded-md bg-[#003366] hover:bg-[#002244] text-white text-xs font-semibold shadow active:scale-95 transition">Update Post</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- ADD LISTING MODAL -->
   <div id="listing-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white rounded-xl p-6 max-w-xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl my-auto border border-slate-100">
       <h3 id="listing-modal-title" class="text-lg font-bold text-slate-800 mb-3">Add Project Listing</h3>
-      <input type="hidden" id="listing-edit-id">
+      <input type="hidden" id="list-edit-id">
       <form onsubmit="saveListing(event)" class="space-y-3.5">
         <div>
           <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Project Name</label>
@@ -601,7 +766,7 @@
         </div>
         
         <div class="border-t border-slate-200 pt-3">
-          <label class="block text-[11px] font-medium text-slate-600 mb-2 uppercase tracking-wider">Custom Action Buttons (Inside Modal Only)</label>
+          <label class="block text-[11px] font-medium text-slate-600 mb-2 uppercase tracking-wider">Custom Action Buttons (Arranging Capable)</label>
           <div id="custom-buttons-inputs" class="space-y-2">
           </div>
           <button type="button" onclick="addCustomButtonInputRow()" class="mt-2 text-xs font-semibold text-[#003366] hover:underline flex items-center gap-1">
@@ -622,7 +787,6 @@
     <div class="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl border border-slate-100">
       <h3 class="text-base font-bold text-slate-800 mb-3">Add FAQ to Project</h3>
       <input type="hidden" id="faq-listing-id">
-      <input type="hidden" id="faq-edit-id">
       <form onsubmit="saveFAQ(event)" class="space-y-3.5">
         <div>
           <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Question</label>
@@ -666,8 +830,7 @@
   <!-- BLOG / NEWS POST MODAL -->
   <div id="blog-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-xl p-6 max-w-lg w-full shadow-2xl border border-slate-100">
-      <h3 id="blog-modal-title" class="text-base font-bold text-slate-800 mb-3">Create Post Update</h3>
-      <input type="hidden" id="blog-edit-id">
+      <h3 class="text-base font-bold text-slate-800 mb-3">Create Post Update</h3>
       <form onsubmit="saveBlog(event)" class="space-y-3.5">
         <div>
           <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Headline Title</label>
@@ -679,9 +842,22 @@
           <span class="text-[10px] text-slate-400 mt-0.5 block">1st Image will be displayed as thumbnail. Multiple images appear as carousel inside post.</span>
         </div>
         <div>
-          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Post Caption / Announcement (supports bold, italic, links, hashtags, etc.)</label>
-          <textarea id="blog-caption" rows="4" required class="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none"></textarea>
-          <span class="text-[10px] text-slate-400 mt-0.5 block">Use HTML tags: &lt;b&gt;, &lt;i&gt;, &lt;a href="..."&gt;, &lt;br&gt;, etc.</span>
+          <label class="block text-[11px] font-medium text-slate-600 mb-1 uppercase tracking-wider">Post Caption / Announcement</label>
+          <div class="rich-toolbar flex flex-wrap gap-1.5 p-2 border border-slate-200 border-b-0 rounded-t-md bg-slate-50">
+            <button type="button" onclick="formatBlogText('bold', 'blog-caption-editor')" title="Bold"><i class="fa-solid fa-bold text-xs"></i></button>
+            <button type="button" onclick="formatBlogText('italic', 'blog-caption-editor')" title="Italic"><i class="fa-solid fa-italic text-xs"></i></button>
+            <button type="button" onclick="formatBlogText('underline', 'blog-caption-editor')" title="Underline"><i class="fa-solid fa-underline text-xs"></i></button>
+            <button type="button" onclick="formatBlogText('insertUnorderedList', 'blog-caption-editor')" title="Bullet list"><i class="fa-solid fa-list-ul text-xs"></i></button>
+            <button type="button" onclick="formatBlogText('insertOrderedList', 'blog-caption-editor')" title="Numbered list"><i class="fa-solid fa-list-ol text-xs"></i></button>
+            <button type="button" onclick="insertBlogLink('blog-caption-editor')" title="Hyperlink"><i class="fa-solid fa-link text-xs"></i></button>
+            <button type="button" onclick="formatBlogText('justifyLeft', 'blog-caption-editor')" title="Align left"><i class="fa-solid fa-align-left text-xs"></i></button>
+            <button type="button" onclick="formatBlogText('justifyCenter', 'blog-caption-editor')" title="Align center"><i class="fa-solid fa-align-center text-xs"></i></button>
+            <button type="button" onclick="formatBlogText('justifyRight', 'blog-caption-editor')" title="Align right"><i class="fa-solid fa-align-right text-xs"></i></button>
+            <button type="button" onclick="formatBlogText('removeFormat', 'blog-caption-editor')" title="Clear formatting"><i class="fa-solid fa-eraser text-xs"></i></button>
+          </div>
+          <div id="blog-caption-editor" class="rich-editor w-full px-3 py-2 border border-slate-300 rounded-b-md text-xs focus:ring-1 focus:ring-[#003366] focus:outline-none" contenteditable="true" data-placeholder="Write your update here..."></div>
+          <textarea id="blog-caption" class="hidden"></textarea>
+          <span class="text-[10px] text-slate-400 mt-0.5 block">Supports spacing, bold, italic, underline, lists, alignment, hyperlinks, and rich-text formatting.</span>
         </div>
         <div class="flex gap-2.5 pt-1">
           <button type="button" onclick="closeModal('blog-modal')" class="w-1/2 py-2 rounded-md border border-slate-300 text-slate-600 text-xs font-medium">Cancel</button>
@@ -786,13 +962,27 @@
     
     window.isAdmin = false;
     window.blogPage = 1;
-    window.blogPostsPerPage = 3;
+    window.blogPostsPerPage = 5;
     window.allBlogs = [];
     window.allListings = {};
     window.allReels = [];
     window.allSocials = [];
     window.allFooterLinks = [];
     window.profileData = {};
+    window.globalSearchTerm = '';
+
+    // Profile keyword shortcuts
+    window.profileKeywordLinks = [
+      { keyword: "PL", name: "DS Pricelist", url: "https://urbandecahomesbatangas.com/pl" },
+      { keyword: "EC", name: "E-Calculator", url: "https://urbandecahomesbatangas.com/e-cal" },
+      { keyword: "SR", name: "Daily Sales Report", url: "https://urbandecahomesbatangas.com/salesreport" },
+      { keyword: "GC", name: "General Computations", url: "https://docs.google.com/spreadsheets/d/1AD2KlyHsBuOfE8voOaPYwaCQEHt-AIRUy0IOw9qTx2U/edit?gid=0#gid=0" },
+      { keyword: "TH", name: "Tracker Hub", url: "https://urbandecahomesbatangas.com/tracker-hub" },
+      { keyword: "IH", name: "Inventory Host", url: "https://docs.google.com/spreadsheets/d/1oc4VaogQ_50WeGWiUd0U9c8pMBT-LyWaC8IboNFPr5k/edit?gid=1669256709#gid=1669256709" },
+      { keyword: "CD", name: "Comm-Dis", url: "https://urbandecahomesbatangas.com/comdis" },
+      { keyword: "GD", name: "Google Drive", url: "https://urbandecahomesbatangas.com/members" }
+    ];
+
     window.leadSettings = { email: 'agent@example.com', phone: '+1234567890', sheetUrl: '', tgToken: '', tgChatId: '' };
 
     let swiperInstance = null;
@@ -814,7 +1004,10 @@
       }
     }
 
-    setTimeout(() => { openModal('lead-popup-modal'); }, 2000);
+    // Dynamic Pop-up Form Trigger after 2 Seconds
+    setTimeout(() => { 
+      openPopupModalAnimated('lead-popup-modal'); 
+    }, 2000);
 
     // Sync Lead Settings
     onValue(ref(db, 'leadSettings'), (snapshot) => {
@@ -829,37 +1022,57 @@
       }
     });
 
-    // Sync Profile & Share Meta Tags
+    // Helper to update Meta Name/Title & Meta Description/Tagline
+    function updatePageMetaTags(name, bio) {
+      const agentName = name || 'Agentech';
+      const tagline = bio || 'Licensed Real Estate Broker | Helping you find your dream home & high-yield real estate investments';
+
+      document.title = agentName;
+      
+      const metaTitle = document.getElementById('meta-doc-title');
+      if (metaTitle) metaTitle.innerText = agentName;
+      
+      const metaDesc = document.getElementById('meta-doc-desc');
+      if (metaDesc) metaDesc.setAttribute('content', tagline);
+
+      const ogTitle = document.getElementById('og-title');
+      if (ogTitle) ogTitle.setAttribute('content', agentName);
+
+      const ogDesc = document.getElementById('og-desc');
+      if (ogDesc) ogDesc.setAttribute('content', tagline);
+
+      const twTitle = document.getElementById('tw-title');
+      if (twTitle) twTitle.setAttribute('content', agentName);
+
+      const twDesc = document.getElementById('tw-desc');
+      if (twDesc) twDesc.setAttribute('content', tagline);
+    }
+
+    // Sync Profile & Dynamic Meta Tags
     onValue(ref(db, 'profile'), (snapshot) => {
-      const data = snapshot.val();
-      if(data) {
-        window.profileData = data;
-        if(data.cover) {
-          document.getElementById('cover-photo').src = data.cover;
-          document.getElementById('og-image').setAttribute('content', data.cover);
-          document.getElementById('tw-image').setAttribute('content', data.cover);
-        }
-        if(data.avatar) document.getElementById('profile-photo').src = data.avatar;
-        if(data.name) {
-          document.getElementById('profile-name').innerText = data.name;
-          document.getElementById('meta-doc-title').innerText = `${data.name} | Real Estate Agent`;
-          document.getElementById('og-title').setAttribute('content', data.name);
-          document.getElementById('tw-title').setAttribute('content', data.name);
-        }
-        if(data.bio) {
-          document.getElementById('profile-bio').innerText = data.bio;
-          document.getElementById('meta-doc-desc').setAttribute('content', data.bio);
-          document.getElementById('og-desc').setAttribute('content', data.bio);
-          document.getElementById('tw-desc').setAttribute('content', data.bio);
-        }
-        if(data.email) {
-          document.getElementById('contact-email').href = `mailto:${data.email}`;
-          if(!window.leadSettings.email) window.leadSettings.email = data.email;
-        }
-        if(data.phone) {
-          document.getElementById('contact-phone').href = `tel:${data.phone}`;
-          if(!window.leadSettings.phone) window.leadSettings.phone = data.phone;
-        }
+      const data = snapshot.val() || {};
+      window.profileData = data;
+      if(data.cover) {
+        document.getElementById('cover-photo').src = data.cover;
+        document.getElementById('og-image').setAttribute('content', data.cover);
+        document.getElementById('tw-image').setAttribute('content', data.cover);
+      }
+      if(data.avatar) document.getElementById('profile-photo').src = data.avatar;
+      if(data.name) {
+        document.getElementById('profile-name').innerText = data.name;
+      }
+      if(data.bio) {
+        document.getElementById('profile-bio').innerText = data.bio;
+      }
+      updatePageMetaTags(data.name, data.bio);
+
+      if(data.email) {
+        document.getElementById('contact-email').href = `mailto:${data.email}`;
+        if(!window.leadSettings.email) window.leadSettings.email = data.email;
+      }
+      if(data.phone) {
+        document.getElementById('contact-phone').href = `tel:${data.phone}`;
+        if(!window.leadSettings.phone) window.leadSettings.phone = data.phone;
       }
       checkDataLoaded('profile');
     });
@@ -867,7 +1080,7 @@
     onValue(ref(db, 'listings'), (snapshot) => {
       const data = snapshot.val() || {};
       window.allListings = data;
-      renderListings(data);
+      renderListings(data, window.globalSearchTerm.trim().toLowerCase());
       checkDataLoaded('listings');
     });
 
@@ -875,7 +1088,7 @@
       const data = snapshot.val() || {};
       const arr = Array.isArray(data) ? data : Object.entries(data).map(([key, val]) => ({ id: key, ...val }));
       window.allReels = arr;
-      renderReels(arr);
+      renderReels(arr, window.globalSearchTerm.trim().toLowerCase());
       checkDataLoaded('reels');
     });
 
@@ -911,27 +1124,32 @@
       checkDataLoaded('footer');
     });
 
-    // Swiper Carousel Initialization (enhanced for smoothness)
+    // Swiper Carousel Initialization (enhanced with user-friendly navigation arrows)
     window.initSwiper = function() {
-      if(swiperInstance) swiperInstance.destroy(true, true);
+      if(swiperInstance) swiperInstance.destroy();
       swiperInstance = new Swiper('.reelsSwiper', {
         slidesPerView: 1.2,
         spaceBetween: 14,
         pagination: { el: '.swiper-pagination', clickable: true },
-        navigation: { nextEl: '#reels-next', prevEl: '#reels-prev' },
-        speed: 400,
-        grabCursor: true,
+        navigation: {
+          nextEl: '#reels-next-btn',
+          prevEl: '#reels-prev-btn',
+        },
+        speed: 400, // faster transition for smoother feel
         breakpoints: {
           480: { slidesPerView: 1.8, spaceBetween: 16 },
           640: { slidesPerView: 2.4, spaceBetween: 18 },
           1024: { slidesPerView: 3.5, spaceBetween: 20 }
         },
+        // improve touch handling
         touchRatio: 1.2,
         resistance: true,
         resistanceRatio: 0.85,
-        on: {
-          slideChange: () => stopAllReels(true)
-        }
+      });
+
+      // Stop & reset all videos whenever user swipes or changes slide
+      swiperInstance.on('slideChange', function () {
+        window.stopAllReelVideos();
       });
     };
 
@@ -977,13 +1195,6 @@
   </script>
 
   <script>
-    function escapeHtml(value) {
-      return String(value ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
-    }
-    function escapeJs(value) {
-      return String(value ?? '').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-    }
-
     // Helper to format Peso Currency Symbol
     function formatPeso(val) {
       if(!val) return '₱0';
@@ -1005,27 +1216,55 @@
       if (burgerBtn && dropdown && !burgerBtn.contains(event.target) && !dropdown.contains(event.target)) {
         dropdown.classList.add('hidden');
       }
+
+      const searchWrap = document.querySelector('.profile-search-wrap');
+      const searchResults = document.getElementById('global-search-results');
+      if (searchWrap && searchResults && !searchWrap.contains(event.target)) {
+        searchResults.classList.add('hidden');
+      }
     });
 
     // Modal Visibility Logic
     function openModal(id) {
       const modal = document.getElementById(id);
-      if(!modal) return;
-      modal.classList.remove('hidden');
-      requestAnimationFrame(() => {
-        modal.classList.add('modal-enter');
-        const panel = modal.querySelector('.modal-animated');
-        if(panel) panel.classList.add('modal-enter');
-      });
+      if(modal) {
+        modal.classList.remove('hidden');
+        if (id === 'blog-modal') {
+          const editor = document.getElementById('blog-caption-editor');
+          if (editor && !document.getElementById('blog-caption').value) editor.innerHTML = '';
+        }
+      }
     }
 
     function closeModal(id) {
       const modal = document.getElementById(id);
-      if(!modal) return;
-      modal.classList.remove('modal-enter');
-      const panel = modal.querySelector('.modal-animated');
-      if(panel) panel.classList.remove('modal-enter');
-      setTimeout(() => modal.classList.add('hidden'), 220);
+      if(modal) modal.classList.add('hidden');
+    }
+
+    // Pop-up Modal animated entrance and exit
+    function openPopupModalAnimated(id) {
+      const modal = document.getElementById(id);
+      const card = document.getElementById('lead-popup-card');
+      if (modal && card) {
+        modal.classList.remove('hidden');
+        card.classList.remove('popup-animate-out');
+        card.classList.add('popup-animate-in');
+      }
+    }
+
+    function closePopupModalAnimated(id) {
+      const modal = document.getElementById(id);
+      const card = document.getElementById('lead-popup-card');
+      if (modal && card) {
+        card.classList.remove('popup-animate-in');
+        card.classList.add('popup-animate-out');
+        setTimeout(() => {
+          modal.classList.add('hidden');
+          card.classList.remove('popup-animate-out');
+        }, 300);
+      } else {
+        closeModal(id);
+      }
     }
 
     // Auth & Navigation Color Logic
@@ -1078,8 +1317,8 @@
       }
 
       if(window.allBlogs) renderBlogFeed();
-      if(window.allListings) renderListings(window.allListings);
-      if(window.allReels) renderReels(window.allReels);
+      if(window.allListings) renderListings(window.allListings, window.globalSearchTerm.trim().toLowerCase());
+      if(window.allReels) renderReels(window.allReels, window.globalSearchTerm.trim().toLowerCase());
       if(window.allSocials) renderSocials(window.allSocials);
       if(window.allFooterLinks) renderFooterLinks(window.allFooterLinks);
     }
@@ -1107,51 +1346,66 @@
       }
     }
 
-    // B. Featured Projects Logic
+    // B. Featured Projects Logic (Fully Editable & Re-arrangable)
     function addCustomButtonInputRow(label = '', url = '') {
       const container = document.getElementById('custom-buttons-inputs');
       const row = document.createElement('div');
-      row.className = 'flex gap-2 items-center custom-btn-row draggable-item';
-      row.draggable = window.isAdmin;
+      row.className = 'flex gap-1.5 items-center custom-btn-row p-1 bg-slate-50 border border-slate-200 rounded-md';
       row.innerHTML = `
-        <span class="text-slate-400 cursor-grab px-1"><i class="fa-solid fa-grip-vertical"></i></span>
-        <input type="text" placeholder="Button Label" value="${escapeHtml(label)}" class="flex-1 min-w-0 px-2.5 py-1.5 border border-slate-300 rounded-md text-xs btn-label">
-        <input type="url" placeholder="URL" value="${escapeHtml(url)}" class="flex-1 min-w-0 px-2.5 py-1.5 border border-slate-300 rounded-md text-xs btn-url">
+        <div class="flex flex-col gap-0.5">
+          <button type="button" onclick="moveCustomButtonRow(this, -1)" class="text-slate-400 hover:text-slate-600 text-[10px]" title="Move Up"><i class="fa-solid fa-chevron-up"></i></button>
+          <button type="button" onclick="moveCustomButtonRow(this, 1)" class="text-slate-400 hover:text-slate-600 text-[10px]" title="Move Down"><i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+        <input type="text" placeholder="Button Label" value="${label}" class="w-1/2 px-2.5 py-1.5 border border-slate-300 rounded-md text-xs btn-label focus:outline-none focus:ring-1 focus:ring-[#003366]">
+        <input type="url" placeholder="URL" value="${url}" class="w-1/2 px-2.5 py-1.5 border border-slate-300 rounded-md text-xs btn-url focus:outline-none focus:ring-1 focus:ring-[#003366]">
         <button type="button" onclick="this.parentElement.remove()" class="text-red-500 hover:text-red-700 p-1.5 text-xs"><i class="fa-solid fa-trash"></i></button>
       `;
       container.appendChild(row);
-      setupCustomButtonDragDrop();
     }
 
-    function openListingEditor(id = null) {
-      if(!window.isAdmin) return;
-      const modal = document.getElementById('listing-modal');
-      const item = id ? window.allListings[id] : null;
-      document.getElementById('listing-edit-id').value = id || '';
-      document.getElementById('listing-modal-title').innerText = id ? 'Edit Project Listing' : 'Add Project Listing';
-      document.getElementById('list-name').value = item?.name || '';
-      document.getElementById('list-location').value = item?.location || '';
-      document.getElementById('list-tcp').value = item?.tcp || '';
-      document.getElementById('list-amort').value = item?.amort || '';
-      document.getElementById('list-desc').value = item?.desc || '';
-      document.getElementById('list-photos').value = (item?.photos || []).join(', ');
-      const buttons = document.getElementById('custom-buttons-inputs');
-      buttons.innerHTML = '';
-      (item?.customButtons || []).forEach(b => addCustomButtonInputRow(b.label, b.url));
-      setupCustomButtonDragDrop();
+    function moveCustomButtonRow(btn, direction) {
+      const row = btn.closest('.custom-btn-row');
+      if (!row) return;
+      if (direction === -1 && row.previousElementSibling) {
+        row.parentNode.insertBefore(row, row.previousElementSibling);
+      } else if (direction === 1 && row.nextElementSibling) {
+        row.parentNode.insertBefore(row.nextElementSibling, row);
+      }
+    }
+
+    function openEditListingModal(id) {
+      const item = window.allListings[id];
+      if (!item) return;
+
+      document.getElementById('list-edit-id').value = id;
+      document.getElementById('list-name').value = item.name || '';
+      document.getElementById('list-location').value = item.location || '';
+      document.getElementById('list-tcp').value = item.tcp || '';
+      document.getElementById('list-amort').value = item.amort || '';
+      document.getElementById('list-desc').value = item.desc || '';
+      document.getElementById('list-photos').value = (item.photos || []).join(', ');
+
+      const container = document.getElementById('custom-buttons-inputs');
+      container.innerHTML = '';
+      if (item.customButtons && Array.isArray(item.customButtons)) {
+        item.customButtons.forEach(b => addCustomButtonInputRow(b.label, b.url));
+      }
+
+      document.getElementById('listing-modal-title').innerText = 'Edit Project Listing';
       openModal('listing-modal');
     }
 
     function saveListing(e) {
       e.preventDefault();
-      if(!window.isAdmin) return;
-      const editId = document.getElementById('listing-edit-id').value.trim();
-      const name = document.getElementById('list-name').value.trim();
-      const location = document.getElementById('list-location').value.trim();
+      const editId = document.getElementById('list-edit-id').value;
+      const name = document.getElementById('list-name').value;
+      const location = document.getElementById('list-location').value;
       const tcp = formatPeso(document.getElementById('list-tcp').value);
       const amort = document.getElementById('list-amort').value.includes('₱') ? document.getElementById('list-amort').value : formatPeso(document.getElementById('list-amort').value);
       const desc = document.getElementById('list-desc').value;
-      const photos = document.getElementById('list-photos').value.split(',').map(url => url.trim()).filter(Boolean);
+      const photosRaw = document.getElementById('list-photos').value;
+      const photos = photosRaw.split(',').map(url => url.trim()).filter(url => url.length > 0);
+
       const customButtons = [];
       document.querySelectorAll('.custom-btn-row').forEach(row => {
         const bLabel = row.querySelector('.btn-label').value.trim();
@@ -1159,47 +1413,36 @@
         if(bLabel && bUrl) customButtons.push({ label: bLabel, url: bUrl });
       });
 
-      const data = { name, location, tcp, amort, desc, photos, customButtons };
-      const targetRef = editId
-        ? window.ref(window.db, `listings/${editId}`)
-        : window.push(window.ref(window.db, 'listings'));
+      if (editId) {
+        const existingFaqs = window.allListings[editId] ? (window.allListings[editId].faqs || null) : null;
+        const updatedData = { name, location, tcp, amort, desc, photos, customButtons };
+        if (existingFaqs) updatedData.faqs = existingFaqs;
 
-      window.set(targetRef, editId ? data : data).then(() => {
-        closeModal('listing-modal');
-        e.target.reset();
-        document.getElementById('listing-edit-id').value = '';
-        document.getElementById('custom-buttons-inputs').innerHTML = '';
-      });
+        window.set(window.ref(window.db, `listings/${editId}`), updatedData).then(() => {
+          closeModal('listing-modal');
+          e.target.reset();
+          document.getElementById('list-edit-id').value = '';
+          document.getElementById('custom-buttons-inputs').innerHTML = '';
+        });
+      } else {
+        const newRef = window.push(window.ref(window.db, 'listings'));
+        window.set(newRef, { name, location, tcp, amort, desc, photos, customButtons }).then(() => {
+          closeModal('listing-modal');
+          e.target.reset();
+          document.getElementById('custom-buttons-inputs').innerHTML = '';
+        });
+      }
     }
 
-    function setupCustomButtonDragDrop() {
-      const container = document.getElementById('custom-buttons-inputs');
-      if(!container || !window.isAdmin) return;
-      let dragIdx = null;
-      container.querySelectorAll('.custom-btn-row').forEach((item, idx) => {
-        item.dataset.index = idx;
-        item.draggable = true;
-        item.ondragstart = e => { dragIdx = Number(e.currentTarget.dataset.index); e.currentTarget.classList.add('dragging'); };
-        item.ondragend = e => e.currentTarget.classList.remove('dragging');
-        item.ondragover = e => e.preventDefault();
-        item.ondrop = e => {
-          e.preventDefault();
-          const targetIdx = Number(e.currentTarget.dataset.index);
-          const rows = [...container.querySelectorAll('.custom-btn-row')];
-          if(dragIdx === null || dragIdx === targetIdx) return;
-          const moved = rows[dragIdx];
-          if(dragIdx < targetIdx) container.insertBefore(moved, rows[targetIdx].nextSibling);
-          else container.insertBefore(moved, rows[targetIdx]);
-          setupCustomButtonDragDrop();
-        };
-      });
-    }
-
-    function renderListings(listings) {
+    function renderListings(listings, searchTerm = '') {
       const container = document.getElementById('listings-container');
       container.innerHTML = '';
 
-      const keys = Object.keys(listings);
+      const keys = Object.keys(listings).filter(id => {
+        if (!searchTerm) return true;
+        const item = listings[id] || {};
+        return [item.name, item.location, item.desc, item.tcp, item.amort].join(' ').toLowerCase().includes(searchTerm);
+      });
       if(keys.length === 0) {
         container.innerHTML = `<div class="col-span-full text-center py-10 text-slate-400 text-xs border border-dashed border-slate-300 rounded-lg">No project listings added yet.</div>`;
         return;
@@ -1213,9 +1456,12 @@
         card.className = "glass-panel bg-white/90 rounded-xl border border-slate-200/90 overflow-hidden shadow-sm hover-lift flex flex-col justify-between relative group";
 
         card.innerHTML = `
-          ${window.isAdmin ? `<div class="absolute top-2.5 right-2.5 flex gap-1 z-20">
-            <button onclick="event.stopPropagation(); openListingEditor('${id}')" class="bg-blue-600 hover:bg-blue-700 text-white w-7 h-7 rounded-md text-xs shadow flex items-center justify-center transition active:scale-95" title="Edit Project"><i class="fa-solid fa-pen"></i></button>
-            <button onclick="event.stopPropagation(); deleteItem('listings/${id}')" class="absolute top-2.5 right-2.5 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs shadow z-20 flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-trash"></i></button>` : ''}
+          ${window.isAdmin ? `
+            <div class="absolute top-2.5 right-2.5 z-20 flex gap-1">
+              <button onclick="openEditListingModal('${id}')" class="bg-[#003366] hover:bg-[#002244] text-white w-7 h-7 rounded-md text-xs shadow flex items-center justify-center transition active:scale-95" title="Edit Listing"><i class="fa-solid fa-pen"></i></button>
+              <button onclick="deleteItem('listings/${id}')" class="bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs shadow flex items-center justify-center transition active:scale-95" title="Delete Listing"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          ` : ''}
           
           <div>
             <div class="relative h-48 sm:h-52 overflow-hidden bg-slate-900 cursor-pointer" onclick="openListingDetails('${id}')">
@@ -1232,7 +1478,7 @@
               <div class="mt-3.5 pt-3 border-t border-slate-100 grid grid-cols-2 gap-2 text-xs">
                 <div>
                   <span class="text-slate-400 font-medium block text-[10px]">Total Price</span>
-                  <span class="font-bold text-[#003366] text-xs sm:text-sm">${String(item.tcp || '').startsWith('₱') ? item.tcp : '₱'+(item.tcp || '0')}</span>
+                  <span class="font-bold text-[#003366] text-xs sm:text-sm">${item.tcp.startsWith('₱') ? item.tcp : '₱'+item.tcp}</span>
                 </div>
                 <div>
                   <span class="text-slate-400 font-medium block text-[10px]">Monthly starts</span>
@@ -1251,7 +1497,7 @@
       });
     }
 
-    // Listing Details Modal View
+    // Listing Details Modal View with FAQ Rearranging Capability
     function openListingDetails(id) {
       const item = window.allListings[id];
       if(!item) return;
@@ -1301,17 +1547,14 @@
         <div class="p-5 sm:p-7 space-y-5">
           ${customBtns.length > 0 ? `
             <div class="flex flex-wrap gap-2 pb-2 border-b border-slate-100">
-              ${customBtns.map((btn, idx) => `
-                <div class="flex items-center gap-1">
-                  <button onclick="window.open('${escapeJs(btn.url)}', '_blank')" class="px-4 py-2 bg-[#003366] hover:bg-[#002244] text-white font-semibold rounded-md text-xs transition shadow flex items-center gap-1.5">
-                    <span>${escapeHtml(btn.label)}</span><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                  </button>
-                  ${window.isAdmin ? `<button onclick="editListingButton('${id}', ${idx})" class="w-7 h-7 rounded bg-slate-100 text-[#003366] hover:bg-slate-200 text-xs" title="Edit Button"><i class="fa-solid fa-pen"></i></button>` : ''}
-                </div>
+              ${customBtns.map(btn => `
+                <button onclick="window.open('${btn.url}', '_blank')" class="px-4 py-2 bg-[#003366] hover:bg-[#002244] text-white font-semibold rounded-md text-xs transition shadow flex items-center gap-1.5">
+                  <span>${btn.label}</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                </button>
               `).join('')}
             </div>
           ` : ''}
-          ${window.isAdmin ? `<div class="flex justify-end -mt-2"><button onclick="openListingEditor('${id}')" class="text-xs text-[#003366] hover:underline font-semibold"><i class="fa-solid fa-pen mr-1"></i>Edit Project Details</button></div>` : ''}
 
           <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
             <div>
@@ -1320,7 +1563,7 @@
             </div>
             <div class="bg-[#003366]/5 p-3 rounded-lg border border-[#003366]/10 inline-block">
               <span class="block text-[10px] font-semibold text-slate-400 uppercase">Total Price</span>
-              <span class="block text-lg font-bold text-[#003366]">${String(item.tcp || '').startsWith('₱') ? item.tcp : '₱'+(item.tcp || '0')}</span>
+              <span class="block text-lg font-bold text-[#003366]">${item.tcp.startsWith('₱') ? item.tcp : '₱'+item.tcp}</span>
               <span class="text-xs text-emerald-600 font-medium">Monthly starts ${item.amort}</span>
             </div>
           </div>
@@ -1338,15 +1581,23 @@
 
             ${faqs.length > 0 ? `
               <div class="space-y-2">
-                ${faqs.map(([faqId, faq], faqIndex) => `
-                  <div class="border border-slate-200 rounded-md overflow-hidden faq-draggable" data-faq-id="${faqId}" draggable="${window.isAdmin}">
-                    <button onclick="toggleFaq('${faqId}')" class="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 font-semibold text-xs text-[#003366] flex justify-between items-center transition">
-                      <span>${window.isAdmin ? `<i class="fa-solid fa-grip-vertical text-slate-400 mr-2 cursor-grab"></i>` : ''}${escapeHtml(faq.q)}</span>
-                      <i id="faq-icon-${faqId}" class="fa-solid fa-chevron-down text-slate-400 text-[10px] transition-transform duration-300"></i>
-                    </button>
+                ${faqs.map(([faqId, faq], index) => `
+                  <div class="border border-slate-200 rounded-md overflow-hidden">
+                    <div class="flex items-center justify-between bg-slate-50">
+                      <button onclick="toggleFaq('${faqId}')" class="w-full text-left p-3 hover:bg-slate-100 font-semibold text-xs text-[#003366] flex justify-between items-center transition">
+                        <span>${faq.q}</span>
+                        <i id="faq-icon-${faqId}" class="fa-solid fa-chevron-down text-slate-400 text-[10px] transition-transform duration-300"></i>
+                      </button>
+                      ${window.isAdmin ? `
+                        <div class="flex items-center gap-1 pr-2">
+                          <button onclick="reorderFaq('${id}', ${index}, -1)" class="text-slate-500 hover:text-[#003366] text-xs p-1" title="Move Up"><i class="fa-solid fa-arrow-up"></i></button>
+                          <button onclick="reorderFaq('${id}', ${index}, 1)" class="text-slate-500 hover:text-[#003366] text-xs p-1" title="Move Down"><i class="fa-solid fa-arrow-down"></i></button>
+                        </div>
+                      ` : ''}
+                    </div>
                     <div id="faq-ans-${faqId}" class="hidden p-3 bg-white text-xs text-slate-600 border-t border-slate-100 relative">
-                      ${window.isAdmin ? `<div class="absolute top-2 right-2 flex gap-2"><button onclick="editFAQ('${id}','${faqId}')" class="text-blue-500 hover:text-blue-700 text-xs"><i class="fa-solid fa-pen"></i></button><button onclick="deleteItem('listings/${id}/faqs/${faqId}')" class="text-red-500 hover:text-red-700 text-xs"><i class="fa-solid fa-trash"></i></button></div>` : ''}
-                      <p class="pr-12">${escapeHtml(faq.a)}</p>
+                      ${window.isAdmin ? `<button onclick="deleteItem('listings/${id}/faqs/${faqId}')" class="absolute top-2 right-2 text-red-500 hover:text-red-700 text-xs"><i class="fa-solid fa-trash"></i></button>` : ''}
+                      <p>${faq.a}</p>
                     </div>
                   </div>
                 `).join('')}
@@ -1357,7 +1608,27 @@
       `;
 
       openModal('listing-details-modal');
-      if(window.isAdmin) setupFaqDragDrop(id);
+    }
+
+    function reorderFaq(listingId, currIdx, direction) {
+      const item = window.allListings[listingId];
+      if (!item || !item.faqs) return;
+      const faqsArr = Object.entries(item.faqs);
+      const targetIdx = currIdx + direction;
+      if (targetIdx < 0 || targetIdx >= faqsArr.length) return;
+
+      const temp = faqsArr[currIdx];
+      faqsArr[currIdx] = faqsArr[targetIdx];
+      faqsArr[targetIdx] = temp;
+
+      const newFaqsObj = {};
+      faqsArr.forEach(([key, val]) => {
+        newFaqsObj[key] = val;
+      });
+
+      window.set(window.ref(window.db, `listings/${listingId}/faqs`), newFaqsObj).then(() => {
+        openListingDetails(listingId);
+      });
     }
 
     function addListingPhoto(id) {
@@ -1390,74 +1661,23 @@
       }
     }
 
-    function openFAQModal(listingId, faqId = null) {
-      const item = window.allListings[listingId];
-      const faq = faqId && item?.faqs?.[faqId];
+    function openFAQModal(listingId) {
       document.getElementById('faq-listing-id').value = listingId;
-      document.getElementById('faq-edit-id').value = faqId || '';
-      document.getElementById('faq-question').value = faq?.q || '';
-      document.getElementById('faq-answer').value = faq?.a || '';
-      document.querySelector('#faq-modal h3').innerText = faqId ? 'Edit FAQ' : 'Add FAQ to Project';
       openModal('faq-modal');
-    }
-
-    function editFAQ(listingId, faqId) {
-      openFAQModal(listingId, faqId);
     }
 
     function saveFAQ(e) {
       e.preventDefault();
-      if(!window.isAdmin) return;
       const listingId = document.getElementById('faq-listing-id').value;
-      const faqId = document.getElementById('faq-edit-id').value;
-      const q = document.getElementById('faq-question').value.trim();
-      const a = document.getElementById('faq-answer').value.trim();
-      const path = faqId ? `listings/${listingId}/faqs/${faqId}` : `listings/${listingId}/faqs`;
-      const target = faqId ? window.ref(window.db, path) : window.push(window.ref(window.db, path));
-      window.set(target, { q, a }).then(() => {
+      const q = document.getElementById('faq-question').value;
+      const a = document.getElementById('faq-answer').value;
+
+      const newRef = window.push(window.ref(window.db, `listings/${listingId}/faqs`));
+      window.set(newRef, { q, a }).then(() => {
         closeModal('faq-modal');
         e.target.reset();
-        document.getElementById('faq-edit-id').value = '';
         openListingDetails(listingId);
       });
-    }
-
-    function setupFaqDragDrop(listingId) {
-      const wrap = document.querySelector('#listing-details-content .space-y-2');
-      if(!wrap || !window.isAdmin) return;
-      let dragId = null;
-      wrap.querySelectorAll('.faq-draggable').forEach(el => {
-        el.addEventListener('dragstart', () => { dragId = el.dataset.faqId; el.classList.add('dragging'); });
-        el.addEventListener('dragend', () => el.classList.remove('dragging'));
-        el.addEventListener('dragover', e => e.preventDefault());
-        el.addEventListener('drop', async e => {
-          e.preventDefault();
-          const targetId = el.dataset.faqId;
-          if(!dragId || dragId === targetId) return;
-          const entries = Object.entries(window.allListings[listingId]?.faqs || {});
-          const from = entries.findIndex(([k]) => k === dragId);
-          const to = entries.findIndex(([k]) => k === targetId);
-          if(from < 0 || to < 0) return;
-          const moved = entries.splice(from,1)[0];
-          entries.splice(to,0,moved);
-          const reordered = {};
-          entries.forEach(([k,v], idx) => { reordered[k] = { ...v, order: idx }; });
-          await window.set(window.ref(window.db, `listings/${listingId}/faqs`), reordered);
-          openListingDetails(listingId);
-        });
-      });
-    }
-
-    function editListingButton(id, idx) {
-      const buttons = window.allListings[id]?.customButtons || [];
-      const btn = buttons[idx];
-      if(!btn) return;
-      const label = prompt('Button Label:', btn.label);
-      if(label === null) return;
-      const url = prompt('Button URL:', btn.url);
-      if(url === null) return;
-      buttons[idx] = { label: label.trim(), url: url.trim() };
-      window.set(window.ref(window.db, `listings/${id}/customButtons`), buttons).then(() => openListingDetails(id));
     }
 
     let activeModalSlideIndex = {};
@@ -1477,7 +1697,7 @@
       setModalCarouselSlide(id, current);
     }
 
-    // C. Reels & Virtual Tours Logic (Enhanced Smooth)
+    // C. Reels & Virtual Tours Logic (Single Video Play, Autoplay Hover, Reset, Fullscreen Mobile)
     function openReelModal(editId = null, title = '', url = '') {
       document.getElementById('reel-edit-id').value = editId || '';
       document.getElementById('reel-title').value = title || '';
@@ -1508,9 +1728,6 @@
       }
     }
 
-    // Detect supported reel URL types without changing the stored Firebase data.
-    // Existing direct MP4 URLs continue to use the native <video> player.
-    // YouTube watch, youtu.be, and Shorts URLs are converted to the official embed URL.
     function getYouTubeVideoId(url) {
       try {
         const parsed = new URL(url);
@@ -1542,7 +1759,7 @@
       if (youtubeId) {
         return {
           type: 'youtube',
-          src: `https://www.youtube.com/embed/${encodeURIComponent(youtubeId)}?rel=0&playsinline=1&enablejsapi=1&mute=1`
+          src: `https://www.youtube.com/embed/${encodeURIComponent(youtubeId)}?enablejsapi=1&rel=0&playsinline=1`
         };
       }
 
@@ -1558,18 +1775,112 @@
         .replace(/'/g, '&#039;');
     }
 
-    function renderReels(reels) {
+    // Stop and reset all reel videos across the section
+    window.stopAllReelVideos = function() {
+      const videos = document.querySelectorAll('.reel-video-el');
+      videos.forEach(v => {
+        v.pause();
+        v.currentTime = 0;
+      });
+
+      const iframes = document.querySelectorAll('.reel-embed-el');
+      iframes.forEach(iframe => {
+        iframe.contentWindow.postMessage(JSON.stringify({
+          event: 'command',
+          func: 'pauseVideo',
+          args: []
+        }), '*');
+      });
+    };
+
+    function hoverPlayReel(container) {
+      window.stopAllReelVideos();
+
+      const video = container.querySelector('.reel-video-el');
+      if (video) {
+        video.play().catch(() => {});
+        return;
+      }
+
+      const iframe = container.querySelector('.reel-embed-el');
+      if (iframe) {
+        iframe.contentWindow.postMessage(JSON.stringify({
+          event: 'command',
+          func: 'playVideo',
+          args: []
+        }), '*');
+      }
+    }
+
+    function hoverStopReel(container) {
+      const video = container.querySelector('.reel-video-el');
+      if (video) {
+        video.pause();
+        video.currentTime = 0;
+      }
+
+      const iframe = container.querySelector('.reel-embed-el');
+      if (iframe) {
+        iframe.contentWindow.postMessage(JSON.stringify({
+          event: 'command',
+          func: 'pauseVideo',
+          args: []
+        }), '*');
+      }
+    }
+
+    function toggleReelFullscreen(btn) {
+      const container = btn.closest('.group');
+      if (!container) return;
+      const media = container.querySelector('.reel-video-el') || container.querySelector('.reel-embed-el');
+      const target = media || container;
+
+      if (!document.fullscreenElement) {
+        if (target.requestFullscreen) {
+          target.requestFullscreen();
+        } else if (target.webkitRequestFullscreen) {
+          target.webkitRequestFullscreen();
+        } else if (target.msRequestFullscreen) {
+          target.msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // Automatically stop and reset all reels when leaving section viewport
+    document.addEventListener('DOMContentLoaded', () => {
+      const reelsSec = document.getElementById('reels');
+      if (reelsSec && 'IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) {
+              window.stopAllReelVideos();
+            }
+          });
+        }, { threshold: 0.1 });
+        observer.observe(reelsSec);
+      }
+    });
+
+    function renderReels(reels, searchTerm = '') {
       const container = document.getElementById('reels-container');
-      stopAllReels(true);
       container.innerHTML = '';
 
-      if(!reels || reels.length === 0) {
-        container.innerHTML = `<div class="swiper-slide text-center py-10 text-slate-300 text-xs">No video reels added yet.</div>`;
+      const filteredReels = (reels || []).filter(reel => {
+        if (!searchTerm) return true;
+        return [reel.title, reel.url].join(' ').toLowerCase().includes(searchTerm);
+      });
+
+      if(filteredReels.length === 0) {
+        container.innerHTML = `<div class="swiper-slide text-center py-10 text-slate-300 text-xs">No video reels matched your keyword.</div>`;
         window.initSwiper();
         return;
       }
 
-      reels.forEach((reel, idx) => {
+      filteredReels.forEach((reel, idx) => {
         const slide = document.createElement('div');
         slide.className = 'swiper-slide draggable-item';
         slide.setAttribute('draggable', window.isAdmin ? 'true' : 'false');
@@ -1581,371 +1892,464 @@
         const safeId = escapeReelHtml(reel.id || '');
 
         const mediaHtml = source.type === 'youtube'
-          ? `<iframe src="${source.src}" title="${safeTitle}" class="w-full h-full object-cover reel-embed-el" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowfullscreen></iframe>`
+          ? `<iframe src="${source.src}" title="${safeTitle}" class="w-full h-full object-cover reel-embed-el" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`
           : `<video src="${safeUrl}" controls controlsList="nodownload" class="w-full h-full object-cover reel-video-el" preload="metadata" playsinline></video>`;
 
         slide.innerHTML = `
-          <div class="relative bg-slate-900 rounded-lg overflow-hidden shadow-lg border border-white/10 group aspect-[9/16] reel-wrapper">
+          <div class="relative bg-slate-900 rounded-lg overflow-hidden shadow-lg border border-white/10 group aspect-[9/16]"
+               onmouseenter="hoverPlayReel(this)" onmouseleave="hoverStopReel(this)">
+
             ${window.isAdmin ? `
               <div class="absolute top-2 right-2 flex gap-1 z-20">
-                <button onclick="event.stopPropagation(); openReelModal('${safeId.replace(/'/g, "\\'")}', '${safeTitle.replace(/'/g, "\\'")}', '${safeUrl.replace(/'/g, "\\'")}')" class="bg-blue-600 hover:bg-blue-700 text-white w-7 h-7 rounded-md text-xs shadow flex items-center justify-center transition active:scale-95" title="Edit Reel"><i class="fa-solid fa-pen"></i></button>
-                <button onclick="event.stopPropagation(); deleteReel('${safeId.replace(/'/g, "\\'")}')" class="bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs shadow flex items-center justify-center transition active:scale-95" title="Delete Reel"><i class="fa-solid fa-trash"></i></button>
+                <button onclick="event.stopPropagation(); openReelModal('${safeId.replace(/'/g, "\\'")}', '${safeTitle.replace(/'/g, "\\'")}', '${safeUrl.replace(/'/g, "\\'")}')" class="bg-blue-600 hover:bg-blue-700 text-white w-7 h-7 rounded-md text-xs flex items-center justify-center shadow transition active:scale-95" title="Edit Reel"><i class="fa-solid fa-pen"></i></button>
+                <button onclick="event.stopPropagation(); deleteItem('reels/${safeId.replace(/'/g, "\\'")}')" class="bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs flex items-center justify-center shadow transition active:scale-95" title="Delete Reel"><i class="fa-solid fa-trash"></i></button>
               </div>
             ` : ''}
-            ${mediaHtml}
-            <button type="button" onclick="event.stopPropagation(); fullscreenReel(this.closest('.reel-wrapper'))" aria-label="Full screen" class="absolute top-2 left-2 z-20 w-8 h-8 rounded-full bg-black/55 hover:bg-black/75 text-white flex items-center justify-center backdrop-blur-sm transition" title="Full screen">
-              <i class="fa-solid fa-expand text-xs"></i>
+
+            <!-- Mobile Fullscreen Button -->
+            <button onclick="event.stopPropagation(); toggleReelFullscreen(this)" class="sm:hidden absolute top-2 left-2 z-20 bg-slate-900/80 hover:bg-slate-900 text-white w-7 h-7 rounded-md text-xs flex items-center justify-center shadow backdrop-blur-md" title="Full Screen">
+              <i class="fa-solid fa-expand"></i>
             </button>
-            <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent pointer-events-none">
-              <h4 class="text-xs font-semibold text-white line-clamp-1">${safeTitle}</h4>
+
+            ${mediaHtml}
+
+            <div class="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent pointer-events-none z-10">
+              <h4 class="text-white font-semibold text-xs truncate">${safeTitle}</h4>
             </div>
           </div>
         `;
-        const wrapper = slide.querySelector('.reel-wrapper');
-        wrapper.addEventListener('mouseenter', () => playReel(wrapper));
-        wrapper.addEventListener('mouseleave', () => stopReel(wrapper, true));
+
         container.appendChild(slide);
       });
 
-      if(window.isAdmin) setupReelDragDrop();
       window.initSwiper();
-      setupReelObserver();
     }
 
-    async function fullscreenReel(wrapper) {
-      if(!wrapper) return;
-      const target = wrapper.querySelector('video') || wrapper.querySelector('iframe');
-      try {
-        if(target?.requestFullscreen) await target.requestFullscreen();
-        else if(wrapper.requestFullscreen) await wrapper.requestFullscreen();
-      } catch(e) {
-        console.log('Fullscreen request was blocked by browser:', e);
-      }
-    }
+    // D. Latest Updates & News Section (Post Editing for Admin)
+    function sanitizeBlogHtml(html) {
+      const template = document.createElement('template');
+      template.innerHTML = String(html || '');
 
-    function stopAllReels(reset = true) {
-      document.querySelectorAll('.reel-video-el').forEach(v => {
-        v.pause();
-        if(reset) { try { v.currentTime = 0; } catch(e) {} }
+      const allowedTags = new Set([
+        'B','STRONG','I','EM','U','S','BR','P','DIV','SPAN',
+        'UL','OL','LI','H1','H2','H3','BLOCKQUOTE','A'
+      ]);
+
+      template.content.querySelectorAll('*').forEach(el => {
+        if (!allowedTags.has(el.tagName)) {
+          el.replaceWith(...Array.from(el.childNodes));
+          return;
+        }
+
+        Array.from(el.attributes).forEach(attr => {
+          if (el.tagName === 'A' && attr.name.toLowerCase() === 'href') return;
+          el.removeAttribute(attr.name);
+        });
+
+        if (el.tagName === 'A') {
+          const href = el.getAttribute('href') || '';
+          if (!/^(https?:|mailto:|tel:)/i.test(href)) {
+            el.removeAttribute('href');
+          } else {
+            el.setAttribute('target', '_blank');
+            el.setAttribute('rel', 'noopener noreferrer');
+          }
+        }
       });
-      document.querySelectorAll('.reel-embed-el').forEach(frame => {
-        try {
-          frame.contentWindow.postMessage(JSON.stringify({event:'command',func:'pauseVideo',args:[]}), '*');
-          if(reset) frame.contentWindow.postMessage(JSON.stringify({event:'command',func:'seekTo',args:[0,true]}), '*');
-        } catch(e) {}
-      });
+
+      return template.innerHTML;
     }
 
-    function playReel(wrapper) {
-      stopAllReels(true);
-      const vid = wrapper.querySelector('video');
-      if(vid) {
-        vid.muted = true;
-        vid.play().catch(() => {});
+    function getBlogPlainText(html) {
+      const div = document.createElement('div');
+      div.innerHTML = String(html || '');
+      return (div.textContent || div.innerText || '')
+        .replace(/\u00a0/g, ' ')
+        .replace(/[ \t]+/g, ' ')
+        .trim();
+    }
+
+    function createBlogExcerpt(html, maxLength = 240) {
+      const plain = getBlogPlainText(html);
+      if (plain.length <= maxLength) return plain;
+      return plain.slice(0, maxLength).trimEnd() + '…';
+    }
+
+    function syncBlogEditor(editorId, textareaId) {
+      const editor = document.getElementById(editorId);
+      const textarea = document.getElementById(textareaId);
+      if (editor && textarea) textarea.value = sanitizeBlogHtml(editor.innerHTML);
+    }
+
+    function formatBlogText(command, editorId = 'blog-caption-editor') {
+      const editor = document.getElementById(editorId);
+      if (!editor) return;
+      editor.focus();
+      document.execCommand(command, false, null);
+      syncBlogEditor(editorId, editorId === 'blog-caption-editor' ? 'blog-caption' : 'edit-blog-caption');
+    }
+
+    function insertBlogLink(editorId = 'blog-caption-editor') {
+      const editor = document.getElementById(editorId);
+      if (!editor) return;
+      editor.focus();
+
+      const url = prompt('Enter hyperlink URL:');
+      if (!url) return;
+
+      if (!/^(https?:|mailto:|tel:)/i.test(url.trim())) {
+        alert('Please enter a valid http(s), mailto, or tel link.');
         return;
       }
-      const frame = wrapper.querySelector('iframe');
-      if(frame) {
-        try {
-          frame.contentWindow.postMessage(JSON.stringify({event:'command',func:'mute',args:[]}), '*');
-          frame.contentWindow.postMessage(JSON.stringify({event:'command',func:'playVideo',args:[]}), '*');
-        } catch(e) {}
+
+      const selection = window.getSelection();
+      const selectedText = selection ? selection.toString() : '';
+      const label = selectedText.trim() || prompt('Enter link text:') || url;
+
+      if (selectedText.trim()) {
+        document.execCommand('createLink', false, url.trim());
+      } else {
+        const safeUrl = url.trim().replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+        const safeLabel = label.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        document.execCommand('insertHTML', false, `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeLabel}</a>`);
       }
-    }
 
-    function stopReel(wrapper, reset = true) {
-      const vid = wrapper.querySelector('video');
-      if(vid) {
-        vid.pause();
-        if(reset) { try { vid.currentTime = 0; } catch(e) {} }
-      }
-      const frame = wrapper.querySelector('iframe');
-      if(frame) {
-        try {
-          frame.contentWindow.postMessage(JSON.stringify({event:'command',func:'pauseVideo',args:[]}), '*');
-          if(reset) frame.contentWindow.postMessage(JSON.stringify({event:'command',func:'seekTo',args:[0,true]}), '*');
-        } catch(e) {}
-      }
-    }
-
-    function hoverPlayReel(wrapper) { playReel(wrapper); }
-    function hoverStopReel(wrapper) { stopReel(wrapper, true); }
-
-    function setupReelObserver() {
-      if(window._reelObserver) window._reelObserver.disconnect();
-      window._reelObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if(!entry.isIntersecting) stopReel(entry.target.querySelector('.reel-wrapper'), true);
-        });
-      }, { threshold: 0.25 });
-      document.querySelectorAll('#reels-container .swiper-slide').forEach(slide => window._reelObserver.observe(slide));
-    }
-
-    document.addEventListener('visibilitychange', () => {
-      if(document.hidden) stopAllReels(true);
-    });
-
-    const reelsSection = document.getElementById('reels');
-    if(reelsSection) {
-      const sectionObserver = new IntersectionObserver(entries => {
-        entries.forEach(entry => { if(!entry.isIntersecting) stopAllReels(true); });
-      }, { threshold: 0.05 });
-      sectionObserver.observe(reelsSection);
-    }
-
-    function deleteReel(id) {
-      if(confirm('Delete this video reel?')) {
-        const updated = window.allReels.filter(r => r.id !== id);
-        window.set(window.ref(window.db, 'reels'), updated);
-      }
-    }
-
-    function setupReelDragDrop() {
-      const container = document.getElementById('reels-container');
-      let dragIdx = null;
-
-      container.querySelectorAll('.draggable-item').forEach(item => {
-        item.addEventListener('dragstart', (e) => {
-          dragIdx = e.currentTarget.dataset.index;
-          e.currentTarget.classList.add('dragging');
-        });
-
-        item.addEventListener('dragend', (e) => {
-          e.currentTarget.classList.remove('dragging');
-        });
-
-        item.addEventListener('dragover', (e) => {
-          e.preventDefault();
-        });
-
-        item.addEventListener('drop', (e) => {
-          e.preventDefault();
-          const targetIdx = e.currentTarget.dataset.index;
-          if(dragIdx !== null && targetIdx !== undefined && dragIdx !== targetIdx) {
-            const reordered = [...window.allReels];
-            const [moved] = reordered.splice(dragIdx, 1);
-            reordered.splice(targetIdx, 0, moved);
-            window.set(window.ref(window.db, 'reels'), reordered);
-          }
-        });
-      });
-    }
-
-    // D. Latest Updates & News Section (Rich text, carousel for multiple images)
-    // D. Latest Updates & News Section
-    function openBlogEditor(id = null) {
-      if(!window.isAdmin) return;
-      const post = id ? window.allBlogs.find(b => b.id === id) : null;
-      document.getElementById('blog-edit-id').value = id || '';
-      document.getElementById('blog-modal-title').innerText = id ? 'Edit Post Update' : 'Create Post Update';
-      document.getElementById('blog-title').value = post?.title || '';
-      document.getElementById('blog-img').value = (post?.images || []).join(', ');
-      document.getElementById('blog-caption').value = post?.caption || '';
-      openModal('blog-modal');
+      syncBlogEditor(editorId, editorId === 'blog-caption-editor' ? 'blog-caption' : 'edit-blog-caption');
     }
 
     function saveBlog(e) {
       e.preventDefault();
-      if(!window.isAdmin) return;
-      const editId = document.getElementById('blog-edit-id').value.trim();
+      syncBlogEditor('blog-caption-editor', 'blog-caption');
+
       const title = document.getElementById('blog-title').value.trim();
-      const caption = document.getElementById('blog-caption').value;
-      const images = document.getElementById('blog-img').value.split(',').map(u => u.trim()).filter(Boolean);
-      const payload = { title, caption, images, timestamp: editId ? (window.allBlogs.find(b => b.id === editId)?.timestamp || Date.now()) : Date.now() };
-      const target = editId ? window.ref(window.db, `blogs/${editId}`) : window.push(window.ref(window.db, 'blogs'));
-      window.set(target, payload).then(() => {
+      const imgRaw = document.getElementById('blog-img').value;
+      const caption = sanitizeBlogHtml(document.getElementById('blog-caption').value);
+
+      if (!getBlogPlainText(caption)) {
+        alert('Please enter a post caption.');
+        return;
+      }
+
+      const images = imgRaw ? imgRaw.split(',').map(u => u.trim()).filter(u => u.length > 0) : [];
+
+      const newRef = window.push(window.ref(window.db, 'blogs'));
+      window.set(newRef, {
+        title,
+        images,
+        caption,
+        timestamp: Date.now()
+      }).then(() => {
         closeModal('blog-modal');
         e.target.reset();
-        document.getElementById('blog-edit-id').value = '';
+        const editor = document.getElementById('blog-caption-editor');
+        if (editor) editor.innerHTML = '';
+        document.getElementById('blog-caption').value = '';
       });
+    }
+
+    function openEditBlogModal(id) {
+      const item = window.allBlogs.find(b => b.id === id);
+      if (!item) return;
+
+      document.getElementById('edit-blog-id').value = id;
+      document.getElementById('edit-blog-title').value = item.title || '';
+      document.getElementById('edit-blog-img').value = (item.images || []).join(', ');
+      document.getElementById('edit-blog-caption').value = sanitizeBlogHtml(item.caption || '');
+
+      const editor = document.getElementById('edit-blog-caption-editor');
+      if (editor) editor.innerHTML = sanitizeBlogHtml(item.caption || '');
+
+      openModal('edit-blog-modal');
+    }
+
+    function saveEditedBlog(e) {
+      e.preventDefault();
+      syncBlogEditor('edit-blog-caption-editor', 'edit-blog-caption');
+
+      const id = document.getElementById('edit-blog-id').value;
+      const title = document.getElementById('edit-blog-title').value.trim();
+      const imgRaw = document.getElementById('edit-blog-img').value;
+      const caption = sanitizeBlogHtml(document.getElementById('edit-blog-caption').value);
+      const images = imgRaw ? imgRaw.split(',').map(u => u.trim()).filter(u => u.length > 0) : [];
+
+      const existingBlog = window.allBlogs.find(b => b.id === id);
+      const timestamp = existingBlog ? (existingBlog.timestamp || Date.now()) : Date.now();
+
+      window.set(window.ref(window.db, `blogs/${id}`), {
+        title,
+        images,
+        caption,
+        timestamp
+      }).then(() => {
+        closeModal('edit-blog-modal');
+        e.target.reset();
+        const editor = document.getElementById('edit-blog-caption-editor');
+        if (editor) editor.innerHTML = '';
+        document.getElementById('edit-blog-caption').value = '';
+      });
+    }
+
+    function changeBlogPage(dir) {
+      window.blogPage += dir;
+      renderBlogFeed();
+      document.getElementById('updates')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function renderBlogFeed() {
       const container = document.getElementById('blog-container');
       container.innerHTML = '';
 
-      if(window.allBlogs.length === 0) {
-        container.innerHTML = `<div class="text-center py-10 text-slate-400 text-xs border border-dashed border-slate-300 rounded-lg">No post updates created yet.</div>`;
+      const term = (window.globalSearchTerm || '').trim().toLowerCase();
+      const sourceBlogs = window.allBlogs || [];
+      const filteredBlogs = term
+        ? sourceBlogs.filter(post =>
+            [post.title, post.caption, ...(post.images || [])]
+              .join(' ')
+              .toLowerCase()
+              .includes(term)
+          )
+        : sourceBlogs;
+
+      if (filteredBlogs.length === 0) {
+        container.innerHTML = `<div class="text-center py-10 text-slate-400 text-xs border border-dashed border-slate-300 rounded-lg">${term ? 'No posts matched your keyword.' : 'No post updates available.'}</div>`;
         document.getElementById('blog-pagination').classList.add('hidden');
         return;
       }
 
-      document.getElementById('blog-pagination').classList.remove('hidden');
+      document.getElementById('blog-pagination').classList.toggle('hidden', !!term);
+
+      const totalPages = Math.max(1, Math.ceil(filteredBlogs.length / window.blogPostsPerPage));
+      if (window.blogPage > totalPages) window.blogPage = totalPages;
+      if (window.blogPage < 1) window.blogPage = 1;
+
+      document.getElementById('blog-page-info').innerText = `Page ${window.blogPage} of ${totalPages}`;
+      document.getElementById('btn-prev-page').disabled = (window.blogPage === 1);
+      document.getElementById('btn-next-page').disabled = (window.blogPage === totalPages);
 
       const start = (window.blogPage - 1) * window.blogPostsPerPage;
-      const end = start + window.blogPostsPerPage;
-      const pageItems = window.allBlogs.slice(start, end);
+      const pagedItems = term ? filteredBlogs : filteredBlogs.slice(start, start + window.blogPostsPerPage);
 
-      const agentName = window.profileData.name || 'Jane Doe';
-      const agentPhoto = window.profileData.avatar || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80';
+      pagedItems.forEach(post => {
+        const card = document.createElement('article');
+        card.className = "glass-panel bg-white rounded-xl border border-slate-200/80 overflow-hidden shadow-sm hover-lift relative";
 
-      pageItems.forEach(post => {
-        const images = post.images || [];
-        // Strip HTML for preview but keep it safe
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = post.caption || '';
-        const plainText = tempDiv.textContent || '';
-        const isLong = plainText.length > 140;
-        const displayCaption = isLong ? plainText.substring(0, 140) + '...' : plainText;
-
-        const card = document.createElement('div');
-        card.className = "glass-panel bg-white/90 rounded-xl border border-slate-200/90 overflow-hidden shadow-sm hover-lift p-4 sm:p-5 cursor-pointer relative";
-        card.onclick = () => openBlogDetails(post.id);
+        const thumb = (post.images && post.images.length > 0) ? post.images[0] : null;
+        const formattedDate = new Date(post.timestamp || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        const authorName = window.profileData.name || 'Agent';
+        const authorAvatar = window.profileData.avatar || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80';
 
         card.innerHTML = `
-          ${window.isAdmin ? `<div class="absolute top-3 right-3 flex gap-1 z-20">
-              <button onclick="event.stopPropagation(); openBlogEditor('${post.id}')" class="bg-blue-600 hover:bg-blue-700 text-white w-7 h-7 rounded-md text-xs shadow flex items-center justify-center transition active:scale-95" title="Edit Post"><i class="fa-solid fa-pen"></i></button>
-              <button onclick="event.stopPropagation(); deleteItem('blogs/${post.id}')" class="bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs shadow flex items-center justify-center transition active:scale-95" title="Delete Post"><i class="fa-solid fa-trash"></i></button>
-            </div>` : ''}
-          
-          <div class="flex items-center gap-2.5 mb-3 border-b border-slate-100 pb-2.5">
-            <img src="${agentPhoto}" alt="${agentName}" class="w-8 h-8 rounded-full object-cover ring-1 ring-[#003366]">
-            <div>
-              <h4 class="text-xs font-bold text-[#003366] leading-tight">${agentName}</h4>
-              <span class="text-[10px] text-slate-400 flex items-center gap-1">
-                <i class="fa-solid fa-clock text-[#f1c40f]"></i>
-                ${new Date(post.timestamp || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-              </span>
+          ${window.isAdmin ? `
+            <div class="absolute top-3 right-3 flex gap-1.5 z-20">
+              <button onclick="openEditBlogModal('${post.id}')" class="bg-[#003366] hover:bg-[#002244] text-white w-7 h-7 rounded-md text-xs shadow flex items-center justify-center transition active:scale-95" title="Edit Post"><i class="fa-solid fa-pen"></i></button>
+              <button onclick="deleteItem('blogs/${post.id}')" class="bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-md text-xs shadow flex items-center justify-center transition active:scale-95" title="Delete Post"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          ` : ''}
+
+          <div class="p-4 sm:p-5">
+            <div class="flex items-center gap-2 text-[11px] text-slate-400 font-medium mb-2">
+              <i class="fa-solid fa-calendar-days text-[#003366]"></i>
+              <span>${formattedDate}</span>
+            </div>
+
+            <h3 onclick="openBlogDetails('${post.id}')" class="text-base sm:text-lg font-bold text-[#003366] hover:text-[#002244] cursor-pointer transition line-clamp-2">${post.title}</h3>
+
+            ${thumb ? `
+              <div class="mt-3 rounded-lg overflow-hidden bg-slate-50 border border-slate-100 cursor-pointer" onclick="openBlogDetails('${post.id}')">
+                <img src="${thumb}" alt="${post.title}" class="blog-card-image hover:opacity-95 transition duration-300" loading="lazy">
+              </div>
+            ` : ''}
+
+            <div class="mt-4 text-slate-600 text-xs sm:text-sm leading-relaxed blog-card-excerpt">${createBlogExcerpt(post.caption || '')}</div>
+
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
+              <div class="flex items-center gap-2 min-w-0">
+                <img src="${authorAvatar}" alt="${authorName}" class="w-8 h-8 rounded-full object-cover border border-white shadow-sm flex-shrink-0">
+                <div class="min-w-0">
+                  <div class="text-[10px] text-slate-400 uppercase tracking-wider">Author</div>
+                  <div class="text-xs font-semibold text-[#003366] truncate">${authorName}</div>
+                </div>
+              </div>
+              <button onclick="openBlogDetails('${post.id}')" class="inline-flex items-center gap-1 text-xs font-semibold text-[#003366] hover:underline flex-shrink-0">
+                <span>Read Full Update</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+              </button>
             </div>
           </div>
-
-          ${images.length > 0 ? `
-            <div class="mb-3 rounded-lg overflow-hidden bg-slate-900 w-full">
-              <img src="${images[0]}" alt="Post thumbnail" class="w-full h-auto max-h-[500px] object-cover">
-            </div>
-          ` : ''}
-
-          <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">${displayCaption}</p>
-
-          ${isLong || images.length > 1 ? `
-            <div class="mt-2 text-xs font-semibold text-[#003366] hover:underline flex items-center gap-1">
-              <span>Read Full Post</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
-            </div>
-          ` : ''}
         `;
 
         container.appendChild(card);
       });
-
-      document.getElementById('blog-page-info').innerText = `Page ${window.blogPage} of ${Math.ceil(window.allBlogs.length / window.blogPostsPerPage)}`;
-      document.getElementById('btn-prev-page').disabled = window.blogPage === 1;
-      document.getElementById('btn-next-page').disabled = end >= window.allBlogs.length;
     }
 
-    function changeBlogPage(direction) {
-      window.blogPage += direction;
-      renderBlogFeed();
-    }
-
-    // Blog details with carousel for multiple images and rich text support
     function openBlogDetails(id) {
       const post = window.allBlogs.find(b => b.id === id);
       if(!post) return;
 
-      const container = document.getElementById('blog-details-content');
+      const content = document.getElementById('blog-details-content');
       const images = post.images || [];
-      const agentName = window.profileData.name || 'Jane Doe';
-      const agentPhoto = window.profileData.avatar || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80';
+      const formattedDate = new Date(post.timestamp || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      const authorName = window.profileData.name || 'Agent';
+      const authorAvatar = window.profileData.avatar || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80';
 
-      // Build image carousel if multiple images
-      let imageHtml = '';
-      if(images.length > 0) {
-        if(images.length === 1) {
-          imageHtml = `<img src="${images[0]}" class="w-full rounded-lg shadow-md mb-4 object-cover max-h-96" alt="Post image">`;
-        } else {
-          // Carousel for multiple images
-          imageHtml = `
-            <div class="relative mb-4 rounded-lg overflow-hidden bg-slate-900" id="post-carousel-${id}">
-              <div class="relative h-64 sm:h-80 w-full">
+      content.innerHTML = `
+        <div class="space-y-4">
+          <div class="flex items-center gap-2 text-xs text-slate-400 font-medium">
+            <i class="fa-solid fa-calendar-days text-[#003366]"></i>
+            <span>${formattedDate}</span>
+          </div>
+
+          <h2 class="text-xl sm:text-2xl font-bold text-[#003366] leading-snug">${post.title}</h2>
+
+          ${images.length > 0 ? `
+            <div class="relative rounded-xl overflow-hidden bg-slate-50 border border-slate-100">
+              <div id="blog-carousel-slides-${id}" class="w-full relative">
                 ${images.map((img, idx) => `
-                  <img src="${img}" class="post-carousel-slide-${id} absolute inset-0 w-full h-full object-contain bg-slate-800 transition-opacity duration-500 ${idx === 0 ? 'opacity-100' : 'opacity-0'}" alt="Post image ${idx+1}">
+                  <img src="${img}" alt="${post.title}" class="blog-slide-${id} blog-detail-image transition-opacity duration-500 ${idx === 0 ? 'opacity-100' : 'opacity-0 absolute inset-0'}">
                 `).join('')}
               </div>
+
               ${images.length > 1 ? `
-                <button onclick="navigatePostCarousel('${id}', -1, ${images.length})" class="absolute left-2 top-1/2 -translate-y-1/2 bg-slate-900/60 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-900 transition z-10">
+                <button onclick="navigateBlogCarousel('${id}', -1, ${images.length})" class="absolute left-3 top-1/2 -translate-y-1/2 bg-slate-900/60 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-900 transition z-10">
                   <i class="fa-solid fa-chevron-left text-xs"></i>
                 </button>
-                <button onclick="navigatePostCarousel('${id}', 1, ${images.length})" class="absolute right-2 top-1/2 -translate-y-1/2 bg-slate-900/60 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-900 transition z-10">
+                <button onclick="navigateBlogCarousel('${id}', 1, ${images.length})" class="absolute right-3 top-1/2 -translate-y-1/2 bg-slate-900/60 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-900 transition z-10">
                   <i class="fa-solid fa-chevron-right text-xs"></i>
                 </button>
-                <div class="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5 z-10">
-                  ${images.map((_, idx) => `<span class="post-dot-${id} w-2 h-2 rounded-full bg-white/60 transition-all ${idx === 0 ? '!bg-[#f1c40f] !w-4' : ''}"></span>`).join('')}
-                </div>
               ` : ''}
             </div>
-          `;
-        }
-      }
+          ` : ''}
 
-      container.innerHTML = `
-        <div class="flex items-center gap-2.5 mb-3 border-b pb-2">
-          <img src="${agentPhoto}" alt="${agentName}" class="w-9 h-9 rounded-full object-cover">
-          <div>
-            <h4 class="text-xs font-bold text-[#003366]">${agentName}</h4>
-            <span class="text-[10px] text-slate-400">${new Date(post.timestamp || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+          <div class="text-slate-700 text-xs sm:text-sm leading-relaxed space-y-3 pt-2 blog-content border-t border-slate-100">
+            ${sanitizeBlogHtml(post.caption || '')}
+          </div>
+
+          <div class="pt-4 border-t border-slate-100 flex items-center gap-3">
+            <img src="${authorAvatar}" alt="${authorName}" class="w-10 h-10 rounded-full object-cover border border-white shadow-sm">
+            <div>
+              <div class="text-[10px] text-slate-400 uppercase tracking-wider">Posted by</div>
+              <div class="text-sm font-bold text-[#003366]">${authorName}</div>
+            </div>
           </div>
         </div>
-
-        ${imageHtml}
-
-        <div class="blog-content text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-wrap">
-          ${post.caption || ''}
-        </div>
       `;
-
-      // Initialize post carousel state
-      if(images.length > 1) {
-        window._postCarouselIndex = window._postCarouselIndex || {};
-        window._postCarouselIndex[id] = 0;
-      }
 
       openModal('blog-details-modal');
     }
 
-    // Navigate post carousel
-    function navigatePostCarousel(id, direction, max) {
-      const key = id;
-      if(!window._postCarouselIndex) window._postCarouselIndex = {};
-      if(window._postCarouselIndex[key] === undefined) window._postCarouselIndex[key] = 0;
-      let current = window._postCarouselIndex[key];
-      current = (current + direction + max) % max;
-      window._postCarouselIndex[key] = current;
+    let activeBlogSlideIndex = {};
+    function navigateBlogCarousel(id, dir, max) {
+      let current = activeBlogSlideIndex[id] || 0;
+      current = (current + dir + max) % max;
+      activeBlogSlideIndex[id] = current;
 
-      const slides = document.querySelectorAll(`.post-carousel-slide-${id}`);
-      const dots = document.querySelectorAll(`.post-dot-${id}`);
+      const slides = document.querySelectorAll(`.blog-slide-${id}`);
       slides.forEach((s, i) => {
         s.classList.toggle('opacity-100', i === current);
         s.classList.toggle('opacity-0', i !== current);
+        s.classList.toggle('absolute', i !== current);
+        if (i === current) {
+          s.classList.remove('absolute', 'inset-0');
+        } else {
+          s.classList.add('absolute', 'inset-0');
+        }
       });
-      dots.forEach((d, i) => {
-        d.classList.toggle('!bg-[#f1c40f]', i === current);
-        d.classList.toggle('!w-4', i === current);
-      });
     }
 
-    // Lightbox Controls
-    let viewerImages = [];
-    let viewerIndex = 0;
-
-    function openImageViewer(images, index) {
-      viewerImages = images;
-      viewerIndex = index;
-      updateViewerImage();
-      openModal('image-viewer-modal');
+    // Global keyword search + profile quick links
+    function getProfileKeywordMatch(value) {
+      const term = String(value || '').trim().toUpperCase();
+      if (!term) return null;
+      return (window.profileKeywordLinks || []).find(item => item.keyword.toUpperCase() === term) || null;
     }
 
-    function updateViewerImage() {
-      const img = document.getElementById('viewer-image');
-      if(img && viewerImages.length > 0) img.src = viewerImages[viewerIndex];
+    function renderProfileKeywordResult(value) {
+      const results = document.getElementById('global-search-results');
+      if (!results) return;
+
+      const match = getProfileKeywordMatch(value);
+
+      if (!match) {
+        results.innerHTML = '';
+        results.classList.add('hidden');
+        return;
+      }
+
+      const safeKeyword = escapeReelHtml(match.keyword);
+      const safeName = escapeReelHtml(match.name);
+
+      results.innerHTML = `
+        <button type="button" class="profile-search-result" onclick="openProfileKeyword('${safeKeyword}')">
+          <span class="keyword-badge">${safeKeyword}</span>
+          <span class="flex-1 min-w-0">
+            <span class="block text-xs font-semibold truncate">${safeName}</span>
+            <span class="block text-[10px] text-slate-400">Open shortcut</span>
+          </span>
+          <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-400"></i>
+        </button>
+      `;
+      results.classList.remove('hidden');
     }
 
-    function navigateViewer(dir) {
-      if(viewerImages.length === 0) return;
-      viewerIndex = (viewerIndex + dir + viewerImages.length) % viewerImages.length;
-      updateViewerImage();
+    function openProfileKeyword(keyword) {
+      const match = getProfileKeywordMatch(keyword);
+      if (!match) return;
+
+      const results = document.getElementById('global-search-results');
+      if (results) results.classList.add('hidden');
+
+      window.open(match.url, '_blank', 'noopener,noreferrer');
     }
 
-    // E. Connect With Me Section
+    // Global keyword search
+    function handleGlobalSearch(value) {
+      window.globalSearchTerm = value || '';
+      window.blogPage = 1;
+      const clearBtn = document.getElementById('global-search-clear');
+      if (clearBtn) clearBtn.classList.toggle('hidden', !value);
+
+      renderProfileKeywordResult(value);
+
+      // Exact profile shortcuts take priority and do not disturb the content sections.
+      if (getProfileKeywordMatch(value)) return;
+
+      renderBlogFeed();
+
+      const term = window.globalSearchTerm.trim().toLowerCase();
+      const listingContainer = document.getElementById('listings-container');
+      if (listingContainer && window.allListings) {
+        renderListings(window.allListings, term);
+      }
+
+      const reelsContainer = document.getElementById('reels-container');
+      if (reelsContainer && window.allReels) {
+        renderReels(window.allReels, term);
+      }
+    }
+
+    function clearGlobalSearch() {
+      const input = document.getElementById('global-search');
+      if (input) input.value = '';
+      const results = document.getElementById('global-search-results');
+      if (results) {
+        results.innerHTML = '';
+        results.classList.add('hidden');
+      }
+      handleGlobalSearch('');
+    }
+
+    // Press Enter on an exact shortcut to open it.
+    document.addEventListener('keydown', function(event) {
+      const input = document.getElementById('global-search');
+      if (event.key === 'Enter' && document.activeElement === input) {
+        const match = getProfileKeywordMatch(input.value);
+        if (match) {
+          event.preventDefault();
+          openProfileKeyword(match.keyword);
+        }
+      }
+    });
+
+    // E. Connect With Me Logic
     function saveSocial(e) {
       e.preventDefault();
       const name = document.getElementById('social-name').value;
@@ -1964,130 +2368,91 @@
       container.innerHTML = '';
 
       if(!socials || socials.length === 0) {
-        container.innerHTML = `<div class="col-span-full text-center py-6 text-slate-400 text-xs">No social links added yet.</div>`;
+        container.innerHTML = `<div class="col-span-full text-center py-6 text-slate-400 text-xs">No social links configured.</div>`;
         return;
       }
 
-      socials.forEach((item, idx) => {
-        const card = document.createElement('div');
-        card.className = "flex items-center justify-between p-3 bg-white/80 border border-slate-200 rounded-lg shadow-sm hover:border-[#003366] transition group relative draggable-item";
-        card.setAttribute('draggable', window.isAdmin ? 'true' : 'false');
-        card.dataset.index = idx;
+      socials.forEach(s => {
+        const item = document.createElement('div');
+        item.className = "relative group";
 
-        card.innerHTML = `
-          <a href="${item.url}" target="_blank" class="flex items-center gap-2.5 truncate flex-grow">
-            <div class="w-7 h-7 rounded-full bg-[#003366]/10 text-[#003366] flex items-center justify-center group-hover:bg-[#003366] group-hover:text-white transition flex-shrink-0">
-              <i class="${item.icon} text-xs"></i>
-            </div>
-            <span class="text-xs font-semibold text-slate-700 group-hover:text-[#003366] truncate">${item.name}</span>
-          </a>
+        item.innerHTML = `
           ${window.isAdmin ? `
-            <button onclick="deleteSocial('${item.id}')" class="text-red-500 hover:text-red-700 text-xs p-1 ml-1" title="Delete Link">
-              <i class="fa-solid fa-trash"></i>
-            </button>
+            <button onclick="deleteItem('socials/${s.id}')" class="absolute -top-1.5 -right-1.5 bg-red-600 text-white w-5 h-5 rounded-full text-[10px] flex items-center justify-center shadow z-20 opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button>
           ` : ''}
+          <a href="${s.url}" target="_blank" class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-white hover:border-[#003366] hover:bg-slate-50 transition shadow-sm hover-lift">
+            <div class="w-8 h-8 rounded-md bg-[#003366]/10 text-[#003366] flex items-center justify-center flex-shrink-0">
+              <i class="${s.icon || 'fa-solid fa-link'} text-sm"></i>
+            </div>
+            <span class="text-xs font-semibold text-slate-700 truncate">${s.name}</span>
+          </a>
         `;
-        container.appendChild(card);
-      });
 
-      if(window.isAdmin) setupSocialDragDrop();
-    }
-
-    function deleteSocial(id) {
-      if(confirm("Remove this social link?")) {
-        const updated = window.allSocials.filter(s => s.id !== id);
-        window.set(window.ref(window.db, 'socials'), updated);
-      }
-    }
-
-    function setupSocialDragDrop() {
-      const container = document.getElementById('socials-container');
-      let dragIdx = null;
-
-      container.querySelectorAll('.draggable-item').forEach(item => {
-        item.addEventListener('dragstart', (e) => {
-          dragIdx = e.currentTarget.dataset.index;
-          e.currentTarget.classList.add('dragging');
-        });
-
-        item.addEventListener('dragend', (e) => {
-          e.currentTarget.classList.remove('dragging');
-        });
-
-        item.addEventListener('dragover', (e) => {
-          e.preventDefault();
-        });
-
-        item.addEventListener('drop', (e) => {
-          e.preventDefault();
-          const targetIdx = e.currentTarget.dataset.index;
-          if(dragIdx !== null && targetIdx !== undefined && dragIdx !== targetIdx) {
-            const reordered = [...window.allSocials];
-            const [moved] = reordered.splice(dragIdx, 1);
-            reordered.splice(targetIdx, 0, moved);
-            window.set(window.ref(window.db, 'socials'), reordered);
-          }
-        });
+        container.appendChild(item);
       });
     }
 
-    // F. Lead Form Section
-    function saveLeadSettings(e) {
-      e.preventDefault();
-      const email = document.getElementById('setting-lead-email').value.trim();
-      const phone = document.getElementById('setting-lead-phone').value.trim();
-      const sheetUrl = document.getElementById('setting-sheet-url').value.trim();
-      const tgToken = document.getElementById('setting-tg-token').value.trim();
-      const tgChatId = document.getElementById('setting-tg-chatid').value.trim();
-
-      window.set(window.ref(window.db, 'leadSettings'), { email, phone, sheetUrl, tgToken, tgChatId }).then(() => {
-        window.leadSettings = { email, phone, sheetUrl, tgToken, tgChatId };
-        alert('Lead integrations & settings updated successfully!');
-        closeModal('lead-settings-modal');
-      });
-    }
-
+    // F. Lead Capture Submission
     function submitLeadForm(e, isPopup = false) {
       e.preventDefault();
       const name = isPopup ? document.getElementById('popup-lead-name').value : document.getElementById('lead-name').value;
       const phone = isPopup ? document.getElementById('popup-lead-phone').value : document.getElementById('lead-phone').value;
       const email = isPopup ? document.getElementById('popup-lead-email').value : document.getElementById('lead-email').value;
-      const msg = isPopup ? 'Inquiry from Popup Form' : document.getElementById('lead-message').value;
+      const message = isPopup ? 'Submitted via popup window' : (document.getElementById('lead-message').value || 'No message provided.');
 
-      const recipientEmail = window.leadSettings.email || 'agent@example.com';
-      const sheetUrl = window.leadSettings.sheetUrl;
-      const tgToken = window.leadSettings.tgToken;
-      const tgChatId = window.leadSettings.tgChatId;
+      const payload = {
+        name, phone, email, message,
+        timestamp: new Date().toISOString()
+      };
 
-      if(sheetUrl) {
-        fetch(sheetUrl, {
+      const leadRef = window.push(window.ref(window.db, 'leads'));
+      window.set(leadRef, payload);
+
+      if(window.leadSettings.sheetUrl) {
+        fetch(window.leadSettings.sheetUrl, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, phone, email, message: msg, date: new Date().toISOString() })
-        }).catch(err => console.log('Spreadsheet post error:', err));
+          body: JSON.stringify(payload)
+        }).catch(err => console.log('Sheet integration error:', err));
       }
 
-      if(tgToken && tgChatId) {
-        const tgMsg = encodeURIComponent(`📥 *New Lead Capture Received*\n\n👤 *Name:* ${name}\n📞 *Phone:* ${phone}\n✉️ *Email:* ${email}\n💬 *Message:* ${msg}`);
-        fetch(`https://api.telegram.org/bot${tgToken}/sendMessage?chat_id=${tgChatId}&text=${tgMsg}&parse_mode=Markdown`)
-          .catch(err => console.log('Telegram API error:', err));
+      if(window.leadSettings.tgToken && window.leadSettings.tgChatId) {
+        const tgMsg = `<b>New Inquiry Received!</b>\n\n<b>Name:</b> ${name}\n<b>Phone:</b> ${phone}\n<b>Email:</b> ${email}\n<b>Message:</b> ${message}`;
+        fetch(`https://api.telegram.org/bot${window.leadSettings.tgToken}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: window.leadSettings.tgChatId, text: tgMsg, parse_mode: 'HTML' })
+        }).catch(err => console.log('Telegram integration error:', err));
       }
 
-      const newRef = window.push(window.ref(window.db, 'leads'));
-      window.set(newRef, { name, phone, email, message: msg, recipient: recipientEmail, timestamp: Date.now() }).then(() => {
-        alert(`Thank you! Your request has been logged and sent to the agent.`);
-        if(isPopup) closeModal('lead-popup-modal');
-        e.target.reset();
+      alert('Thank you! Your request has been sent successfully.');
+      e.target.reset();
+      if(isPopup) closePopupModalAnimated('lead-popup-modal');
+    }
+
+    function saveLeadSettings(e) {
+      e.preventDefault();
+      const email = document.getElementById('setting-lead-email').value;
+      const phone = document.getElementById('setting-lead-phone').value;
+      const sheetUrl = document.getElementById('setting-sheet-url').value;
+      const tgToken = document.getElementById('setting-tg-token').value;
+      const tgChatId = document.getElementById('setting-tg-chatid').value;
+
+      window.set(window.ref(window.db, 'leadSettings'), {
+        email, phone, sheetUrl, tgToken, tgChatId
+      }).then(() => {
+        closeModal('lead-settings-modal');
+        alert('Lead & Integration settings updated!');
       });
     }
 
-    // G. Footer Section Logic
+    // G. Footer Section Actions
     function editFooterDetails() {
       if(!window.isAdmin) return;
-      const logo = prompt("Enter Footer Logo Image URL:");
-      const brand = prompt("Enter Brand Name:");
-      const about = prompt("Enter Footer About Text:");
+      const logo = prompt("Enter Footer Logo URL:");
+      const brand = prompt("Enter Brand / Realty Name:");
+      const about = prompt("Enter Short Footer Bio/About:");
 
       if(logo) window.set(window.ref(window.db, 'footer/logo'), logo);
       if(brand) window.set(window.ref(window.db, 'footer/brand'), brand);
@@ -2108,82 +2473,33 @@
 
     function renderFooterLinks(links) {
       const container = document.getElementById('footer-links-container');
-      if(!container) return;
       container.innerHTML = '';
-      
+
       if(!links || links.length === 0) {
-        container.innerHTML = `<li class="text-slate-500 text-xs">No related links added.</li>`;
+        container.innerHTML = `<li class="text-slate-500 italic">No links added</li>`;
         return;
       }
 
-      links.forEach((link, idx) => {
+      links.forEach(l => {
         const li = document.createElement('li');
-        li.className = "flex items-center justify-between draggable-item";
-        li.setAttribute('draggable', window.isAdmin ? 'true' : 'false');
-        li.dataset.index = idx;
-
+        li.className = "flex items-center justify-between group";
         li.innerHTML = `
-          <a href="${link.url}" target="_blank" class="hover:text-white transition flex items-center gap-1.5 truncate">
-            <i class="fa-solid fa-chevron-right text-[10px] text-[#f1c40f]"></i> ${link.label}
+          <a href="${l.url}" target="_blank" class="hover:text-[#f1c40f] transition flex items-center gap-1">
+            <i class="fa-solid fa-chevron-right text-[9px] text-[#f1c40f]"></i>
+            <span>${l.label}</span>
           </a>
           ${window.isAdmin ? `
-            <button onclick="deleteFooterLink('${link.id}')" class="text-red-400 hover:text-red-300 ml-2" title="Delete Link">
-              <i class="fa-solid fa-trash text-[10px]"></i>
-            </button>
+            <button onclick="deleteItem('footer/links/${l.id}')" class="text-red-400 hover:text-red-600 text-[10px] opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-trash"></i></button>
           ` : ''}
         `;
         container.appendChild(li);
       });
-
-      if(window.isAdmin) setupFooterLinkDragDrop();
     }
 
-    function deleteFooterLink(id) {
-      if(confirm("Delete this related link?")) {
-        const updated = window.allFooterLinks.filter(l => l.id !== id);
-        window.set(window.ref(window.db, 'footer/links'), updated);
-      }
-    }
-
-    function setupFooterLinkDragDrop() {
-      const container = document.getElementById('footer-links-container');
-      let dragIdx = null;
-
-      container.querySelectorAll('.draggable-item').forEach(item => {
-        item.addEventListener('dragstart', (e) => {
-          dragIdx = e.currentTarget.dataset.index;
-          e.currentTarget.classList.add('dragging');
-        });
-
-        item.addEventListener('dragend', (e) => {
-          e.currentTarget.classList.remove('dragging');
-        });
-
-        item.addEventListener('dragover', (e) => {
-          e.preventDefault();
-        });
-
-        item.addEventListener('drop', (e) => {
-          e.preventDefault();
-          const targetIdx = e.currentTarget.dataset.index;
-          if(dragIdx !== null && targetIdx !== undefined && dragIdx !== targetIdx) {
-            const reordered = [...window.allFooterLinks];
-            const [moved] = reordered.splice(dragIdx, 1);
-            reordered.splice(targetIdx, 0, moved);
-            window.set(window.ref(window.db, 'footer/links'), reordered);
-          }
-        });
-      });
-    }
-
-    // Global Database Delete Helper
+    // Generic Delete Helper
     function deleteItem(path) {
-      if(!window.isAdmin) return;
-      if(confirm('Are you sure you want to delete this item?')) {
-        window.remove(window.ref(window.db, path)).then(() => {
-          alert('Item removed.');
-          closeModal('listing-details-modal');
-        });
+      if(confirm("Are you sure you want to delete this item?")) {
+        window.remove(window.ref(window.db, path));
       }
     }
   </script>
